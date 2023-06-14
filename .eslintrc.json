@@ -32,6 +32,10 @@
             "error",
             "always"
         ],
+        "eqeqeq": [
+            "error",
+            "smart"
+        ],
         "object-curly-spacing": [
             "error",
             "always"
