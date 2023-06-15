@@ -62,11 +62,71 @@ $ npm run test:cov
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
+## MongoDB design 
+
+### Schemas
+
+USERS
+
+````JSON
+
+{
+  "_id": ,
+  "name": ,
+  "last_name": ,
+  "email": , 
+  "password": ,
+  "wallet_balance": ,
+  "bought_courses": ,
+  "created_courses": ,
+  "chat_notifications_sent": ,
+  "chat_notifications_recieved": ,
+  "profile": ,
+  "recovery_token": ,
+}
+
+````
+
+COURSES
+
+````JSON
+
+{
+  "_id": ,
+  "name": ,
+  "price": ,
+  "topic": , 
+  "difficulty": ,
+  "tags": ,
+  "bought": ,
+  "create_date": ,
+  "update_date": ,
+  "reviews": [
+    {
+      "_id_comment": ,
+      "stars": ,
+    }
+  ] ,
+  "content": ,
+}
+
+````
+
+COMMENTS
+
+````JSON
+
+{
+  "_id": ,
+  "comment_text": ,
+  "user_id": , 
+}
+
+````
+
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+
 
 ## License
 
