@@ -28,6 +28,10 @@
             "error",
             "double"
         ],
+        "quote-props": [
+            "error",
+            "consistent-as-needed"
+        ],
         "semi": [
             "error",
             "always"
