@@ -21,13 +21,19 @@ let UsersService = exports.UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    create(createUserDto) {
-        const result = this.userModel.find({ email: createUserDto.email });
-        if (result) {
-            return result;
+    async create(createUserDto) {
+        try {
+            const result = await this.userModel.find({ email: createUserDto.email });
+            if (result.length !== 0) {
+                return { message: 'User already exists' };
+            }
+            else {
+                const result = await this.userModel.create([createUserDto]);
+                return result;
+            }
         }
-        else {
-            return { message: 'User already exists' };
+        catch (e) {
+            console.log(`Error creating new user ${e}`);
         }
     }
     findAll() {
