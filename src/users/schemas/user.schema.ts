@@ -1,4 +1,7 @@
-export class CreateUserDto {
+import { Schema } from '@nestjs/mongoose';
+
+@Schema()
+export class User {
 	name: string;
 	last_name: string;
 	email: string; 
