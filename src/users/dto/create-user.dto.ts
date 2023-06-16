@@ -11,3 +11,5 @@ export class CreateUserDto {
 	profile: string;
 	recovery_token: string;
 }
+=======
+export class CreateUserDto {}
