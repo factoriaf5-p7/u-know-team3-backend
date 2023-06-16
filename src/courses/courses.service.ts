@@ -10,7 +10,7 @@ export class CoursesService {
 
 	findAll() {
     
-		return coursesModel.find();
+		return 'This action find all users';
 	}
 
 	findOne(id: number) {
