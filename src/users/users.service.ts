@@ -28,8 +28,23 @@ export class UsersService {
 		}
 	}
 
+	async checkLoginInfo(email:string){
+		try {
+			const result = await this.userModel.find({ email:email });
+			if (result.length !==0) {
+				return result;
+			} else {
+				console.log('user not exist');
+				return;
+			}
+		} catch (error) {
+			return error;
+		}
+	}
+
 	findAll() {
-		return `This action returns all users`;
+		return this.userModel.find();
+		// return `This action returns all users`;
 	}
 
 	findOne(id: number) {

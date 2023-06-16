@@ -22,25 +22,23 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Model } from 'mongoose';
-import { User } from './schemas/user.schema';
-export declare class UsersService {
-    private userModel;
-    constructor(userModel: Model<User>);
-    create(createUserDto: CreateUserDto): Promise<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>)[] | {
-        message: string;
-    }>;
-    checkLoginInfo(email: string): Promise<any>;
-    findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>)[], import("mongoose").Document<unknown, {}, User> & Omit<User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>, {}, User, "find">;
-    findOne(id: number): string;
-    update(id: number, updateUserDto: UpdateUserDto): string;
-    remove(id: number): string;
+import { HydratedDocument } from 'mongoose';
+export type UserDocument = HydratedDocument<User>;
+export declare class User {
+    name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    wallet_balance: number;
+    bought_courses: [];
+    created_courses: [];
+    chat_notifications_sent: [];
+    chat_notifications_recieved: [];
+    profile: string;
+    recovery_token: string;
 }
+export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & Omit<User & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<User>> & Omit<import("mongoose").FlatRecord<User> & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>>;

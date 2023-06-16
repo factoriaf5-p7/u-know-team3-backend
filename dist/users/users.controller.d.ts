@@ -34,7 +34,12 @@ export declare class UsersController {
     }, never>)[] | {
         message: string;
     }>;
-    findAll(): string;
+    checkLoginInfo(email: string): Promise<any>;
+    findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>)[], import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>, {}, import("./schemas/user.schema").User, "find">;
     findOne(id: string): string;
     update(id: string, updateUserDto: UpdateUserDto): string;
     remove(id: string): string;

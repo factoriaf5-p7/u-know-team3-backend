@@ -13,6 +13,11 @@ export class UsersController {
 		return this.usersService.create(createUserDto);
 	}
 
+  @Get(':email')
+  checkLoginInfo(@Param('email') email:string) {
+    return this.usersService.checkLoginInfo(email)
+  }
+
   @Get()
   findAll() {
   	return this.usersService.findAll();

@@ -36,8 +36,23 @@ let UsersService = exports.UsersService = class UsersService {
             console.log(`Error creating new user ${e}`);
         }
     }
+    async checkLoginInfo(email) {
+        try {
+            const result = await this.userModel.find({ email: email });
+            if (result.length !== 0) {
+                return result;
+            }
+            else {
+                console.log('user not exist');
+                return;
+            }
+        }
+        catch (error) {
+            return error;
+        }
+    }
     findAll() {
-        return `This action returns all users`;
+        return this.userModel.find();
     }
     findOne(id) {
         return `This action returns a #${id} user`;
