@@ -28,14 +28,13 @@ export class UsersService {
 		}
 	}
 
-	async checkLoginInfo(email:string){
+	async checkLoginInfo(createUserDto:CreateUserDto){
 		try {
-			const result = await this.userModel.find({ email:email });
+			const result = await this.userModel.find({ email: createUserDto.email, password: createUserDto.password });
 			if (result.length !==0) {
 				return result;
 			} else {
-				console.log('user not exist');
-				return;
+				return { error : 'User doesn\'t exist.' };
 			}
 		} catch (error) {
 			return error;

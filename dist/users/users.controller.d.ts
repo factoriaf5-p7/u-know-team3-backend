@@ -34,7 +34,7 @@ export declare class UsersController {
     }, never>)[] | {
         message: string;
     }>;
-    checkLoginInfo(email: string): Promise<any>;
+    checkLoginInfo(createUserDto: CreateUserDto): Promise<any>;
     findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>)[], import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {

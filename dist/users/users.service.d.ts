@@ -34,7 +34,7 @@ export declare class UsersService {
     }, never>)[] | {
         message: string;
     }>;
-    checkLoginInfo(email: string): Promise<any>;
+    checkLoginInfo(createUserDto: CreateUserDto): Promise<any>;
     findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>)[], import("mongoose").Document<unknown, {}, User> & Omit<User & {

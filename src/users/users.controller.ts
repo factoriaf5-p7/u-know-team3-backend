@@ -13,9 +13,9 @@ export class UsersController {
 		return this.usersService.create(createUserDto);
 	}
 
-  @Get(':email')
-  checkLoginInfo(@Param('email') email:string) {
-    return this.usersService.checkLoginInfo(email)
+  @Get()
+  checkLoginInfo(@Body() createUserDto: CreateUserDto) {
+  	return this.usersService.checkLoginInfo(createUserDto);
   }
 
   @Get()
