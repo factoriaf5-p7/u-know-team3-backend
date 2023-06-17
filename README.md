@@ -124,6 +124,32 @@ COMMENTS
 
 ````
 
+USER FOR TESTING
+
+````JSON
+
+{
+  "name": "Jhon",
+  "last_name": "Connors",
+  "email": "jhon@judgementday.com", 
+  "password": "1234",
+  "wallet_balance": 100,
+  "bought_courses": ["Course1"],
+  "created_courses": ["Course 2", "Course 3"],
+  "chat_notifications_sent": [],
+  "chat_notifications_recieved": [
+    {
+        "requested_from_user": 2,
+        "requested_date": "2023-06-20 18:00"
+    }
+  ],
+  "profile": "user",
+  "recovery_token": ""
+}
+
+````
+
+
 ## Stay in touch
 
 

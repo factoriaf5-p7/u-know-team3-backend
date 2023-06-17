@@ -13,7 +13,7 @@ let CoursesService = exports.CoursesService = class CoursesService {
         return 'This action adds a new course';
     }
     findAll() {
-        return `This action returns all courses`;
+        return 'This action find all users';
     }
     findOne(id) {
         return `This action returns a #${id} course`;
