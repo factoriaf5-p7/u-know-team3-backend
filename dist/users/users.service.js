@@ -38,13 +38,12 @@ let UsersService = exports.UsersService = class UsersService {
     }
     async checkLoginInfo(createUserDto) {
         try {
-            const result = await this.userModel.find({ email: createUserDto.email, password: createUserDto.password });
-            if (result.length !== 0) {
-                return { result, success: true };
-            }
-            else {
-                return { error: 'User doesn\'t exist.', success: false };
-            }
+            const result = await this.userModel.find({
+                email: createUserDto.email,
+                password: createUserDto.password,
+            });
+            const valid = result.length !== 0;
+            return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
         }
         catch (error) {
             return error;
