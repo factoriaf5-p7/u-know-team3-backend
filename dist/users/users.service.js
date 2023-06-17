@@ -40,10 +40,10 @@ let UsersService = exports.UsersService = class UsersService {
         try {
             const result = await this.userModel.find({ email: createUserDto.email, password: createUserDto.password });
             if (result.length !== 0) {
-                return result;
+                return { result, success: true };
             }
             else {
-                return { error: 'User doesn\'t exist.' };
+                return { error: 'User doesn\'t exist.', success: false };
             }
         }
         catch (error) {
