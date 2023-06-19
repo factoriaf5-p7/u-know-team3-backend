@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "6490cb44e77da73b3fd0629c"
+  },
+  "name": "How to go throw the rabbit hole",
+  "price": 100,
+  "topic": "Fantasy",
+  "difficulty": "Meddium",
+  "tags": "#rabbithole, #wonderworld #hunt",
+  "bought": true,
+  "create_date": "2023-06-19 23:42",
+  "update_date": "2023-06-19 23:42",
+  "reviews": [
+    {
+      "_id_comment": "2435LKJ4J",
+      "stars": 4
+    }
+  ],
+  "content": "### HOW TO GO TRHOW THE RABBIT HOLE ## Capitul I"
+},
+{
+  "_id": {
+    "$oid": "6490cc44e77da73b3fd0629d"
+  },
+  "name": "Be inclusive have in consideration Terminator's feelings",
+  "price": 100,
+  "topic": "Personal development",
+  "difficulty": "Easy",
+  "tags": "#terminator, #feelings #theyarenotonlymetalandwires",
+  "bought": true,
+  "create_date": "2023-06-19 23:42",
+  "update_date": "2023-06-19 23:42",
+  "reviews": [
+    {
+      "_id_comment": "45453",
+      "stars": 5
+    }
+  ],
+  "content": "### DEEPER UNDERSTANDING OF TERMINATOR'S INNER WORLD ## Capitul I"
+}]
