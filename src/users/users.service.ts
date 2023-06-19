@@ -20,7 +20,7 @@ export class UsersService {
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create([ createUserDto ]);
+				const result = await this.userModel.create( createUserDto );
 				return result;
 			}
 		}catch(e){
