@@ -1,0 +1,34 @@
+POST http://localhost:3000/u-know/users
+Content-Type: application/json
+
+
+{
+    "name": "Rick",
+    "last_name": "Mayall",
+    "email": "rick@theyoungones.org",
+    "password": "123456",
+    "wallet_balance": 100,
+    "bought_courses": "[];",
+    "created_courses": "[];",
+    "chat_notifications_sent": "[];",
+    "chat_notifications_recieved": "[];",
+    "profile": "",
+    "recovery_token": "string;"
+}
+{
+    "name": "Neil",
+    "last_name": "Pye",
+    "email": "neil@theyoungones.org",
+    "password": "654321",
+    "wallet_balance": 100,
+    "bought_courses": "[];",
+    "created_courses": "[];",
+    "chat_notifications_sent": "[];",
+    "chat_notifications_recieved": "[];",
+    "profile": "",
+    "recovery_token": "string;"
+}
+
+######
+
+GET http://localhost:3000/u-know/users

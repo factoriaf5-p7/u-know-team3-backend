@@ -29,7 +29,7 @@ createTestAccount((err, account) => {
         html: '<p><b>Hello</b> aqui tienes enlace para recuperar contraseña</p>'// token
     };
 
-    transporter.sendMail(message, (err, info) => {
+    transporter.sendMail(message, (err: { message: string; }, info: { messageId: any; }) => {
         if (err) {
             console.log('Error occurred. ' + err.message);
             return process.exit(1);
