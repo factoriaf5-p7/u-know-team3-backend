@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", String)
 ], Course.prototype, "content", void 0);
 exports.Course = Course = __decorate([
-    (0, mongoose_1.Schema)()
+    (0, mongoose_1.Schema)({ timestamps: true })
 ], Course);
 exports.CourseSchema = mongoose_1.SchemaFactory.createForClass(Course);
 //# sourceMappingURL=course.schema.js.map

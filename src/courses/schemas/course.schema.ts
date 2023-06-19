@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Schema()
+@Schema( { timestamps: true } )
 export class Course {
     @ApiProperty({ example: 'Introduction to Web Development' })
     @Prop()

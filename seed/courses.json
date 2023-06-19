@@ -1,6 +1,5 @@
 [
     {
-        "_id": ObjectId("60c2ef21eef77c001f84c8f1"),
         "name": "Introduction to Web Development",
         "price": 59.99,
         "topic": "Web Development",
