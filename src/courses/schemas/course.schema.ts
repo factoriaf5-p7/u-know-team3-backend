@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Schema()
@@ -24,12 +24,10 @@ export class Course {
     	tags: [];
 
     @ApiProperty({ example: [ { 
-    	_id_comment: ObjectId('60c2ef21eef77c001f84c8f2'),
-    	stars: 4
+    	 	stars: 4
     },
     {
-    	_id_comment: ObjectId('60c2ef21eef77c001f84c8f3'),
-    	stars: 5
+    	    	stars: 5
     } ] })
     @Prop()
     	reviews: [];
@@ -38,4 +36,6 @@ export class Course {
     @Prop()
     	content: string;
 }
+
+export const CourseSchema = SchemaFactory.createForClass(Course);
 
