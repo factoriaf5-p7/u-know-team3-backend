@@ -36,8 +36,8 @@ export class UsersService {
 		return `This action returns a #${id} user`;
 	}
 
-	update(id: number, updateUserDto: UpdateUserDto) {
-		return `This action updates a #${id} user`;
+	async update(updateUserDto: UpdateUserDto) {
+		return `hey`;
 	}
 
 	remove(id: number) {
