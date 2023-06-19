@@ -5,7 +5,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema({ typeKey: '$type' })
+@Schema()
 export class User {
   @ApiProperty({ example: 'Jhon' })
   @Prop()
