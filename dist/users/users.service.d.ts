@@ -26,6 +26,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
+import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 export declare class UsersService {
     private userModel;
     constructor(userModel: Model<User>);
@@ -34,7 +35,14 @@ export declare class UsersService {
     }, never>)[] | {
         message: string;
     }>;
-    findAll(): string;
+    findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>)[], import("mongoose").Document<unknown, {}, User> & Omit<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>, {}, User, "find">;
+    login(user: GetUserLoginDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
     findOne(id: number): string;
     update(id: number, updateUserDto: UpdateUserDto): string;
     remove(id: number): string;

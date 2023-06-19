@@ -50,12 +50,22 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "created_courses", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: [{ sent_to_user: 1, sent_date: '2023-06-20 10:30' }, { sent_to_user: 5, sent_date: '2023-06-23 17:00' }] }),
+    (0, swagger_1.ApiProperty)({
+        example: [
+            { sent_to_user: 1, sent_date: '2023-06-20 10:30' },
+            { sent_to_user: 5, sent_date: '2023-06-23 17:00' },
+        ],
+    }),
     (0, mongoose_1.Prop)(),
     __metadata("design:type", Array)
 ], User.prototype, "chat_notifications_sent", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: [{ recieved_from_user: 1, requested_date: '2023-06-20 10:30' }, { recieved_from_user: 5, requested_date: '2023-06-23 17:00' }] }),
+    (0, swagger_1.ApiProperty)({
+        example: [
+            { recieved_from_user: 1, requested_date: '2023-06-20 10:30' },
+            { recieved_from_user: 5, requested_date: '2023-06-23 17:00' },
+        ],
+    }),
     (0, mongoose_1.Prop)(),
     __metadata("design:type", Array)
 ], User.prototype, "chat_notifications_recieved", void 0);
@@ -70,7 +80,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "recovery_token", void 0);
 exports.User = User = __decorate([
-    (0, mongoose_1.Schema)()
+    (0, mongoose_1.Schema)({ typeKey: '$type' })
 ], User);
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 //# sourceMappingURL=user.schema.js.map

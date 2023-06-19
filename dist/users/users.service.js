@@ -37,10 +37,19 @@ let UsersService = exports.UsersService = class UsersService {
         }
     }
     findAll() {
-        return `This action returns all users`;
+        return this.userModel.find();
+    }
+    async login(user) {
+        try {
+            const res = await this.userModel.findOne({ email: user.email, password: user.password });
+            return res;
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
     findOne(id) {
-        return `This action returns a #${id} user`;
+        return 'findone';
     }
     update(id, updateUserDto) {
         return `This action updates a #${id} user`;
