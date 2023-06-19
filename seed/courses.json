@@ -6,7 +6,7 @@
         "topic": "Web Development",
         "difficulty": "Beginner",
         "tags": ["HTML", "CSS", "JavaScript"],
-        "bought": 50,
+        "bought": true,
         "create_date": ISODate("2022-07-10T09:00:00Z"),
         "update_date": ISODate("2022-08-20T14:30:00Z"),
         "reviews": [
@@ -28,7 +28,7 @@
         "topic": "Web Development",
         "difficulty": "Advanced",
         "tags": ["Node.js", "JavaScript", "Web Development"],
-        "bought": 50,
+        "bought": true,
         "create_date": ISODate("2022-08-10T10:15:00Z"),
         "update_date": ISODate("2022-09-20T14:45:00Z"),
         "reviews": [
