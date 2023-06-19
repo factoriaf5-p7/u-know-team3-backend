@@ -36,24 +36,20 @@ let UsersService = exports.UsersService = class UsersService {
             console.log(`Error creating new user ${e}`);
         }
     }
-    async checkLoginInfo(createUserDto) {
-        try {
-            const result = await this.userModel.find({
-                email: createUserDto.email,
-                password: createUserDto.password,
-            });
-            const valid = result.length !== 0;
-            return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
-        }
-        catch (error) {
-            return error;
-        }
-    }
     findAll() {
         return this.userModel.find();
     }
+    async login(user) {
+        try {
+            const res = await this.userModel.findOne({ email: user.email, password: user.password });
+            return res;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
     findOne(id) {
-        return `This action returns a #${id} user`;
+        return 'findone';
     }
     update(id, updateUserDto) {
         return `This action updates a #${id} user`;

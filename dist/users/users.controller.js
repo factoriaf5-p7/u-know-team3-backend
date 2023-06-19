@@ -24,9 +24,6 @@ let UsersController = exports.UsersController = class UsersController {
     create(createUserDto) {
         return this.usersService.create(createUserDto);
     }
-    checkLoginInfo(createUserDto) {
-        return this.usersService.checkLoginInfo(createUserDto);
-    }
     findAll() {
         return this.usersService.findAll();
     }
@@ -47,13 +44,6 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
-    __metadata("design:returntype", void 0)
-], UsersController.prototype, "checkLoginInfo", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
