@@ -13,8 +13,8 @@ export class AuthService {
 			const result = await this.userService.login(user);
 			console.log(result);
         
-			// const valid = result === null;
-			// return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
+			const valid = result !== null;
+			return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
 		} catch (error) {
 			return error;
 		}
