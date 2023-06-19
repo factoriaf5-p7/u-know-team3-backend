@@ -8,7 +8,7 @@ import { RecoverUserDto } from './dto/recover-user.dto';
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
-	@Get('login')
+	@Post('login')
 	findOne(@Body() user: GetUserLoginDto) {
 		return this.authService.findOne(user);
 	}
