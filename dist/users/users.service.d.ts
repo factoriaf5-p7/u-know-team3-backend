@@ -35,7 +35,7 @@ export declare class UsersService {
         message: string;
     }>;
     findAll(): string;
-    findById(id: number): string;
+    findOne(id: number): string;
     update(id: number, updateUserDto: UpdateUserDto): string;
     remove(id: number): string;
 }

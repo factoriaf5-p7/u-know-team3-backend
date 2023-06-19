@@ -39,7 +39,7 @@ let UsersService = exports.UsersService = class UsersService {
     findAll() {
         return `This action returns all users`;
     }
-    findById(id) {
+    findOne(id) {
         return `This action returns a #${id} user`;
     }
     update(id, updateUserDto) {

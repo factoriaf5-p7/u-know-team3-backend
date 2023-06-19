@@ -35,7 +35,7 @@ export declare class UsersController {
         message: string;
     }>;
     findAll(): string;
-    findOne(id: string): any;
+    findOne(id: string): string;
     update(id: string, updateUserDto: UpdateUserDto): string;
     remove(id: string): string;
 }
