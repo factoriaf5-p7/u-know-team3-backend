@@ -2,7 +2,6 @@
 
 [
     {
-        "_id": ObjectId("60c2ef21eef77c001f84c8f1"),
         "name": "John",
         "last_name": "Doe",
         "email": "johndoe@example.com",
@@ -16,7 +15,6 @@
         "recovery_token": "abc123"
       },
       {
-        "_id": ObjectId("60c2ef21eef77c001f84c8f2"),
         "name": "Jane",
         "last_name": "Smith",
         "email": "janesmith@example.com",
