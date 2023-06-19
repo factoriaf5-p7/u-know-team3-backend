@@ -45,12 +45,30 @@ export class UsersService {
 		// return `This action returns a #${id} user`;
 	}
 
+	async saveRecoverPassword(token: string, user: UpdateUserDto) {
+		try {
+			const updatedUser = await this.userModel.findById(user._id);
+			updatedUser.recovery_token = token;
+			return await updatedUser.save();
+		} catch (error) {
+			
+		}
+	}
+
 	findOne(id :number) {
 		return 'findone';
 	}
 
-	update(id: number, updateUserDto: UpdateUserDto) {
-		return `This action updates a #${id} user`;
+	async update(user: UpdateUserDto) {
+		try {
+			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			console.log(result);
+			return result;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	remove(id: number) {

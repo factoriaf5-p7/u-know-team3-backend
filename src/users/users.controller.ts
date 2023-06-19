@@ -23,9 +23,14 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  	return this.usersService.update(+id, updateUserDto);
+  update(@Body() updateUserDto: UpdateUserDto) {
+  	return this.usersService.update(updateUserDto);
   }
+
+  // @Patch([ ':id', ':rtoken' ])
+  // update(@Param() id: string, token: string, @Body() password: string) {
+  // 	return this.usersService.update(id, token, password);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
