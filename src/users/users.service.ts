@@ -31,7 +31,7 @@ export class UsersService {
 		return `This action returns all users`;
 	}
 
-	findById(id: number) {
+	findOne(id: number) {
 		return `This action returns a #${id} user`;
 	}
 
