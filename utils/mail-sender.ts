@@ -2,7 +2,7 @@
 import { createTestAccount, createTransport, getTestMessageUrl } from 'nodemailer';
 
 // Generate SMTP service account from ethereal.email
-createTestAccount((err, account) => {
+createTestAccount((err, sendTo, token ) => {
     if (err) {
         console.error('Failed to create a testing account. ' + err.message);
         return process.exit(1);
@@ -23,10 +23,10 @@ createTestAccount((err, account) => {
     // Message object
     let message = {
         from: 'Uknow <uknow@example.com>',
-        to: 'Recipient <recipient@example.com>', //user.email
+        to: sendTo, //user.email
         subject: 'Recuperar contraseña',
        // text: 'Hello to myself!',
-        html: '<p><b>Hello</b> aqui tienes enlace para recuperar contraseña</p>'// token
+        html: '<p><b>Hello</b> aqui tienes enlace para recuperar contraseña</p><a href="">'// token
     };
 
     transporter.sendMail(message, (err: { message: string; }, info: { messageId: any; }) => {
