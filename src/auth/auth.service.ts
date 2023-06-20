@@ -16,12 +16,11 @@ export class AuthService {
 	async findOne(user:GetUserLoginDto){
 		try {
 			const result = await this.userService.login(user);
-			console.log(result);
         
 			const valid = result !== null;
 			return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
 		} catch (error) {
-			return error;
+			throw error;
 		}
 	}
 
@@ -30,7 +29,7 @@ export class AuthService {
 			const result = await this.userService.create(user);
 			return result;
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
@@ -47,14 +46,14 @@ export class AuthService {
 			sendEmail(updatedUser, token);
 			return updatedUser;
 		} catch (error) {
-			
+			throw error;
 		}
 	}
 
 	async updatePassword(user: RecoverUserDto) {
 		try {
-
-			//Hash password
+			// TODO
+			// Hash password
 			// if token is not expired
 			user.recovery_token = '';
 			return await this.userService.update(user);
