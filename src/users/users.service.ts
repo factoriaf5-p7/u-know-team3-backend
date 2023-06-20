@@ -15,13 +15,13 @@ export class UsersService {
 	async create(createUserDto: CreateUserDto) {
 
 		try{
-			const result = await this.userModel.find({ email: createUserDto.email });
+			const user = await this.userModel.find({ email: createUserDto.email });
 
-			if(result.length !== 0){
+			if(user.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create( createUserDto );
-				return result;
+				const createdUser = await this.userModel.create( createUserDto );
+				return createdUser;
 			}
 		}catch(error){
 			throw error;
@@ -30,7 +30,7 @@ export class UsersService {
 
 	findAll() {
 		try{
-			return this.userModel.find();
+			return this.userModel.find().select('-password');
 		}catch(error){
 			throw error;
 		}
