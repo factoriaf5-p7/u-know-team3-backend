@@ -23,35 +23,25 @@ export class UsersService {
 				const result = await this.userModel.create( createUserDto );
 				return result;
 			}
-		}catch(e){
-			console.log(`Error creating new user ${e}`);
+		}catch(error){
+			throw error;
 		}
 	}
 
 	findAll() {
-		return this.userModel.find();
-		// return `This action returns all users`;
+		try{
+			return this.userModel.find();
+		}catch(error){
+			throw error;
+		}
 	}
 
 	async login(user: GetUserLoginDto) {
 		try {
-			// console.log(email,password);
 			const res= await this.userModel.findOne({ email:user.email,password:user.password });
-			// console.log(res);
 			return res;
 		} catch (error) {
-			console.log(error);
-		}
-		// return `This action returns a #${id} user`;
-	}
-
-	async saveRecoverPassword(token: string, user: UpdateUserDto) {
-		try {
-			const updatedUser = await this.userModel.findById(user._id);
-			updatedUser.recovery_token = token;
-			return await updatedUser.save();
-		} catch (error) {
-			
+			throw error;
 		}
 	}
 
@@ -73,7 +63,7 @@ export class UsersService {
 			});
 			return result;
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 

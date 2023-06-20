@@ -3,16 +3,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
-import mongoose from 'mongoose';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
-	// @Post()
-	// create(@Body() createUserDto: CreateUserDto) {
-	// 	return this.usersService.create(createUserDto);
-	// }
+	@Post()
+	create(@Body() createUserDto: CreateUserDto) {
+		return this.usersService.create(createUserDto);
+	}
 
   @Get()
 	findAll() {
@@ -28,11 +28,6 @@ export class UsersController {
   update(@Body() updateUserDto: UpdateUserDto) {
   	return this.usersService.update(updateUserDto);
   }
-
-  // @Patch([ ':id', ':rtoken' ])
-  // update(@Param() id: string, token: string, @Body() password: string) {
-  // 	return this.usersService.update(id, token, password);
-  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
