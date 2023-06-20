@@ -80,7 +80,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "recovery_token", void 0);
 exports.User = User = __decorate([
-    (0, mongoose_1.Schema)({ typeKey: '$type' })
+    (0, mongoose_1.Schema)()
 ], User);
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 //# sourceMappingURL=user.schema.js.map

@@ -24,22 +24,18 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
-    create(createUserDto: CreateUserDto): Promise<(import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>)[] | {
-        message: string;
-    }>;
     findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>)[], import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>, {}, import("./schemas/user.schema").User, "find">;
     findOne(id: string): string;
-    update(id: string, updateUserDto: UpdateUserDto): string;
+    update(updateUserDto: UpdateUserDto): Promise<import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
     remove(id: string): string;
 }

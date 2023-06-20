@@ -32,7 +32,7 @@ export declare class UsersService {
     constructor(userModel: Model<User>);
     create(createUserDto: CreateUserDto): Promise<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
         _id: import("mongoose").Types.ObjectId;
-    }, never>)[] | {
+    }, never>) | {
         message: string;
     }>;
     findAll(): import("mongoose").Query<(import("mongoose").Document<unknown, {}, User> & Omit<User & {
@@ -43,7 +43,12 @@ export declare class UsersService {
     login(user: GetUserLoginDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
+    saveRecoverPassword(token: string, user: UpdateUserDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
     findOne(id: number): string;
-    update(id: number, updateUserDto: UpdateUserDto): string;
+    update(user: UpdateUserDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
     remove(id: number): string;
 }

@@ -28,7 +28,7 @@ let UsersService = exports.UsersService = class UsersService {
                 return { message: 'User already exists' };
             }
             else {
-                const result = await this.userModel.create([createUserDto]);
+                const result = await this.userModel.create(createUserDto);
                 return result;
             }
         }
@@ -48,11 +48,27 @@ let UsersService = exports.UsersService = class UsersService {
             console.log(error);
         }
     }
+    async saveRecoverPassword(token, user) {
+        try {
+            const updatedUser = await this.userModel.findById(user._id);
+            updatedUser.recovery_token = token;
+            return await updatedUser.save();
+        }
+        catch (error) {
+        }
+    }
     findOne(id) {
         return 'findone';
     }
-    update(id, updateUserDto) {
-        return `This action updates a #${id} user`;
+    async update(user) {
+        try {
+            const result = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            console.log(result);
+            return result;
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
     remove(id) {
         return `This action removes a #${id} user`;
