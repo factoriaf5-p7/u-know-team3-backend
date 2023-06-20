@@ -15,4 +15,8 @@ describe('UsersService', () => {
 	it('should be defined', () => {
 		expect(service).toBeDefined();
 	});
+
+	it('create() should return ', () => {
+		expect(await findAll()).toMatchObject();
+	});
 });
