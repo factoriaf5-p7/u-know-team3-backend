@@ -1,20 +1,8 @@
 // Use at least Nodemailer v4.1.0
-import {
-	createTestAccount,
-	createTransport,
-	getTestMessageUrl,
-} from 'nodemailer';
+import { createTransport, getTestMessageUrl } from 'nodemailer';
 
-// Generate SMTP service account from ethereal.email
-createTestAccount((err, sendTo, token) => {
-	if (err) {
-		console.error('Failed to create a testing account. ' + err.message);
-		return process.exit(1);
-	}
+export const sendEmail = (user, token) => {
 
-	console.log('Credentials obtained, sending message...');
-
-	// Create a SMTP transporter object
 	const transporter = createTransport({
 		host: 'smtp.ethereal.email',
 		port: 587,
@@ -27,10 +15,11 @@ createTestAccount((err, sendTo, token) => {
 	// Message object
 	const message = {
 		from: 'Uknow <uknow@example.com>',
-		to: sendTo, //user.email
-		subject: 'Recuperar contraseña',
+		to: user.email, //user.email
+		subject: 'Solicitud recuperación contraseña',
 		// text: 'Hello to myself!',
-		html: '<p><b>Hello</b> aqui tienes enlace para recuperar contraseña</p><a href="">', // token
+		html: `<p><b>Hello</b> aqui tienes enlace para recuperar contraseña</p><br>
+			<a href="http://localhost:3000/auth/upassword?id=${user._id}&token=${token}">Resetear contraseña</a>`, // token
 	};
 
 	transporter.sendMail(
@@ -46,4 +35,4 @@ createTestAccount((err, sendTo, token) => {
 			console.log('Preview URL: %s', getTestMessageUrl(info));
 		},
 	);
-});
+};
