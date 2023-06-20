@@ -4,6 +4,7 @@ import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RecoverUserDto } from './dto/recover-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { sendEmail } from 'src/utils/mail-sender';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
 		}
 	}
 
-	async recoverPassword(user: RecoverUserDto){
+	async recoverPasswordRequest(user: RecoverUserDto){
 		const payload = { 
 			sub: user._id,
 			email: user.email
@@ -42,9 +43,24 @@ export class AuthService {
 		try {
 			const token = await this.jwtService.signAsync(payload);
 			user.recovery_token = token;
-			return await this.userService.update(user);
+			const updatedUser = await this.userService.update(user);
+			sendEmail(updatedUser, token);
+			return updatedUser;
 		} catch (error) {
 			
+		}
+	}
+
+	async updatePassword(user: RecoverUserDto) {
+		try {
+
+			//Hash password
+			// if token is not expired
+			user.recovery_token = '';
+			return await this.userService.update(user);
+			
+		} catch (error) {
+			throw error;
 		}
 	}
 }

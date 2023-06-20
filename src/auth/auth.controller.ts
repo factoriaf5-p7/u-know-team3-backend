@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -18,8 +18,13 @@ export class AuthController {
 		return this.authService.register(user);
 	}
 
-	@Post('recover')
-	recoverPassword (@Body() user: RecoverUserDto){
-		return this.authService.recoverPassword(user);
+	@Patch('recover')
+	recoverPasswordRequest (@Body() user: RecoverUserDto){
+		return this.authService.recoverPasswordRequest(user);
+	}
+
+	@Get('upassword')
+	updatePassword (@Body() user: RecoverUserDto){
+		return this.authService.updatePassword(user);
 	}
 }
