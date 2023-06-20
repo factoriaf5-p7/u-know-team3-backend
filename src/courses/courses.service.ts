@@ -11,7 +11,6 @@ export class CoursesService {
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
-
 	create(createCourseDto: CreateCourseDto) {
 		return 'This action adds a new course';
 	}
