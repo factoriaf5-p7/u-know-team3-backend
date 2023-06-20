@@ -149,6 +149,20 @@ USER FOR TESTING
 
 ````
 
+## Nodemailer
+
+### Ethereal test account
+
+````ENV
+
+Name = 
+Alexie Bradtke
+Username =	
+alexie35@ethereal.email
+Password = 	
+wdC2Ur2kNYY9sbFEUY
+
+````
 
 ## Stay in touch
 

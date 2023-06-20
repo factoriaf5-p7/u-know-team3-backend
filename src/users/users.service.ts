@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from  'mongoose';
+import { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
 import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 
@@ -55,8 +55,15 @@ export class UsersService {
 		}
 	}
 
-	findOne(id :number) {
-		return 'findone';
+	async findOne(id : ObjectId): Promise <User> {
+		try {
+			const user = await this.findOne(id);
+
+			return user;
+			
+		} catch (error) {
+			throw error;
+		}	
 	}
 
 	async update(user: UpdateUserDto) {
@@ -64,7 +71,6 @@ export class UsersService {
 			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
 			});
-			console.log(result);
 			return result;
 		} catch (error) {
 			console.log(error);

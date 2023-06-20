@@ -2,6 +2,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -18,8 +20,8 @@ export class UsersController {
 	}
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-  	return this.usersService.findOne(+id);
+  findOne(@Param('id') id: ObjectId) {
+  	return this.usersService.findOne(id);
   }
 
   @Patch(':id')
