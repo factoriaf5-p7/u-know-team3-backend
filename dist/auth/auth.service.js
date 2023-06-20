@@ -13,6 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("../users/users.service");
 const jwt_1 = require("@nestjs/jwt");
+const mail_sender_1 = require("../utils/mail-sender");
 let AuthService = exports.AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
@@ -38,7 +39,7 @@ let AuthService = exports.AuthService = class AuthService {
             console.log(error);
         }
     }
-    async recoverPassword(user) {
+    async recoverPasswordRequest(user) {
         const payload = {
             sub: user._id,
             email: user.email
@@ -46,9 +47,20 @@ let AuthService = exports.AuthService = class AuthService {
         try {
             const token = await this.jwtService.signAsync(payload);
             user.recovery_token = token;
+            const updatedUser = await this.userService.update(user);
+            (0, mail_sender_1.sendEmail)(updatedUser, token);
+            return updatedUser;
+        }
+        catch (error) {
+        }
+    }
+    async updatePassword(user) {
+        try {
+            user.recovery_token = '';
             return await this.userService.update(user);
         }
         catch (error) {
+            throw error;
         }
     }
 };

@@ -57,13 +57,18 @@ let UsersService = exports.UsersService = class UsersService {
         catch (error) {
         }
     }
-    findOne(id) {
-        return 'findone';
+    async findOne(id) {
+        try {
+            const user = await this.findOne(id);
+            return user;
+        }
+        catch (error) {
+            throw error;
+        }
     }
     async update(user) {
         try {
             const result = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
-            console.log(result);
             return result;
         }
         catch (error) {

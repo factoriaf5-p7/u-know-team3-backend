@@ -38,7 +38,10 @@ export declare class AuthService {
     }, never>) | {
         message: string;
     }>;
-    recoverPassword(user: RecoverUserDto): Promise<import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
+    recoverPasswordRequest(user: RecoverUserDto): Promise<import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
+        _id: import("mongoose").Types.ObjectId;
+    }, never>>;
+    updatePassword(user: RecoverUserDto): Promise<import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
 }

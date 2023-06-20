@@ -28,8 +28,11 @@ let AuthController = exports.AuthController = class AuthController {
     signup(user) {
         return this.authService.register(user);
     }
-    recoverPassword(user) {
-        return this.authService.recoverPassword(user);
+    recoverPasswordRequest(user) {
+        return this.authService.recoverPasswordRequest(user);
+    }
+    updatePassword(user) {
+        return this.authService.updatePassword(user);
     }
 };
 __decorate([
@@ -47,12 +50,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signup", null);
 __decorate([
-    (0, common_1.Post)('recover'),
+    (0, common_1.Patch)('recover'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [recover_user_dto_1.RecoverUserDto]),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "recoverPassword", null);
+], AuthController.prototype, "recoverPasswordRequest", null);
+__decorate([
+    (0, common_1.Get)('upassword'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [recover_user_dto_1.RecoverUserDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "updatePassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

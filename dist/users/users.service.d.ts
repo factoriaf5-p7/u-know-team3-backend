@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 export declare class UsersService {
@@ -46,7 +46,7 @@ export declare class UsersService {
     saveRecoverPassword(token: string, user: UpdateUserDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
-    findOne(id: number): string;
+    findOne(id: ObjectId): Promise<User>;
     update(user: UpdateUserDto): Promise<import("mongoose").Document<unknown, {}, User> & Omit<User & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
