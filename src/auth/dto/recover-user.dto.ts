@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { ObjectId } from 'mongoose';
 
 export class RecoverUserDto {
 	@ApiProperty({ example: 1 })
-		_id: SchemaObject;
+		_id: ObjectId;
 
 	@ApiProperty({ example: 'jhon' })
 		email: string;

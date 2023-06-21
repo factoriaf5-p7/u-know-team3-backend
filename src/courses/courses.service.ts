@@ -11,14 +11,31 @@ export class CoursesService {
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
-
 	create(createCourseDto: CreateCourseDto) {
 		return 'This action adds a new course';
 	}
 
 	async findAll() {
-		return this.courseModel.find().exec();    
+		// return this.courseModel.find().exec();    
 		// return 'This action find all users';
+		return this.courseModel.aggregate([
+			{
+			  $project: {
+					_id: 1,
+					name: 1,
+					price: 1,
+					topic: 1,
+					difficulty: 1,
+					tags: 1,
+					bought: 1,
+					reviews: 1,
+					averageRating: { $avg: '$reviews.stars' }
+			  }
+			},
+			{
+			  $sort: { averageRating: -1 }
+			}
+		  ]);
 
 	}
 
