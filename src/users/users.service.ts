@@ -12,15 +12,15 @@ export class UsersService {
 		@InjectModel(User.name) private userModel: Model<User>,
 	) { }
 
-	async create(createUserDto: RegisterUserDto) {
+	async create(registerUserDto: RegisterUserDto) {
 
 		try{
-			const result = await this.userModel.find({ email: createUserDto.email });
+			const result = await this.userModel.find({ email: registerUserDto.email });
 
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create( createUserDto );
+				const result = await this.userModel.create( registerUserDto );
 				return result;
 			}
 		}catch(error){
