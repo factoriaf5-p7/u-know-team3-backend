@@ -1,57 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNumber, IsString, IsStrongPassword, IsArray, IsNotEmpty } from 'class-validator';
 
 export class RegisterUserDto {
 	@ApiProperty({ example: 'Jhon' })
-	
+	@IsString()
 		name: string;
   
 	@ApiProperty({ example: 'Connor' })
-	
+	@IsString()
 		last_name: string;
   
 	@ApiProperty({ example: 'jhon.connor@judgmentday.com' })
-	
+	@IsEmail()
 		email: string;
   
 	@ApiProperty({ example: '12345' })
-	
+	@IsNotEmpty()
 		password: string;
-  
-	@ApiProperty({ example: 100 })
-	
-		wallet_balance: number;
-  
-	@ApiProperty({ example: [ 'Bought Course 1', 'Bought Course 2' ] })
-	
-		bought_courses: [];
-  
-	@ApiProperty({ example: [ 'Created Course 1', 'Created Course 2' ] })
-	
-		created_courses: [];
-  
-	@ApiProperty({
-		example: [
-			{ sent_to_user: 1, sent_date: '2023-06-20 10:30' },
-			{ sent_to_user: 5, sent_date: '2023-06-23 17:00' },
-		],
-	})
-	
-		chat_notifications_sent: [];
-  
-	@ApiProperty({
-		example: [
-			{ recieved_from_user: 1, requested_date: '2023-06-20 10:30' },
-			{ recieved_from_user: 5, requested_date: '2023-06-23 17:00' },
-		],
-	})
-	
-		chat_notifications_recieved: [];
-  
-	@ApiProperty({ example: 'user | admin' })
-	
-		profile: string;
-  
-	@ApiProperty({ example: '4j4jllleu99xaey21' })
-	
-		recovery_token: string;
 }
