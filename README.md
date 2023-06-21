@@ -77,7 +77,18 @@ USERS
   "email": , 
   "password": ,
   "wallet_balance": ,
-  "bought_courses": ,
+  "bought_courses": [
+    {
+      "course_id": ,
+      "stars": ,
+      "commented": false,
+    },
+    {
+      "course_id": ,
+      "stars": 4,
+      "commented": true,
+    },
+  ] ,
   "created_courses": ,
   "chat_notifications_sent": ,
   "chat_notifications_recieved": ,
@@ -101,12 +112,6 @@ COURSES
   "bought": ,
   "create_date": ,
   "update_date": ,
-  "reviews": [
-    {
-      "_id_comment": ,
-      "stars": ,
-    }
-  ] ,
   "content": ,
 }
 
@@ -119,7 +124,8 @@ COMMENTS
 {
   "_id": ,
   "comment_text": ,
-  "user_id": , 
+  "user_id": ,
+  "course_id": ,
 }
 
 ````
