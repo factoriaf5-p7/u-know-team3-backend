@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 
 @Injectable()
 export class CoursesService {
@@ -11,8 +11,20 @@ export class CoursesService {
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
-	create(createCourseDto: CreateCourseDto) {
-		return 'This action adds a new course';
+	async create(createCourseDto: CreateCourseDto) {
+		try {
+			const newCourse =  await this.courseModel.create(createCourseDto);
+
+			return {
+				message: 'New course created successfully.',
+				status: HttpStatus.OK,
+				course: newCourse
+			};
+			
+		} catch (error) {
+			throw error;
+		}
+
 	}
 
 	async findAll() {
@@ -51,7 +63,21 @@ export class CoursesService {
 		return `This action updates a #${id} course`;
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} course`;
+	async remove(id: ObjectId) {
+		try {
+			const course = await this.courseModel.findOne({ _id:id });
+		
+			if (!course.bought) {
+				course.deleteOne();
+				return {
+					message: 'Course deleted.',
+					status: HttpStatus.OK,
+				};
+			} else {
+				throw new HttpException('Course can not be deleted.', HttpStatus.UNAUTHORIZED);
+			}
+		} catch {
+			throw new HttpException('Course not found.', HttpStatus.UNAUTHORIZED);
+		}
 	}
 }
