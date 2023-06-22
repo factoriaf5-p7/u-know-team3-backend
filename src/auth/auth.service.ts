@@ -19,7 +19,7 @@ export class AuthService {
 			const result = await this.userService.login(user);
         
 			if (result !== null) {
-				return { valid : true };
+				return result;
 			} else {
 				throw new HttpException('USER_NOT_FOUND', 401);
 			}

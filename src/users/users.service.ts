@@ -36,7 +36,6 @@ export class UsersService {
 	async findAll() {
 		try{
 			const users = await this.userModel.find().select('-password').lean().exec();
-			console.log(users);
 			return {
 				message: 'All users retrieved succesfully',
 				status: 200,
