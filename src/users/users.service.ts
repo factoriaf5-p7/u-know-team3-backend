@@ -10,7 +10,6 @@ import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 @Injectable()
 export class UsersService {
 	constructor(
-		
 		@InjectModel(User.name) private userModel: Model<User>,
 	) { }
 
@@ -52,7 +51,7 @@ export class UsersService {
 
 	async findOne(id : ObjectId) {
 		try {
-			const user = await this.userModel.findOne({ _id: id }).select('-password');
+			const user = await this.userModel.findOne({ _id: id }).select('-password -recovery_token');
 			return {
 				message: 'User retrived successfully',
 				status: 200,
