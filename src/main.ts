@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -15,6 +16,9 @@ async function bootstrap() {
 
 	// Configuración del ENDPOINT de la documentación de la API en /docs
 	SwaggerModule.setup('docs', app, document);
+
+	// Configuración de la validación de los tipos en los DTOs
+	app.useGlobalPipes(new ValidationPipe());
 
 	await app.listen(3000);
 }

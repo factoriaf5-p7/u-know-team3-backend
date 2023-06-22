@@ -1,39 +1,43 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, ObjectId } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
   @ApiProperty({ example: 'Jhon' })
-  @Prop()
+  @Prop({ required: true })
   	name: string;
 
   @ApiProperty({ example: 'Connor' })
-  @Prop()
+  @Prop({ required: true })
   	last_name: string;
 
   @ApiProperty({ example: 'jhon.connor@judgmentday.com' })
-  @Prop()
+  @Prop({ required: true, unique: true })
   	email: string;
 
   @ApiProperty({ example: '12345' })
-  @Prop()
+  @Prop({ required: true })
   	password: string;
 
   @ApiProperty({ example: 100 })
-  @Prop()
+  @Prop({ required: true, default: 100 })
   	wallet_balance: number;
 
   @ApiProperty({ example: [ 'Bought Course 1', 'Bought Course 2' ] })
   @Prop()
-  	bought_courses: [];
+  	bought_courses: [{
+      course_id: ObjectId,
+      stars: number,
+      commented: boolean
+    }];
 
   @ApiProperty({ example: [ 'Created Course 1', 'Created Course 2' ] })
   @Prop()
-  	created_courses: [];
+  	created_courses: [course_id: ObjectId];
 
   @ApiProperty({
   	example: [
@@ -42,7 +46,10 @@ export class User {
   	],
   })
   @Prop()
-  	chat_notifications_sent: [];
+  	chat_notifications_sent: [{
+      sent_to_user: ObjectId,
+      sent_date: Date
+    }];
 
   @ApiProperty({
   	example: [
@@ -51,10 +58,13 @@ export class User {
   	],
   })
   @Prop()
-  	chat_notifications_recieved: [];
+  	chat_notifications_recieved: [{
+      recieved_from_user: ObjectId,
+      requested_date: Date
+    }];
 
   @ApiProperty({ example: 'user | admin' })
-  @Prop()
+  @Prop({ required: true, enum: [ 'user', 'admin' ] })
   	profile: string;
 
   @ApiProperty({ example: '4j4jllleu99xaey21' })
