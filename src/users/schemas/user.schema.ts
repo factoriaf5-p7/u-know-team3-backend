@@ -16,7 +16,7 @@ export class User {
   	last_name: string;
 
   @ApiProperty({ example: 'jhon.connor@judgmentday.com' })
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, index: { unique: true } })
   	email: string;
 
   @ApiProperty({ example: '12345' })
