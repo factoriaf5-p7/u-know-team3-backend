@@ -5,6 +5,8 @@ import { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
 import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
+import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
+import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,15 +14,15 @@ export class UsersService {
 		@InjectModel(User.name) private userModel: Model<User>,
 	) { }
 
-	async create(createUserDto: RegisterUserDto) {
+	async create(registerUserDto: RegisterUserDto) {
 
 		try{
-			const result = await this.userModel.find({ email: createUserDto.email });
+			const result = await this.userModel.find({ email: registerUserDto.email });
 
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create( createUserDto );
+				const result = await this.userModel.create( registerUserDto );
 				return result;
 			}
 		}catch(error){
@@ -57,6 +59,28 @@ export class UsersService {
 	}
 
 	async update(user: UpdateUserDto) {
+		try {
+			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async updatePassword(user: RecoverUserDto) {
+		try {
+			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async updateRecoveryToken(user: RecoverRequestDto) {
 		try {
 			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user

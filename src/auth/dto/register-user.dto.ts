@@ -3,14 +3,17 @@ import { IsEmail, IsNumber, IsString, IsStrongPassword, IsArray, IsNotEmpty } fr
 
 export class RegisterUserDto {
 	@ApiProperty({ example: 'Jhon' })
+	@IsNotEmpty()
 	@IsString()
 		name: string;
   
 	@ApiProperty({ example: 'Connor' })
+	@IsNotEmpty()
 	@IsString()
 		last_name: string;
   
 	@ApiProperty({ example: 'jhon.connor@judgmentday.com' })
+	@IsNotEmpty()
 	@IsEmail()
 		email: string;
   
