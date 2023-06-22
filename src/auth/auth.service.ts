@@ -61,11 +61,7 @@ export class AuthService {
 			// user.password = hash(user.password);
 			return await this.userService.updatePassword(user);	
 		} catch (error) {
-			if(error.name === 'TokenExpiredError'){
-				throw new UnauthorizedException('Token is expired');
-			}	else {
-				throw new UnauthorizedException();
-			}
+			throw error;
 		}
 	}
 }

@@ -170,8 +170,19 @@ wdC2Ur2kNYY9sbFEUY
 
 ````
 
-## Stay in touch
+### Response Objects
 
+````JS
+{
+  message: STRING, // Mensaje que describe la operación
+  status: NUMBER, // Código HTTP de estado según el resultado
+  user?: {
+    DB_USER       // Objeto o array de objetos de usuario que devuelven algunas operaciones. Opcional.
+  }
+}
+````
+
+## Stay in touch
 
 
 ## License

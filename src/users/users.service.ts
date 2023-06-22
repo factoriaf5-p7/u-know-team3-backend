@@ -22,17 +22,26 @@ export class UsersService {
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create( registerUserDto );
-				return result;
+				await this.userModel.create( registerUserDto );
+				return { 
+					message: 'User created succesfully',
+					status: 200
+				};
 			}
 		}catch(error){
 			throw error;
 		}
 	}
 
-	findAll() {
+	async findAll() {
 		try{
-			return this.userModel.find();
+			const users = await this.userModel.find().select('-password').lean().exec();
+			console.log(users);
+			return {
+				message: 'All users retrieved succesfully',
+				status: 200,
+				users: users
+			};
 		}catch(error){
 			throw error;
 		}
@@ -40,19 +49,25 @@ export class UsersService {
 
 	async login(user: GetUserLoginDto) {
 		try {
-			const res= await this.userModel.findOne({ email:user.email,password:user.password });
-			return res;
+			const userLogged = await this.userModel.findOne({ email:user.email,password:user.password }).select('-password');
+			return {
+				message: 'Logging success',
+				status: 200,
+				user: userLogged
+			};
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	async findOne(id : ObjectId): Promise <User> {
+	async findOne(id : ObjectId) {
 		try {
-			const user = await this.findOne(id);
-
-			return user;
-			
+			const user = await this.userModel.findOne({ _id: id }).select('-password');
+			return {
+				message: 'User retrived successfully',
+				status: 200,
+				user: user
+			};
 		} catch (error) {
 			throw error;
 		}	
@@ -60,10 +75,14 @@ export class UsersService {
 
 	async update(user: UpdateUserDto) {
 		try {
-			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
 			});
-			return result;
+			return {
+				message: 'User updated successfully',
+				status: 200,
+				user: updatedUser
+			};
 		} catch (error) {
 			throw error;
 		}
@@ -71,10 +90,14 @@ export class UsersService {
 
 	async updatePassword(user: RecoverUserDto) {
 		try {
-			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+			const userPasswordUpdated = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
 			});
-			return result;
+			return {
+				message: 'Password updated successfully',
+				status: 200,
+				user: userPasswordUpdated
+			};
 		} catch (error) {
 			throw error;
 		}
@@ -82,10 +105,14 @@ export class UsersService {
 
 	async updateRecoveryToken(user: RecoverRequestDto) {
 		try {
-			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+			const userTokenCreated = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
 			});
-			return result;
+			return {
+				message: 'Recovery token created successfully',
+				status: 200,
+				user: userTokenCreated
+			};
 		} catch (error) {
 			throw error;
 		}
