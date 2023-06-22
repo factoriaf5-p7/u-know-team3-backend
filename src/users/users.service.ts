@@ -3,8 +3,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
-import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
+import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
+import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,45 +13,50 @@ export class UsersService {
 		@InjectModel(User.name) private userModel: Model<User>,
 	) { }
 
-	async create(createUserDto: RegisterUserDto) {
+	async create(registerUserDto: RegisterUserDto) {
 
 		try{
-			const result = await this.userModel.find({ email: createUserDto.email });
+			const result = await this.userModel.find({ email: registerUserDto.email });
 
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				const result = await this.userModel.create( createUserDto );
-				return result;
+				await this.userModel.create( registerUserDto );
+				return { 
+					message: 'User created succesfully',
+					status: 200
+				};
 			}
 		}catch(error){
 			throw error;
 		}
 	}
 
-	findAll() {
+	async findAll() {
 		try{
-			return this.userModel.find();
+			const users = await this.userModel.find().select('-password').lean().exec();
+			return {
+				message: 'All users retrieved succesfully',
+				status: 200,
+				users: users
+			};
 		}catch(error){
 			throw error;
 		}
 	}
 
-	async login(user: GetUserLoginDto) {
-		try {
-			const res= await this.userModel.findOne({ email:user.email,password:user.password });
-			return res;
-		} catch (error) {
-			throw error;
-		}
+	async findOneLogin(email:string,password:string) {
+		return await this.userModel.findOne({ email,password }).select('-password');
 	}
 
-	async findOne(id : ObjectId): Promise <User> {
+	async findOne(id : ObjectId) {
 		try {
-			const user = await this.findOne(id);
-
-			return user;
-			
+			const user = await this.userModel.findOne({ _id: id }).select('-password');
+			return {
+				message: 'User retrived successfully',
+				status: 200,
+				user: user
+			};
 		} catch (error) {
 			throw error;
 		}	
@@ -58,10 +64,44 @@ export class UsersService {
 
 	async update(user: UpdateUserDto) {
 		try {
-			const result = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
 			});
-			return result;
+			return {
+				message: 'User updated successfully',
+				status: 200,
+				user: updatedUser
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async updatePassword(user: RecoverUserDto) {
+		try {
+			const userPasswordUpdated = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			return {
+				message: 'Password updated successfully',
+				status: 200,
+				user: userPasswordUpdated
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async updateRecoveryToken(user: RecoverRequestDto) {
+		try {
+			const userTokenCreated = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			return {
+				message: 'Recovery token created successfully',
+				status: 200,
+				user: userTokenCreated
+			};
 		} catch (error) {
 			throw error;
 		}

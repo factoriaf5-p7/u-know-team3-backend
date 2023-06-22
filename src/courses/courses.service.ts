@@ -18,7 +18,7 @@ export class CoursesService {
 	async findAll() {
 		// return this.courseModel.find().exec();    
 		// return 'This action find all users';
-		return this.courseModel.aggregate([
+		const courses = await this.courseModel.aggregate([
 			{
 			  $project: {
 					_id: 1,
@@ -36,7 +36,11 @@ export class CoursesService {
 			  $sort: { averageRating: -1 }
 			}
 		  ]);
-
+		  return {
+			message: 'Retrieved all courses succesfully',
+			status: 200,
+			course: courses
+		  };
 	}
 
 	findOne(id: number) {
