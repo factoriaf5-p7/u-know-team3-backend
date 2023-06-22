@@ -13,6 +13,7 @@ export class RecoverRequestDto {
 	@IsNotEmpty()
 	@IsEmail()
 		email: string;
-
-	recovery_token: string;
+	
+	@ApiProperty({ example: 'Token created and given by system' })
+		recovery_token: string;
 }

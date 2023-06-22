@@ -41,7 +41,7 @@ export class AuthService {
 		};
 
 		try {
-			const token = await this.jwtService.signAsync(payload, { expiresIn: '10s' });
+			const token = await this.jwtService.signAsync(payload, { expiresIn: '60s' });
 			user.recovery_token = token;
 			const updatedUser = await this.userService.updateRecoveryToken(user);
 			sendEmail(updatedUser, token);
@@ -53,13 +53,12 @@ export class AuthService {
 
 	async updatePassword(user: RecoverUserDto) {
 		try {
-			// TODO
-			// Hash password
-			// if token is not expired
 			const { sub, email } = await this.jwtService.verifyAsync(user.recovery_token, { secret: 'Th3 s3cr3t t0 k33p s4v3 t0k3ns 4nd s3rv3r' });
 			user._id = sub;
 			user.email = email;
 			user.recovery_token = '';
+			// TODO
+			// user.password = hash(user.password);
 			return await this.userService.updatePassword(user);	
 		} catch (error) {
 			if(error.name === 'TokenExpiredError'){
@@ -67,7 +66,6 @@ export class AuthService {
 			}	else {
 				throw new UnauthorizedException();
 			}
-			// throw error;
 		}
 	}
 }

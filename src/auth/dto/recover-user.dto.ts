@@ -3,15 +3,11 @@ import { IsEmail, IsJWT, IsMongoId, IsNotEmpty } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class RecoverUserDto {
-	// @ApiProperty({ example: 1 })
-	// @IsNotEmpty()
-	// @IsMongoId()
-	_id: ObjectId;
+	@ApiProperty({ example: 1 })
+		_id: ObjectId;
 
-	// @ApiProperty({ example: 'jhon' })
-	// @IsNotEmpty()
-	// @IsEmail()
-	email: string;
+	@ApiProperty({ example: 'jhon' })
+		email: string;
 
 	@ApiProperty({ example: '1234' })
 	@IsNotEmpty()
