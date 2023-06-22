@@ -3,7 +3,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
-import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
@@ -46,17 +45,8 @@ export class UsersService {
 		}
 	}
 
-	async login(user: GetUserLoginDto) {
-		try {
-			const userLogged = await this.userModel.findOne({ email:user.email,password:user.password }).select('-password');
-			return {
-				message: 'Logging success',
-				status: 200,
-				user: userLogged
-			};
-		} catch (error) {
-			throw error;
-		}
+	async findOneLogin(email:string,password:string) {
+		return await this.userModel.findOne({ email,password }).select('-password');
 	}
 
 	async findOne(id : ObjectId) {
