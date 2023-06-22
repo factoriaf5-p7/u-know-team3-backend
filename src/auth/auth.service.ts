@@ -15,7 +15,8 @@ export class AuthService {
 	) {}
   
 	async login(user:GetUserLoginDto){
-		const findUser = await this.userService.findOneLogin(user.email,user.password);
+		const { email, password } = user;
+		const findUser = await this.userService.findOneLogin(email,password);
 		if(!findUser) throw new HttpException('USER_NOT_FOUND', 401);
 
 		return { message: 'Login success.', status: 200, user: findUser };
