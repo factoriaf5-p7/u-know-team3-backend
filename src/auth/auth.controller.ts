@@ -10,7 +10,7 @@ export class AuthController {
 
 	@Post('login')
 	findOne(@Body() user: GetUserLoginDto) {
-		return this.authService.findOne(user);
+		return this.authService.login(user);
 	}
 
 	@Post('signup')
