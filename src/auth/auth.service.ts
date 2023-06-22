@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -14,12 +14,15 @@ export class AuthService {
 	private readonly jwtService: JwtService
 	) {}
   
-	async findOne(user:GetUserLoginDto){
+	async login(user:GetUserLoginDto){
 		try {
 			const result = await this.userService.login(user);
         
-			const valid = result !== null;
-			return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
+			if (result !== null) {
+				return { valid : true };
+			} else {
+				throw new HttpException('USER_NOT_FOUND', 401);
+			}
 		} catch (error) {
 			throw error;
 		}
