@@ -1,4 +1,4 @@
-import { HttpException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -12,21 +12,15 @@ import { hash, genSalt, compare } from 'bcrypt';
 export class AuthService {
 	constructor(
     private userService: UsersService, 
-	private readonly jwtService: JwtService
+	private readonly jwtService: JwtService,
 	) {}
   
 	async login(user:GetUserLoginDto){
-		try {
-			const result = await this.userService.login(user);
-        
-			if (result !== null) {
-				return result;
-			} else {
-				throw new HttpException('USER_NOT_FOUND', 401);
-			}
-		} catch (error) {
-			throw error;
-		}
+		const { email, password } = user;
+		const findUser = await this.userService.findOneLogin(email,password);
+		if(!findUser) throw new HttpException('USER_NOT_FOUND', 401);
+
+		return { message: 'Login success.', status: 200, user: findUser };
 	}
 
 	async register(user: RegisterUserDto) {
