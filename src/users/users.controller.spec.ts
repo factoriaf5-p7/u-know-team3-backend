@@ -28,7 +28,11 @@ describe('UsersController', () => {
 
 	const mockUserService = {
 		findOne: jest.fn().mockImplementation((_id: Types.ObjectId) => {
-			return Promise.resolve(user);
+			return Promise.resolve({
+				message: 'User retrived successfully',
+				status: 200,
+				User: user
+			});
 		})
 	};
 
@@ -57,21 +61,25 @@ describe('UsersController', () => {
 
 	it('findOne() return a User object in a standard response object', async () => {
 		expect(await controller.findOne(new mongoose.Schema.Types.ObjectId('2345k3k34j5h2g3'))).toMatchObject({
-			_id: '64ljkh523o54yuo3l3l',
-			name: 'Jhon',
-			last_name: 'Connors',
-			email: 'jhon@judgementday.com', 
-			wallet_balance: 100,
-			bought_courses: [ 'Course1' ],
-			created_courses: [ 'Course 2', 'Course 3' ],
-			chat_notifications_sent: [],
-			chat_notifications_recieved: [
-				{
-					requested_from_user: 2,
-					requested_date: '2023-06-20 18:00'
-				}
-			],
-			profile: 'user'
+			message: 'User retrived successfully',
+			status: 200,
+			User: {
+				_id: '64ljkh523o54yuo3l3l',
+				name: 'Jhon',
+				last_name: 'Connors',
+				email: 'jhon@judgementday.com', 
+				wallet_balance: 100,
+				bought_courses: [ 'Course1' ],
+				created_courses: [ 'Course 2', 'Course 3' ],
+				chat_notifications_sent: [],
+				chat_notifications_recieved: [
+					{
+						requested_from_user: 2,
+						requested_date: '2023-06-20 18:00'
+					}
+				],
+				profile: 'user'
+			}
 		});
 	});
 });
