@@ -11,18 +11,19 @@ import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 @Injectable()
 export class UsersService {
 	constructor(
+		
 		@InjectModel(User.name) private userModel: Model<User>,
 	) { }
 
-	async create(registerUserDto: RegisterUserDto) {
+	async create(user: RegisterUserDto) {
 
 		try{
-			const result = await this.userModel.find({ email: registerUserDto.email });
+			const result = await this.userModel.find({ email: user.email });
 
 			if(result.length !== 0){
 				return { message: 'User already exists' };
 			} else {
-				await this.userModel.create( registerUserDto );
+				await this.userModel.create( user );
 				return { 
 					message: 'User created succesfully',
 					status: 200
