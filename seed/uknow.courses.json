@@ -1,0 +1,109 @@
+[{
+  "_id": {
+    "$oid": "6490640b558ac28e56d30793"
+  },
+  "name": "Nodemailer para principiantes",
+  "price": 100,
+  "topic": "Backend",
+  "difficulty": "Beginner",
+  "tags": [
+    "nodemailer",
+    "Backend",
+    "email"
+  ],
+  "bought": true,
+  "create_date": "",
+  "update_date": "",
+  "content": "# Introduction to Web Development\n\nWelcome to the Introduction to Web Development course! In this course, you will learn the fundamentals of web development using HTML, CSS, and JavaScript.\n\n## Course Outline\n\n### Chapter 1: HTML Basics\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to HTML\n- HTML tags and elements\n- Building a basic HTML webpage\n\n### Chapter 2: CSS Styling\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to CSS\n- Selectors and properties\n- Applying styles to HTML elements\n\n### Chapter 3: JavaScript Fundamentals\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to JavaScript\n- Variables and data types\n- Control flow and functions\n\n## Conclusion\n\nCongratulations on completing the Introduction to Web Development course! We hope you've gained a solid foundation in web development."
+},
+{
+  "_id": {
+    "$oid": "6590640b558ac28e56d30993"
+  },  
+  "name": "Introduction to Web Development",
+  "price": 100,
+  "topic": "Frontend",
+  "difficulty": "Medium",
+  "tags": [
+    "web",
+    "development",
+    "frontend"
+  ],
+  "bought": true,
+  "create_date": "",
+  "update_date": "",
+  "content": "# Introduction to Web Development\n\nWelcome to the Introduction to Web Development course! In this course, you will learn the fundamentals of web development using HTML, CSS, and JavaScript.\n\n## Course Outline\n\n### Chapter 1: HTML Basics\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to HTML\n- HTML tags and elements\n- Building a basic HTML webpage\n\n### Chapter 2: CSS Styling\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to CSS\n- Selectors and properties\n- Applying styles to HTML elements\n\n### Chapter 3: JavaScript Fundamentals\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to JavaScript\n- Variables and data types\n- Control flow and functions\n\n## Conclusion\n\nCongratulations on completing the Introduction to Web Development course! We hope you've gained a solid foundation in web development."
+},
+{
+  "_id": {
+    "$oid": "6490c6a365d8d514f7ba7502"
+  },
+  "name": "Advanced Web Development with Node.js",
+  "price": 80,
+  "topic": "Backend",
+  "difficulty": "Advanced",
+  "tags": [
+    "node",
+    "javascript",
+    "backend"
+  ],
+  "bought": true,
+  "create_date": "",
+  "update_date": "",
+  "content": "# Advanced Web Development with Node.js\n\n## Course Content\n\n### Module 1: Introduction to Node.js\n\nIn this module, you will be introduced to Node.js and its features. You will learn how to set up a Node.js development environment and understand the event-driven architecture of Node.js. Topics covered in this module include:\n\n- Introduction to Node.js\n- Setting up a Node.js development environment\n- Understanding the event-driven architecture of Node.js\n\n### Module 2: Asynchronous Programming with Promises\n\nIn this module, you will dive into asynchronous programming in JavaScript. You will learn how to work with Promises and handle asynchronous operations. Additionally, you will explore the implementation of async/await for cleaner code. Topics covered in this module include:\n\n- Introduction to asynchronous programming in JavaScript\n- Working with Promises\n- Handling asynchronous operations\n- Implementing async/await for cleaner code\n\n### Module 3: Building RESTful APIs with Express.js\n\nIn this module, you will explore the world of RESTful APIs and their importance in web development. You will learn how to set up an Express.js application and design and implement RESTful routes and controllers. Topics covered in this module include:\n\n- Overview of RESTful APIs\n- Setting up an Express.js application\n- Designing and implementing RESTful routes\n- Building controllers for handling requests and responses\n\n### Module 4: Database Integration with MongoDB\n\nIn this module, you will focus on integrating MongoDB into Node.js development. You will learn how to connect to a MongoDB database using Mongoose and perform CRUD (Create, Read, Update, Delete) operations with MongoDB and Mongoose. Topics covered in this module include:\n\n- Introduction to MongoDB and its role in Node.js development\n- Connecting to a MongoDB database using Mongoose\n- Performing CRUD operations with MongoDB and Mongoose\n\n### Module 5: Authentication and Authorization\n\nIn this module, you will learn how to implement user authentication and authorization in Node.js applications. You will explore techniques such as using JSON Web Tokens (JWT) for authentication, managing user sessions, and ensuring secure password storage. Topics covered in this module include:\n\n- Introduction to user authentication and authorization\n- Implementing user authentication with JSON Web Tokens (JWT)\n- Managing user sessions\n- Secure password storage techniques\n\n### Module 6: Real-time Applications with Socket.io\n\nIn this module, you will delve into real-time communication using Socket.io. You will learn how to integrate Socket.io into a Node.js application and build real-time chat and notification features. Topics covered in this module include:\n\n- Introduction to real-time communication\n- Integrating Socket.io into a Node.js application\n- Building real-time chat features\n- Implementing real-time notifications\n\n### Module 7: Performance Optimization Techniques\n\nIn this module, you will explore performance optimization techniques for Node.js applications. You will learn how to identify and optimize performance bottlenecks, implement caching strategies using Redis, and handle load balancing and scaling of Node.js applications. Topics covered in this module include:\n\n- Identifying performance bottlenecks in Node.js applications\n- Implementing caching strategies using Redis\n- Load balancing and scaling of Node.js applications\n\n### Module 8: Testing and Debugging Node.js Applications\n\nIn this module, you will focus on testing and debugging Node.js applications. You will learn how to write unit tests and integration tests for Node.js applications, debug them using built-in and third-party tools, and set up continuous"
+}, 
+{
+  "_id": {
+    "$oid": "6490cb44e77da73b3fd0629c"
+  },
+  "name": "How to go throw the rabbit hole",
+  "price": 50,
+  "topic": "Frontend",
+  "difficulty": "Beginner",
+  "tags": [
+    "rabbithole",
+    "wonderworld",
+    "hunt"
+  ],
+  "bought": true,
+  "create_date": "",
+  "content": "### HOW TO GO TRHOW THE RABBIT HOLE ## Capitul I"
+},
+{
+  "_id": {
+    "$oid": "6490cc44e77da73b3fd0629d"
+  },
+  "name": "Be inclusive have in consideration Terminator's feelings",
+  "price": 80,
+  "topic": "Web Development",
+  "difficulty": "Advanced",
+  "tags": [
+    "terminator",
+    "feelings",
+    "theyarenotonlymetalandwires"
+  ],
+  "bought": true,
+  "create_date": "",
+  "content": "### DEEPER UNDERSTANDING OF TERMINATOR'S INNER WORLD ## Capitul I"
+},
+{
+  "_id": {
+    "$oid": "649077a6558ac28e56d30796"
+  },
+  "name": "Nodemailer para principiantes",
+  "price": 100,
+  "topic": "Backend",
+  "difficulty": "Advanced",
+  "tags": [
+    "javascript",
+    "node",
+    "backend"
+  ],
+  "bought": false,
+  "create_date": "",
+  "content": "Nodemailer is a module for Node.js applications to allow easy as cake email sending. The project got started back in 2010 when there was no sane option to send email messages, today it is the solution most Node.js users turn to by default."
+}
+
+
+
+]
