@@ -10,7 +10,7 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Post('login')
-	findOne(@Body() user: GetUserLoginDto) {
+	signin(@Body() user: GetUserLoginDto) {
 		return this.authService.login(user);
 	}
 

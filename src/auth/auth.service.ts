@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RecoverUserDto } from './dto/recover-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { sendEmail } from 'src/utils/mail-sender';
+import { sendEmail } from '../utils/mail-sender';
 import { RecoverRequestDto } from './dto/recover-request.dto';
 import { hash, genSalt, compare } from 'bcrypt';
 
