@@ -23,6 +23,8 @@ describe('CoursesService', () => {
 	});
 
 	it('findCreatedCourses() should return a standard object within a ', async () => {
-		
+		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
+
+		});
 	});
 });
