@@ -135,4 +135,8 @@ describe('AuthController', () => {
 		});
 	});
 
+	it('recoverPasswordRequest() should return standard object and send an recover email with token', async ()=> {
+		
+	});
+
 });
