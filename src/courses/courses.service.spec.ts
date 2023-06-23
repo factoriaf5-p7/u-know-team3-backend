@@ -23,6 +23,6 @@ describe('CoursesService', () => {
 	});
 
 	it('findCreatedCourses() should return a standard object within a ', async () => {
-
+		
 	});
 });
