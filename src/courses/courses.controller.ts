@@ -14,6 +14,11 @@ export class CoursesController {
 		return this.coursesService.create(createCourseDto);
 	}
 
+  @Get('created-courses/:userid')
+  showCreatedCourses(@Param('userid') userId: ObjectId){
+  	return this.coursesService.findCreatedCourses(userId);
+  }
+
   @Get()
   findAll() {
   	return this.coursesService.findAll();
