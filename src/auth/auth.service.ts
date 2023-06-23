@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
-=======
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
->>>>>>> 268c51afb4a5a5589a61a53f122395a20cc127f9
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
