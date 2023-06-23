@@ -22,26 +22,7 @@ const recoverRequest = {
 
 describe('AuthService', () => {
 	let service: AuthService;
-	let usersService: UsersService;
-
-	// const mockAuthService = {
-	// 	recoverPasswordRequest: jest.fn().mockImplementation((user: RecoverRequestDto) => {
-	// 		return Promise.resolve({
-	// 			message: 'Recovery link has sent to your email',
-	// 			status: HttpStatus.OK,
-	// 			data: ''
-	// 		});
-	// 	}), 
-
-	// 	updatePassword: jest.fn().mockImplementation((user: RecoverUserDto) => {
-	// 		return Promise.resolve({
-	// 			message: 'Password updated successfully',
-	// 			status: 200,
-	// 			data: ''
-	// 		});
-	// 	})
-	// };
-
+	
 	const mockUsersService = {
 		updatePassword: jest.fn().mockImplementation((user: RecoverUserDto) => {
 			return Promise.resolve({
