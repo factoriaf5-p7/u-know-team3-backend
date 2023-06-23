@@ -137,4 +137,8 @@ describe('UsersController', () => {
 		});
 	});
 
+	it('updatePassword() should update the user\'s password and return the standard object', async () => {
+
+	})
+
 });

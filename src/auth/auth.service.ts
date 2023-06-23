@@ -57,9 +57,12 @@ export class AuthService {
 			user.email = email;
 			user.password = await this.encryptPassword(user.password);
 			user.recovery_token = '';
-			// TODO
-			// user.password = hash(user.password);
-			return await this.userService.updatePassword(user);	
+			await this.userService.updatePassword(user);
+			return {
+				message: 'Password updated successfully',
+				status: HttpStatus.OK,
+				user: ''
+			};
 		} catch (error) {
 			throw error;
 		}
