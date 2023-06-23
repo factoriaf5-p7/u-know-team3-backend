@@ -16,27 +16,27 @@ let User = exports.User = class User {
 };
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Jhon' }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Connor' }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], User.prototype, "last_name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'jhon.connor@judgmentday.com' }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true, index: { unique: true } }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '12345' }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 100 }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true, default: 100 }),
     __metadata("design:type", Number)
 ], User.prototype, "wallet_balance", void 0);
 __decorate([
@@ -71,7 +71,7 @@ __decorate([
 ], User.prototype, "chat_notifications_recieved", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'user | admin' }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ required: true, enum: ['user', 'admin'] }),
     __metadata("design:type", String)
 ], User.prototype, "profile", void 0);
 __decorate([

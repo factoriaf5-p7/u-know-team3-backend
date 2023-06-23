@@ -16,9 +16,13 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const register_user_dto_1 = require("../auth/dto/register-user.dto");
 let UsersController = exports.UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
+    }
+    create(registerUserDto) {
+        return this.usersService.create(registerUserDto);
     }
     findAll() {
         return this.usersService.findAll();
@@ -33,6 +37,13 @@ let UsersController = exports.UsersController = class UsersController {
         return this.usersService.remove(+id);
     }
 };
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [register_user_dto_1.RegisterUserDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

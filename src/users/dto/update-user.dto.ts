@@ -16,5 +16,4 @@ export class UpdateUserDto {
 	@IsNotEmpty()
 	@IsString()
 		last_name: string;
-
 }

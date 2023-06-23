@@ -21,46 +21,48 @@ let UsersService = exports.UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    async create(createUserDto) {
+    async create(user) {
         try {
-            const result = await this.userModel.find({ email: createUserDto.email });
+            const result = await this.userModel.find({ email: user.email });
             if (result.length !== 0) {
                 return { message: 'User already exists' };
             }
             else {
-                const result = await this.userModel.create(createUserDto);
-                return result;
+                await this.userModel.create(user);
+                return {
+                    message: 'User created succesfully',
+                    status: 200
+                };
             }
         }
-        catch (e) {
-            console.log(`Error creating new user ${e}`);
+        catch (error) {
+            throw error;
         }
     }
-    findAll() {
-        return this.userModel.find();
-    }
-    async login(user) {
+    async findAll() {
         try {
-            const res = await this.userModel.findOne({ email: user.email, password: user.password });
-            return res;
+            const users = await this.userModel.find().select('-password').lean().exec();
+            return {
+                message: 'All users retrieved succesfully',
+                status: 200,
+                users: users
+            };
         }
         catch (error) {
-            console.log(error);
+            throw error;
         }
     }
-    async saveRecoverPassword(token, user) {
-        try {
-            const updatedUser = await this.userModel.findById(user._id);
-            updatedUser.recovery_token = token;
-            return await updatedUser.save();
-        }
-        catch (error) {
-        }
+    async findOneLogin(email, password) {
+        return await this.userModel.findOne({ email, password }).select('-password');
     }
     async findOne(id) {
         try {
-            const user = await this.findOne(id);
-            return user;
+            const user = await this.userModel.findOne({ _id: id }).select('-password -recovery_token');
+            return {
+                message: 'User retrived successfully',
+                status: 200,
+                user: user
+            };
         }
         catch (error) {
             throw error;
@@ -68,11 +70,41 @@ let UsersService = exports.UsersService = class UsersService {
     }
     async update(user) {
         try {
-            const result = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
-            return result;
+            const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            return {
+                message: 'User updated successfully',
+                status: 200,
+                user: updatedUser
+            };
         }
         catch (error) {
-            console.log(error);
+            throw error;
+        }
+    }
+    async updatePassword(user) {
+        try {
+            const userPasswordUpdated = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            return {
+                message: 'Password updated successfully',
+                status: 200,
+                user: userPasswordUpdated
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async updateRecoveryToken(user) {
+        try {
+            const userTokenCreated = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            return {
+                message: 'Recovery token created successfully',
+                status: 200,
+                user: userTokenCreated
+            };
+        }
+        catch (error) {
+            throw error;
         }
     }
     remove(id) {

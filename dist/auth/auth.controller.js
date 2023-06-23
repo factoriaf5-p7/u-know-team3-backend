@@ -18,12 +18,13 @@ const auth_service_1 = require("./auth.service");
 const get_user_login_dto_1 = require("./dto/get-user-login.dto");
 const register_user_dto_1 = require("./dto/register-user.dto");
 const recover_user_dto_1 = require("./dto/recover-user.dto");
+const recover_request_dto_1 = require("./dto/recover-request.dto");
 let AuthController = exports.AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
     findOne(user) {
-        return this.authService.findOne(user);
+        return this.authService.login(user);
     }
     signup(user) {
         return this.authService.register(user);
@@ -53,7 +54,7 @@ __decorate([
     (0, common_1.Patch)('recover'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [recover_user_dto_1.RecoverUserDto]),
+    __metadata("design:paramtypes", [recover_request_dto_1.RecoverRequestDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "recoverPasswordRequest", null);
 __decorate([

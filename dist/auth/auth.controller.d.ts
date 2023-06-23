@@ -27,19 +27,36 @@ import { AuthService } from './auth.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RecoverUserDto } from './dto/recover-user.dto';
+import { RecoverRequestDto } from './dto/recover-request.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    findOne(user: GetUserLoginDto): Promise<any>;
-    signup(user: RegisterUserDto): Promise<(import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>) | {
+    findOne(user: GetUserLoginDto): Promise<{
         message: string;
+        status: import("@nestjs/common").HttpStatus;
+        user: import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
+            _id: import("mongoose").Types.ObjectId;
+        }, never>;
     }>;
-    recoverPasswordRequest(user: RecoverUserDto): Promise<import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>>;
-    updatePassword(user: RecoverUserDto): Promise<import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>>;
+    signup(user: RegisterUserDto): Promise<{
+        message: string;
+        status?: undefined;
+    } | {
+        message: string;
+        status: number;
+    }>;
+    recoverPasswordRequest(user: RecoverRequestDto): Promise<{
+        message: string;
+        status: number;
+        user: import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
+            _id: import("mongoose").Types.ObjectId;
+        }, never>;
+    }>;
+    updatePassword(user: RecoverUserDto): Promise<{
+        message: string;
+        status: number;
+        user: import("mongoose").Document<unknown, {}, import("../users/schemas/user.schema").User> & Omit<import("../users/schemas/user.schema").User & {
+            _id: import("mongoose").Types.ObjectId;
+        }, never>;
+    }>;
 }

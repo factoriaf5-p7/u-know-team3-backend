@@ -14,29 +14,27 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("../users/users.service");
 const jwt_1 = require("@nestjs/jwt");
 const mail_sender_1 = require("../utils/mail-sender");
+const bcrypt_1 = require("bcrypt");
 let AuthService = exports.AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-    async findOne(user) {
-        try {
-            const result = await this.userService.login(user);
-            console.log(result);
-            const valid = result !== null;
-            return valid ? { result, valid } : { error: 'User doesn\'t exist.', valid };
-        }
-        catch (error) {
-            return error;
-        }
+    async login(user) {
+        const { email, password } = user;
+        const findUser = await this.userService.findOneLogin(email, password);
+        if (!findUser)
+            throw new common_1.HttpException('USER_NOT_FOUND', common_1.HttpStatus.UNAUTHORIZED);
+        return { message: 'Login success.', status: common_1.HttpStatus.OK, user: findUser };
     }
     async register(user) {
         try {
+            user.password = await this.encryptPassword(user.password);
             const result = await this.userService.create(user);
             return result;
         }
         catch (error) {
-            console.log(error);
+            throw error;
         }
     }
     async recoverPasswordRequest(user) {
@@ -45,23 +43,40 @@ let AuthService = exports.AuthService = class AuthService {
             email: user.email
         };
         try {
-            const token = await this.jwtService.signAsync(payload);
+            const token = await this.jwtService.signAsync(payload, { expiresIn: '60s' });
             user.recovery_token = token;
-            const updatedUser = await this.userService.update(user);
+            const updatedUser = await this.userService.updateRecoveryToken(user);
             (0, mail_sender_1.sendEmail)(updatedUser, token);
             return updatedUser;
         }
         catch (error) {
+            throw error;
         }
     }
     async updatePassword(user) {
         try {
+            const { sub, email } = await this.jwtService.verifyAsync(user.recovery_token, { secret: 'Th3 s3cr3t t0 k33p s4v3 t0k3ns 4nd s3rv3r' });
+            user._id = sub;
+            user.email = email;
+            user.password = await this.encryptPassword(user.password);
             user.recovery_token = '';
-            return await this.userService.update(user);
+            return await this.userService.updatePassword(user);
         }
         catch (error) {
             throw error;
         }
+    }
+    async encryptPassword(password) {
+        try {
+            const salt = await (0, bcrypt_1.genSalt)(10);
+            return (0, bcrypt_1.hash)(password, salt);
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException();
+        }
+    }
+    async passwordVerify(password, hash) {
+        return await (0, bcrypt_1.compare)(password, hash);
     }
 };
 exports.AuthService = AuthService = __decorate([
