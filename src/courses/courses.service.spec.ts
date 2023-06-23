@@ -5,7 +5,6 @@ import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
-import { User } from 'src/users/schemas/user.schema';
 
 const response = {
 	user: {
