@@ -49,7 +49,7 @@ describe('AuthController', () => {
 			return Promise.resolve({
 				message: 'User created',
 				status: 200,
-				user: ''
+				data: ''
 			});
 		}),
 
@@ -57,7 +57,7 @@ describe('AuthController', () => {
 			return Promise.resolve({
 				message: 'Password updated successfully',
 				status: 200,
-				user: ''
+				data: ''
 			});
 		})
 	};
@@ -117,7 +117,7 @@ describe('AuthController', () => {
 		expect(await controller.signup(userCreated)).toMatchObject({
 			message: 'User created',
 			status: 200,
-			user: ''
+			data: ''
 		});
 	});
 
@@ -131,12 +131,12 @@ describe('AuthController', () => {
 		expect(await controller.updatePassword(recoveryUser)).toMatchObject({
 			message: 'Password updated successfully',
 			status: 200,
-			user: ''
+			data: ''
 		});
 	});
 
 	it('recoverPasswordRequest() should return standard object and send an recover email with token', async ()=> {
-		
+
 	});
 
 });
