@@ -4,10 +4,12 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import { Model, ObjectId } from 'mongoose';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CoursesService {
 	constructor(
+		private readonly userService: UsersService,
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
@@ -53,6 +55,15 @@ export class CoursesService {
 			status: 200,
 			course: courses
 		  };
+	}
+
+	async findCreatedCourses(userId: ObjectId){
+		const user = await this.userService.findOne(userId).select('created_courses');
+		return {
+			message: 'Retrieved all created courses successfully',
+			status: HttpStatus.OK,
+			course: user.created_courses
+		};
 	}
 
 	findOne(id: number) {
