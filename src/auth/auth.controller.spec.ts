@@ -5,6 +5,8 @@ import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { UnauthorizedException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { User } from '../users/schemas/user.schema';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { IsEmail } from 'class-validator';
 
 const user = {
 	_id: '64ljkh523o54yuo3l3l',
@@ -42,6 +44,14 @@ describe('AuthController', () => {
 			}else {
 				throw new UnauthorizedException();
 			}
+		}),
+				
+		register: jest.fn().mockImplementation((registerDto: RegisterUserDto) => {
+			return Promise.resolve({
+				message: 'User created',
+				status: 200,
+				user: ''
+			});
 		})
 	};
 
@@ -89,4 +99,17 @@ describe('AuthController', () => {
 			}
 		});
 	});
-});
+
+	it('register should return a user object with encripted password ', async () => {
+		const userCreated:RegisterUserDto = {
+			name: 'Jhon',
+			last_name: 'Connors',
+			email: 'jhon.connors@gmail.com',
+			password: '1234'
+		};
+		expect(await controller.signup(userCreated)).toMatchObject({
+			message: 'User created',
+			status: 200,
+			user: ''
+		});
+	});});

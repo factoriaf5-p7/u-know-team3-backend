@@ -3,6 +3,7 @@ import { CoursesController } from './courses.controller';
 import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
+import mongoose, { ObjectId, Types } from 'mongoose';
 
 const courses = [
 	{
@@ -31,6 +32,24 @@ const courses = [
 	}
 ];
 
+const user = {
+	_id: '64ljkh523o54yuo3l3l',
+	name: 'Jhon',
+	last_name: 'Connors',
+	email: 'jhon@judgementday.com', 
+	wallet_balance: 100,
+	bought_courses: [ 'Course1' ],
+	created_courses: [ 'Course 2', 'Course 3' ],
+	chat_notifications_sent: [],
+	chat_notifications_recieved: [
+		{
+			requested_from_user: 2,
+			requested_date: '2023-06-20 18:00'
+		}
+	],
+	profile: 'user'
+};
+
 describe('CoursesController', () => {
 	let controller: CoursesController;
 
@@ -40,6 +59,13 @@ describe('CoursesController', () => {
 				message: 'Retrieved all courses succesfully',
 				status: 200,
 				course: courses
+			});
+		}),
+		findCreatedCourses: jest.fn().mockImplementation((userId: ObjectId) => {
+			return Promise.resolve({
+				message: 'Retrieved all created courses successfully',
+				status: 200,
+				course: user.created_courses
 			});
 		})
 	};
@@ -65,6 +91,14 @@ describe('CoursesController', () => {
 			message: 'Retrieved all courses succesfully',
 			status: 200,
 			course: courses
+		});
+	});
+
+	it('showCreatedCourses() should return an array of courses Ids', async () => {
+		expect(await controller.showCreatedCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
+			message: 'Retrieved all created courses successfully',
+			status: 200,
+			course: user.created_courses
 		});
 	});
 });
