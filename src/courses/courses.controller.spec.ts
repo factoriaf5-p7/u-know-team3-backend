@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CoursesController } from './courses.controller';
 import { CoursesService } from './courses.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { Course } from './schemas/course.schema';
 
 const courses = [
 	{
@@ -46,7 +48,10 @@ describe('CoursesController', () => {
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [ CoursesController ],
 			providers: [ CoursesService ],
-		}).compile();
+		})
+			.overrideProvider(CoursesService)
+			.useValue(mockCoursesService)
+			.compile();
 
 		controller = module.get<CoursesController>(CoursesController);
 	});
@@ -56,6 +61,10 @@ describe('CoursesController', () => {
 	});
 
 	it('findAll() should return an array of course object', async () => {
-
+		expect(await controller.findAll()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: 200,
+			course: courses
+		});
 	});
 });
