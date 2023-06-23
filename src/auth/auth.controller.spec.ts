@@ -6,6 +6,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RecoverUserDto } from './dto/recover-user.dto';
 import mongoose from 'mongoose';
+import { HttpStatus } from '@nestjs/common';
 
 const user = {
 	_id: '64ljkh523o54yuo3l3l',
@@ -57,6 +58,14 @@ describe('AuthController', () => {
 			return Promise.resolve({
 				message: 'Password updated successfully',
 				status: 200,
+				data: ''
+			});
+		}),
+
+		recoverPasswordRequest: jest.fn().mockImplementation((recoverRequest) => {
+			return Promise.resolve({
+				message: 'Recovery link has sent to your email',
+				status: HttpStatus.OK,
 				data: ''
 			});
 		})
@@ -135,8 +144,18 @@ describe('AuthController', () => {
 		});
 	});
 
-	it('recoverPasswordRequest() should return standard object and send an recover email with token', async ()=> {
+	it('recoverPasswordRequest() should return response standard object', async ()=> {
+		const recoverRequest = {
+			_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
+			email: 'jhon@judgementday.com',
+			recovery_token: ''
+		};
 
+		expect(await controller.recoverPasswordRequest(recoverRequest)).toMatchObject({
+			message: 'Recovery link has sent to your email',
+			status: HttpStatus.OK,
+			data: ''
+		});
 	});
 
 });

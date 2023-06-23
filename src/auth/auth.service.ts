@@ -68,7 +68,7 @@ export class AuthService {
 			return {
 				message: 'Password updated successfully',
 				status: HttpStatus.OK,
-				user: ''
+				data: ''
 			};
 		} catch (error) {
 			throw error;
