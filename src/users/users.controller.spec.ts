@@ -6,6 +6,7 @@ import { User } from './schemas/user.schema';
 import mongoose, { Types } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
+import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 
 const user = {
 	_id: '64ljkh523o54yuo3l3l',
@@ -136,9 +137,5 @@ describe('UsersController', () => {
 			}
 		});
 	});
-
-	it('updatePassword() should update the user\'s password and return the standard object', async () => {
-
-	})
 
 });
