@@ -20,7 +20,10 @@ export class AuthService {
 		const findUser = await this.userService.findOneLogin(email,password);
 		if(!findUser) throw new HttpException('USER_NOT_FOUND', HttpStatus.UNAUTHORIZED);
 
-		return { message: 'Login success.', status: HttpStatus.OK, user: findUser };
+		return { 
+			message: 'Login success.', 
+			status: HttpStatus.OK, 
+			user: findUser };
 	}
 
 	async register(user: RegisterUserDto) {
@@ -44,7 +47,11 @@ export class AuthService {
 			user.recovery_token = token;
 			const updatedUser = await this.userService.updateRecoveryToken(user);
 			sendEmail(updatedUser, token);
-			return updatedUser;
+			return {
+				message: 'Recovery link has sent to your email',
+				status: HttpStatus.OK,
+				data: ''
+			};
 		} catch (error) {
 			throw error;
 		}
@@ -57,9 +64,12 @@ export class AuthService {
 			user.email = email;
 			user.password = await this.encryptPassword(user.password);
 			user.recovery_token = '';
-			// TODO
-			// user.password = hash(user.password);
-			return await this.userService.updatePassword(user);	
+			await this.userService.updatePassword(user);
+			return {
+				message: 'Password updated successfully',
+				status: HttpStatus.OK,
+				data: ''
+			};
 		} catch (error) {
 			throw error;
 		}

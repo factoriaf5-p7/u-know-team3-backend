@@ -79,13 +79,13 @@ export class UsersService {
 
 	async updatePassword(user: RecoverUserDto) {
 		try {
-			const userPasswordUpdated = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+			await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user
-			});
+			}).select('-password -recovery_token');
 			return {
 				message: 'Password updated successfully',
 				status: 200,
-				user: userPasswordUpdated
+				user: ''
 			};
 		} catch (error) {
 			throw error;
