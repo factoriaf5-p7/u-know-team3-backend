@@ -59,14 +59,15 @@ describe('AuthService', () => {
 				{
 					message: 'Login success.', 
 					status: HttpStatus.OK, 
-					data: '' }
-			);
+					data: '' 
+				});
 		}),
 
 		create: jest.fn().mockImplementation((user:RegisterUserDto) => {
 			return Promise.resolve({
 				message: 'User created succesfully',
 				status: HttpStatus.OK,
+				data: ''
 			});
 		})
 	};
@@ -124,7 +125,8 @@ describe('AuthService', () => {
 	it('register() should return a new created user', async () => {
 		expect(await service.register(registerRequest)).toMatchObject({
 			message: 'User created succesfully',
-			status: 200			
+			status: 200,
+			data: ''
 		});
 	});
 });
