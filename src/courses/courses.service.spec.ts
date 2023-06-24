@@ -63,7 +63,7 @@ describe('CoursesService', () => {
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue(courses)
+		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) })
 	};
 
 	beforeEach(async () => {
