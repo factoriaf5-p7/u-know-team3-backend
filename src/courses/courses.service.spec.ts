@@ -26,6 +26,33 @@ const response = {
 	}
 };
 
+const courses = [
+	{
+		_id: '321kjklj3298ssa',
+		name: 'Front end development basics',
+		price: 100,
+		topic: 'Frontend', 
+		difficulty: 'Beginner',
+		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		bought: true,
+		createAt: '2023-06-23 17:00',
+		updateAt: '2023-06-23 17:00',
+		content: 'React really rocks'
+	},
+	{
+		_id: '321k90aj211kaa',
+		name: 'Back end development basics',
+		price: 100,
+		topic: 'Backend', 
+		difficulty: 'Beginner',
+		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		bought: true,
+		createAt: '2023-06-23 17:00',
+		updateAt: '2023-06-23 17:00',
+		content: 'Nestj is really anoying'
+	}
+];
+
 describe('CoursesService', () => {
 	let service: CoursesService;
 
@@ -35,12 +62,18 @@ describe('CoursesService', () => {
 		})
 	};
 
+	const mockCourseModel = {
+		find: jest.fn().mockReturnValue(courses)
+	};
+
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [ CoursesService,
 				{
 					provide: getModelToken(Course.name),
-					useValue: {}
+					useValue: {
+						find: jest.fn()
+					}
 				},
 				{
 					provide: UsersService,
@@ -69,6 +102,18 @@ describe('CoursesService', () => {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
 			course: response.user.created_courses
+		});
+	});
+
+	it('search() should return response standard object with filtered courses as data', async () => {
+		const query = {
+			filters: 'name,tags',
+			keywords: 'web development'
+		};
+		expect(await service.search(query.filters, query.keywords)).toMatchObject({
+			message: 'Retrieved all created courses successfully',
+			status: HttpStatus.OK,
+			course: courses
 		});
 	});
 });
