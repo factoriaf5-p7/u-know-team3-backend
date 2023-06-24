@@ -86,16 +86,6 @@ export class CoursesService {
 				
 			// });
 
-			// const tempCourses = allCourses;
-
-			// for(let i = 0; i < allCourses.length ; i++){
-			// 	for( let j = i + 1 ; j < allCourses.length ; j++){
-			// 		if(Object.values(allCourses[i])[2].name === Object.values(allCourses[j])[2].name){
-			// 			allCourses.splice(i,1);
-			// 		}
-			// 	}
-			// }
-
 			// console.log(typeof allCourses[0] );
 			// for(let i = 0; i < allCourses.length ; i++){
 			// 	for( let j = i + 1 ; j < allCourses.length ; j++){
