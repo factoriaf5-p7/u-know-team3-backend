@@ -3,8 +3,9 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { Model, ObjectId, Query } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
@@ -64,6 +65,55 @@ export class CoursesService {
 			status: HttpStatus.OK,
 			course: response.user.created_courses
 		};
+	}
+
+	async search(filters: string, keywords: string) {
+		const allCourses = [];
+
+		const regex = new RegExp(keywords, 'i');
+		const arrFilters = filters.split(',');
+		
+		try {
+			for await (const filter of arrFilters) {
+				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
+			}
+
+			// const filteredCourses = allCourses.filter((course, index, arr) => {
+			// 	console.log(index !== arr.findIndex((oCourse) => {
+			// 		Object.values(oCourse)[2].name === Object.values(course)[2].name;
+			// 	}));
+			// 	console.log(arr[index]);
+				
+			// });
+
+			// const tempCourses = allCourses;
+
+			// for(let i = 0; i < allCourses.length ; i++){
+			// 	for( let j = i + 1 ; j < allCourses.length ; j++){
+			// 		if(Object.values(allCourses[i])[2].name === Object.values(allCourses[j])[2].name){
+			// 			allCourses.splice(i,1);
+			// 		}
+			// 	}
+			// }
+
+			// console.log(typeof allCourses[0] );
+			// for(let i = 0; i < allCourses.length ; i++){
+			// 	for( let j = i + 1 ; j < allCourses.length ; j++){
+			// 		if(allCourses[i].name === allCourses[j].name){
+			// 			continue;
+			// 		}
+			// 		filteredCourses.push(allCourses[]);
+			// 	}
+			// }
+
+			return {
+				message: 'Retrieved filtered courses successfully',
+				status: HttpStatus.OK,
+				data: allCourses
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	findOne(id: number) {

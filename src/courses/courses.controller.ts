@@ -24,6 +24,11 @@ export class CoursesController {
   	return this.coursesService.findAll();
   }
 
+  @Get('search')
+  search(@Query() query) {
+  	return this.coursesService.search(query.filters, query.keywords);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
   	return this.coursesService.findOne(+id);
