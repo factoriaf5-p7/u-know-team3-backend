@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RecoverRequestDto } from './dto/recover-request.dto';
 import { HttpStatus } from '@nestjs/common';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 const recoveryUser: RecoverUserDto = {
 	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
@@ -24,6 +25,13 @@ const recoverRequest = {
 const loginRequest: GetUserLoginDto = {
 	email: 'tomatkins@email.com',
 	password: 'tom123'
+};
+
+const registerRequest: RegisterUserDto = {
+	name: 'Jhon',
+	last_name: 'Connors',
+	email: 'jhon.connors@gmail.com',
+	password: '1234'
 };
 
 describe('AuthService', () => {
@@ -47,12 +55,19 @@ describe('AuthService', () => {
 		}),
 
 		findOneLogin: jest.fn().mockImplementation((email: string, password: string) => {
-			Promise.resolve(
+			return Promise.resolve(
 				{
 					message: 'Login success.', 
 					status: HttpStatus.OK, 
 					data: '' }
 			);
+		}),
+
+		create: jest.fn().mockImplementation((user:RegisterUserDto) => {
+			return Promise.resolve({
+				message: 'User created succesfully',
+				status: HttpStatus.OK,
+			});
 		})
 	};
 
@@ -98,11 +113,18 @@ describe('AuthService', () => {
 		});
 	});
 
-	it('login() should return a successful request',async () => {
+	it('login() should return a successful user login request',async () => {
 		expect(await service.login(loginRequest)).toMatchObject({
 			message: 'Login success.',
 			status: HttpStatus.OK,
 			data: ''
+		});
+	});
+
+	it('register() should return a new created user', async () => {
+		expect(await service.register(registerRequest)).toMatchObject({
+			message: 'User created succesfully',
+			status: 200			
 		});
 	});
 });
