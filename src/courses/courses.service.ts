@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { Model, ObjectId, Query } from 'mongoose';
 import { UsersService } from '../users/users.service';
-import { filter } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
