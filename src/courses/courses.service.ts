@@ -68,7 +68,7 @@ export class CoursesService {
 	}
 
 	async search(filters: string, keywords: string) {
-		const allCourses = [];
+		let allCourses = [];
 
 		const regex = new RegExp(keywords, 'i');
 		const arrFilters = filters.split(',');
@@ -78,28 +78,22 @@ export class CoursesService {
 				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
 			}
 
-			// const filteredCourses = allCourses.filter((course, index, arr) => {
-			// 	console.log(index !== arr.findIndex((oCourse) => {
-			// 		Object.values(oCourse)[2].name === Object.values(course)[2].name;
-			// 	}));
-			// 	console.log(arr[index]);
-				
-			// });
+			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con 
+			// los diferentes filtros.
+			allCourses = allCourses.flat(Infinity);
 
-			// console.log(typeof allCourses[0] );
-			// for(let i = 0; i < allCourses.length ; i++){
-			// 	for( let j = i + 1 ; j < allCourses.length ; j++){
-			// 		if(allCourses[i].name === allCourses[j].name){
-			// 			continue;
-			// 		}
-			// 		filteredCourses.push(allCourses[]);
-			// 	}
-			// }
+			// Se eliminan duplicados para mostrar los cursos que coinciden con las palabras clave solicitadas.
+			// Si el id de course guardado en hash ya existe devuelve false, por lo que no se guarda en el nuevo array.
+			// Si no existe se le asigna true y se guarda en el nuevo array.
+			const hash = {};
+			const filteredCourses = allCourses.filter(course =>{
+				return hash[course._id] ? false : hash[course._id] = true;
+			});
 
 			return {
 				message: 'Retrieved filtered courses successfully',
 				status: HttpStatus.OK,
-				data: allCourses
+				data: filteredCourses
 			};
 		} catch (error) {
 			throw error;
