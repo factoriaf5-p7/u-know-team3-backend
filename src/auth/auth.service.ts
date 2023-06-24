@@ -18,12 +18,13 @@ export class AuthService {
 	async login(user:GetUserLoginDto){
 		const { email, password } = user;
 		const findUser = await this.userService.findOneLogin(email,password);
-		if(!findUser) throw new HttpException('USER_NOT_FOUND', HttpStatus.UNAUTHORIZED);
-
+		if(findUser === null) throw new HttpException('USER_NOT_FOUND', HttpStatus.UNAUTHORIZED);
+		
 		return { 
 			message: 'Login success.', 
 			status: HttpStatus.OK, 
-			user: findUser };
+			data: ''
+		};
 	}
 
 	async register(user: RegisterUserDto) {

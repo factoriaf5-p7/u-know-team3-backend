@@ -6,6 +6,7 @@ import { RecoverUserDto } from './dto/recover-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RecoverRequestDto } from './dto/recover-request.dto';
 import { HttpStatus } from '@nestjs/common';
+import { GetUserLoginDto } from './dto/get-user-login.dto';
 
 const recoveryUser: RecoverUserDto = {
 	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
@@ -18,6 +19,11 @@ const recoverRequest = {
 	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
 	email: 'jhon@judgementday.com',
 	recovery_token: ''
+};
+
+const loginRequest: GetUserLoginDto = {
+	email: 'tomatkins@email.com',
+	password: 'tom123'
 };
 
 describe('AuthService', () => {
@@ -38,7 +44,16 @@ describe('AuthService', () => {
 				status: HttpStatus.OK,
 				data: ''
 			});
-		}), 
+		}),
+
+		findOneLogin: jest.fn().mockImplementation((email: string, password: string) => {
+			Promise.resolve(
+				{
+					message: 'Login success.', 
+					status: HttpStatus.OK, 
+					data: '' }
+			);
+		})
 	};
 
 	const mockJwtService = {
@@ -78,6 +93,14 @@ describe('AuthService', () => {
 	it('recoverPasswordRequest() should return standard object and send and email with a link within a recovery token', async () => {
 		expect(await service.recoverPasswordRequest(recoverRequest)).toMatchObject({
 			message: 'Recovery link has sent to your email',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('login() should return a successful request',async () => {
+		expect(await service.login(loginRequest)).toMatchObject({
+			message: 'Login success.',
 			status: HttpStatus.OK,
 			data: ''
 		});
