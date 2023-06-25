@@ -5,6 +5,8 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId, Types } from 'mongoose';
 import { query } from 'express';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { HttpStatus } from '@nestjs/common';
 
 const courses = [
 	{
@@ -32,6 +34,19 @@ const courses = [
 		content: 'Nestj is really anoying'
 	}
 ];
+
+const course = {
+	_id: '321k90aj211kuu',
+	name: 'new course',
+	price: 100,
+	topic: 'Web development',
+	bought: false,
+	difficulty: 'Medium',
+	tags: [ '#frontend', '#react', '#css' ],
+	createAt: '2023-06-25 17:00',
+	updateAt: '2023-06-25 17:00',
+	content: '### this is the frontend course you need'
+};
 
 const user = {
 	_id: '64ljkh523o54yuo3l3l',
@@ -73,9 +88,24 @@ describe('CoursesController', () => {
 
 		search: jest.fn().mockReturnValue(Promise.resolve({
 			message: 'Retrieved filtered courses successfully',
-			status: 200,
+			status: HttpStatus.OK,
 			data: courses
-		}))
+		})),
+
+		create: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
+			return Promise.resolve({
+				message: 'New course created successfully.',
+				status: HttpStatus.OK,
+				data: {
+					_id: '321k90aj211kuu',
+					bought: false,
+					price: 100,
+					createAt: '2023-06-25 17:00',
+					updateAt: '2023-06-25 17:00',
+					...newCourse
+				}
+			});
+		})
 	};
 
 	beforeEach(async () => {
@@ -119,6 +149,23 @@ describe('CoursesController', () => {
 			message: 'Retrieved filtered courses successfully',
 			status: 200,
 			data: courses
+		});
+	});
+
+	it('create() should return a response standard object with new created course object as data', async () => {
+		const newCourse: CreateCourseDto = {	
+			name: 'new course',
+			topic: 'Web development',
+			difficulty: 'Medium',
+			tags: [ '#frontend', '#react', '#css' ],
+			content: '### this is the frontend course you need'
+		};
+		expect(await controller.create(newCourse)).toMatchObject({
+			message: 'New course created successfully.',
+			status: 200,
+			data: {
+				_id: expect.any(String)
+			}
 		});
 	});
 });

@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
+import { CreateCourseDto } from './dto/create-course.dto';
 
 const response = {
 	user: {
@@ -53,6 +54,19 @@ const courses = [
 	}
 ];
 
+const course = {
+	_id: '321k90aj211kuu',
+	name: 'new course',
+	price: 100,
+	topic: 'Web development',
+	bought: false,
+	difficulty: 'Medium',
+	tags: [ '#frontend', '#react', '#css' ],
+	createAt: '2023-06-25 17:00',
+	updateAt: '2023-06-25 17:00',
+	content: '### this is the frontend course you need'
+};
+
 describe('CoursesService', () => {
 	let service: CoursesService;
 
@@ -63,7 +77,21 @@ describe('CoursesService', () => {
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) })
+		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
+		create: jest.fn().mockImplementation((newCourse) => {
+			return Promise.resolve({
+				message: 'New course created successfully.',
+				status: HttpStatus.OK,
+				data: {
+					_id: '321k90aj211kuu',
+					price: 100,
+					bought: false,
+					createAt: '2023-06-25 17:00',
+					updateAt: '2023-06-25 17:00',
+					...newCourse
+				}
+			});
+		})
 	};
 
 	beforeEach(async () => {
@@ -72,7 +100,8 @@ describe('CoursesService', () => {
 				{
 					provide: getModelToken(Course.name),
 					useValue: {
-						find: jest.fn()
+						find: jest.fn(),
+						create: jest.fn()
 					}
 				},
 				{
@@ -114,6 +143,23 @@ describe('CoursesService', () => {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
 			course: courses
+		});
+	});
+
+	it('create() should return a response standard object with new created course object as data', async () => {
+		const newCourse: CreateCourseDto = {	
+			name: 'new course',
+			topic: 'Web development',
+			difficulty: 'Medium',
+			tags: [ '#frontend', '#react', '#css' ],
+			content: '### this is the frontend course you need'
+		};
+		expect(await service.create(newCourse)).toMatchObject({
+			message: 'New course created successfully.',
+			status: HttpStatus.OK,
+			data: {
+				_id: expect.any(String)
+			}
 		});
 	});
 });

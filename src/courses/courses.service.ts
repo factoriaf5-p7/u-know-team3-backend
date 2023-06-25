@@ -20,7 +20,7 @@ export class CoursesService {
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				course: newCourse
+				data: newCourse
 			};
 			
 		} catch (error) {
@@ -62,7 +62,7 @@ export class CoursesService {
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			course: response.user.created_courses
+			data: response.user.created_courses
 		};
 	}
 
@@ -116,6 +116,7 @@ export class CoursesService {
 				return {
 					message: 'Course deleted.',
 					status: HttpStatus.OK,
+					data: ''
 				};
 			} else {
 				throw new HttpException('Course can not be deleted.', HttpStatus.UNAUTHORIZED);
