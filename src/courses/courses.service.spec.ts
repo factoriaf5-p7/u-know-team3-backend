@@ -54,12 +54,17 @@ const courses = [
 	}
 ];
 
-const createNewCourse: CreateCourseDto = {
-	name: 'Java Course',
-	topic: 'Backend',
-	difficulty: 'Advanced',
-	tags: [],
-	content: '# Learn Java the best way!'
+const course = {
+	_id: '321k90aj211kuu',
+	name: 'new course',
+	price: 100,
+	topic: 'Web development',
+	bought: false,
+	difficulty: 'Medium',
+	tags: [ '#frontend', '#react', '#css' ],
+	createAt: '2023-06-25 17:00',
+	updateAt: '2023-06-25 17:00',
+	content: '### this is the frontend course you need'
 };
 
 describe('CoursesService', () => {
@@ -73,12 +78,18 @@ describe('CoursesService', () => {
 
 	const mockCourseModel = {
 		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
-
-		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
+		create: jest.fn().mockImplementation((newCourse) => {
 			return Promise.resolve({
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: course	
+				data: {
+					_id: '321k90aj211kuu',
+					price: 100,
+					bought: false,
+					createAt: '2023-06-25 17:00',
+					updateAt: '2023-06-25 17:00',
+					...newCourse
+				}
 			});
 		})
 	};
@@ -135,11 +146,20 @@ describe('CoursesService', () => {
 		});
 	});
 
-	it('create() should return a response with new created course', async () => {
-		expect(await service.create(createNewCourse)).toMatchObject({	
+	it('create() should return a response standard object with new created course object as data', async () => {
+		const newCourse: CreateCourseDto = {	
+			name: 'new course',
+			topic: 'Web development',
+			difficulty: 'Medium',
+			tags: [ '#frontend', '#react', '#css' ],
+			content: '### this is the frontend course you need'
+		};
+		expect(await service.create(newCourse)).toMatchObject({
 			message: 'New course created successfully.',
-			status: HttpStatus.OK,	
-		});	
-
+			status: HttpStatus.OK,
+			data: {
+				_id: expect.any(String)
+			}
+		});
 	});
 });
