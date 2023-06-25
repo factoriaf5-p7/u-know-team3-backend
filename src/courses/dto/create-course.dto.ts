@@ -27,7 +27,7 @@ export class CreateCourseDto {
 	@ApiProperty({ example: '#webdevolopment, #javascript, #css' })
 	@IsArray()
 	@ArrayMaxSize(3)
-		tags: [];
+		tags: [string, string, string];
 	
 	@ApiProperty({ example: '### How to validate dtos properties<br>## Class-validator<br>To validate install the package as follow: nmp i class-validator.' })
 	@IsString()
