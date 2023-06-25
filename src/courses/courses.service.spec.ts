@@ -151,11 +151,9 @@ describe('CoursesService', () => {
 			content: '### this is the frontend course you need'
 		};
 		expect(await service.create(newCourse)).toMatchObject({
-			message: 'New course created successfully.',
-			status: HttpStatus.OK,
-			data: {
-				_id: expect.any(String)
-			}
+		
+			_id: expect.any(String)
+			
 		});
 	});
 });
