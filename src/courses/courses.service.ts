@@ -3,7 +3,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import mongoose, { Model, ObjectId, Query } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class CoursesService {
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				course: newCourse
+				data: newCourse 
 			};
 			
 		} catch (error) {

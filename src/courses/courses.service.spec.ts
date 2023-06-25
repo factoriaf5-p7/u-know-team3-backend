@@ -3,8 +3,9 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Types, isValidObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
+import { CreateCourseDto } from './dto/create-course.dto';
 
 const response = {
 	user: {
@@ -53,6 +54,14 @@ const courses = [
 	}
 ];
 
+const createNewCourse: CreateCourseDto = {
+	name: 'Java Course',
+	topic: 'Backend',
+	difficulty: 'Advanced',
+	tags: [],
+	content: '# Learn Java the best way!'
+};
+
 describe('CoursesService', () => {
 	let service: CoursesService;
 
@@ -63,7 +72,15 @@ describe('CoursesService', () => {
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) })
+		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
+
+		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
+			return Promise.resolve({
+				message: 'New course created successfully.',
+				status: HttpStatus.OK,
+				data: course	
+			});
+		})
 	};
 
 	beforeEach(async () => {
@@ -72,13 +89,14 @@ describe('CoursesService', () => {
 				{
 					provide: getModelToken(Course.name),
 					useValue: {
-						find: jest.fn()
+						find: jest.fn(),
+						create: jest.fn()
 					}
 				},
 				{
 					provide: UsersService,
 					useValue: {
-						findOne: jest.fn()
+						findOne: jest.fn(),
 					}
 				}
 			],
@@ -115,5 +133,13 @@ describe('CoursesService', () => {
 			status: HttpStatus.OK,
 			course: courses
 		});
+	});
+
+	it('create() should return a response with new created course', async () => {
+		expect(await service.create(createNewCourse)).toMatchObject({	
+			message: 'New course created successfully.',
+			status: HttpStatus.OK,	
+		});	
+
 	});
 });
