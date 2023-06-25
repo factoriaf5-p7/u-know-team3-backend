@@ -82,14 +82,7 @@ describe('CoursesService', () => {
 			return Promise.resolve({
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: {
-					_id: '321k90aj211kuu',
-					price: 100,
-					bought: false,
-					createAt: '2023-06-25 17:00',
-					updateAt: '2023-06-25 17:00',
-					...newCourse
-				}
+				data: course
 			});
 		})
 	};
@@ -130,7 +123,7 @@ describe('CoursesService', () => {
 		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			course: response.user.created_courses
+			data: response.user.created_courses
 		});
 	});
 
@@ -142,7 +135,7 @@ describe('CoursesService', () => {
 		expect(await service.search(query.filters, query.keywords)).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			course: courses
+			data: courses
 		});
 	});
 
@@ -157,9 +150,7 @@ describe('CoursesService', () => {
 		expect(await service.create(newCourse)).toMatchObject({
 			message: 'New course created successfully.',
 			status: HttpStatus.OK,
-			data: {
-				_id: expect.any(String)
-			}
+			data: course
 		});
 	});
 });
