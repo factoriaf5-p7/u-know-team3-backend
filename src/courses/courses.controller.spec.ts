@@ -4,6 +4,7 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId, Types } from 'mongoose';
+import { query } from 'express';
 
 const courses = [
 	{
@@ -58,16 +59,23 @@ describe('CoursesController', () => {
 			return Promise.resolve({
 				message: 'Retrieved all courses succesfully',
 				status: 200,
-				course: courses
+				data: courses
 			});
 		}),
+
 		findCreatedCourses: jest.fn().mockImplementation((userId: ObjectId) => {
 			return Promise.resolve({
 				message: 'Retrieved all created courses successfully',
 				status: 200,
-				course: user.created_courses
+				data: user.created_courses
 			});
-		})
+		}),
+
+		search: jest.fn().mockReturnValue(Promise.resolve({
+			message: 'Retrieved filtered courses successfully',
+			status: 200,
+			data: courses
+		}))
 	};
 
 	beforeEach(async () => {
@@ -90,7 +98,7 @@ describe('CoursesController', () => {
 		expect(await controller.findAll()).toMatchObject({
 			message: 'Retrieved all courses succesfully',
 			status: 200,
-			course: courses
+			data: courses
 		});
 	});
 
@@ -98,7 +106,19 @@ describe('CoursesController', () => {
 		expect(await controller.showCreatedCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: 200,
-			course: user.created_courses
+			data: user.created_courses
+		});
+	});
+
+	it('search() should return a response standard object with filtered courses as data', async () => {
+		const query = {
+			filters: 'name,tags',
+			keywords: 'web development'
+		};
+		expect(await controller.search(query)).toMatchObject({
+			message: 'Retrieved filtered courses successfully',
+			status: 200,
+			data: courses
 		});
 	});
 });
