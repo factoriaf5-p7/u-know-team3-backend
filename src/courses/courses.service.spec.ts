@@ -78,11 +78,14 @@ describe('CoursesService', () => {
 
 	const mockCourseModel = {
 		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
-		create: jest.fn().mockImplementation((newCourse) => {
+		create: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
 			return Promise.resolve({
-				message: 'New course created successfully.',
-				status: HttpStatus.OK,
-				data: course
+				_id: '321k90aj211kuu',
+				price: 100,
+				bought: false,
+				createAt: '2023-06-25 17:00',
+				updateAt: '2023-06-25 17:00',
+				...newCourse
 			});
 		})
 	};
@@ -150,7 +153,9 @@ describe('CoursesService', () => {
 		expect(await service.create(newCourse)).toMatchObject({
 			message: 'New course created successfully.',
 			status: HttpStatus.OK,
-			data: course
+			data: {
+				_id: expect.any(String)
+			}
 		});
 	});
 });
