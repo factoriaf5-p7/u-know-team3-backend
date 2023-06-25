@@ -3,7 +3,7 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Types, isValidObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 
@@ -100,7 +100,7 @@ describe('CoursesService', () => {
 				{
 					provide: UsersService,
 					useValue: {
-						findOne: jest.fn()
+						findOne: jest.fn(),
 					}
 				}
 			],
