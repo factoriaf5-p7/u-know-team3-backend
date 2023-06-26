@@ -281,7 +281,7 @@ USERS
       "commented": true,
     },
   ] ,
-  "created_courses": ,
+  "created_courses": [],
   "chat_notifications_sent": ,
   "chat_notifications_recieved": ,
   "profile": ,
