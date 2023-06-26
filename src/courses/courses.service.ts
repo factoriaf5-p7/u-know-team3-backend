@@ -3,7 +3,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -30,30 +30,37 @@ export class CoursesService {
 	}
 
 	async findAll() {
-		// return this.courseModel.find().exec();    
+		const listCoursesSorted = [];
+		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
+		const { data, message, status } = await this.userService.findAllBoughtCourses( {}, { bought_courses: 1, _id: 0 } ); //cursos comprados de cada usuario
+
 		// return 'This action find all users';
-		const courses = await this.courseModel.aggregate([
-			{
-			  $project: {
-					_id: 1,
-					name: 1,
-					price: 1,
-					topic: 1,
-					difficulty: 1,
-					tags: 1,
-					bought: 1,
-					reviews: 1,
-					averageRating: { $avg: '$reviews.stars' }
-			  }
-			},
-			{
-			  $sort: { averageRating: -1 }
-			}
-		  ]);
+		// const courses = this.courseModel.find();
+		idCoursesAll.forEach( (course) => {
+			const courseId = course._id;
+			let totalStars = 0;
+			let numRating = 0;
+
+			// Buscar las puntuaciones del curso
+			data.forEach(boughtCourses => {
+				const bcourses = Array.from(boughtCourses.bought_courses);
+				bcourses.forEach(courses => {
+					if(String(courses.course_id) === String(courseId)){
+						totalStars += courses.stars;
+						numRating++;
+					}
+				});
+			
+			});
+
+		});
+		
+		//   respuesta
 		  return {
 			message: 'Retrieved all courses succesfully',
 			status: 200,
-			course: courses
+			idCourses: idCoursesAll,
+			// users: starsUsersAll 
 		  };
 	}
 
