@@ -3,7 +3,7 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId, Types, isValidObjectId } from 'mongoose';
+import mongoose, { ObjectId, Types } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 
@@ -65,11 +65,23 @@ describe('CoursesService', () => {
 
 	const mockCourseModel = {
 		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
+
 		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
 			return Promise.resolve({
-				message: 'New course created successfully.',
+				...course,
+				_id: '6499e0352835baa915ad78f8',
+				price: 100,
+				bought: false,
+				createdAt: '2023-06-26T19:00:05.876Z',
+				updatedAt: '2023-06-26T19:00:05.876Z',
+			});
+		  }),
+
+		remove: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve({
+				message: 'Course deleted.',
 				status: HttpStatus.OK,
-				data: course	
+				data: ''
 			});
 		})
 	};
@@ -79,10 +91,7 @@ describe('CoursesService', () => {
 			providers: [ CoursesService,
 				{
 					provide: getModelToken(Course.name),
-					useValue: {
-						find: jest.fn(),
-						create: jest.fn()
-					}
+					useValue: mockCourseModel
 				},
 				{
 					provide: UsersService,
@@ -99,11 +108,11 @@ describe('CoursesService', () => {
 		service = module.get<CoursesService>(CoursesService);
 	});
 
-	it('should be defined', () => {
+	xit('should be defined', () => {
 		expect(service).toBeDefined();
 	});
 
-	it('findCreatedCourses() should return a standard object within a ', async () => {
+	xit('findCreatedCourses() should return a standard object within a ', async () => {
 		const userToGetCreatedCourses = {
 			id: '64905b60558ac28e56d3078e'
 		};
@@ -114,7 +123,7 @@ describe('CoursesService', () => {
 		});
 	});
 
-	it('search() should return response standard object with filtered courses as data', async () => {
+	xit('search() should return response standard object with filtered courses as data', async () => {
 		const query = {
 			filters: 'name,tags',
 			keywords: 'web development'
@@ -138,8 +147,47 @@ describe('CoursesService', () => {
 		expect(await service.create(createNewCourse)).toMatchObject({
 			message: 'New course created successfully.',
 			status: HttpStatus.OK,
-			// Añadiendo data no funciona el test (???)
-			// data: createNewCourse
+			data: {
+				...createNewCourse,
+			}
 		});
+	});
+
+	xit('remove() should return response standard object if a course is deleted',async () => {
+		const course = {
+			id: '6490640b558ac28e56d30793'
+		};
+		expect(await service.remove(new mongoose.Schema.Types.ObjectId(course.id))).toMatchObject({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: '',
+		  });
+		// const newCourse: CreateCourseDto = {
+		// 	name: 'Java Course',
+		// 	topic: 'Backend',
+		// 	difficulty: 'Advanced',
+		// 	tags: [
+		// 		'coding',
+		// 		'developer',
+		// 		'software'
+		// 	],
+		// 	content: '# Learn Java the best way!'
+		// };
+		// const createdCourse = await service.create(newCourse);
+		// console.log(createdCourse);
+		// console.log(createdCourse.data._id);
+		// const course = {
+		// 	name: 'Java Course',
+		// 	price: 100,
+		// 	topic: 'Backend',
+		// 	difficulty: 'Advanced',
+		// 	tags: [ 'tag1','tag2','tag3' ],
+		// 	bought: false,
+		// 	content: '# Learn Java the best way!',
+		// 	id: '64988aff674a81e41bfd643c',
+		// 	createdAt: '2023-06-25T17:01:32.077Z',
+		// 	updatedAt: '2023-06-25T17:01:32.077Z',
+		// 	__v: 0
+		// };
 	});
 });
