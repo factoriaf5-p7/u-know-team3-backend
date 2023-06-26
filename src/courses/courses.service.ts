@@ -140,16 +140,17 @@ export class CoursesService {
 			const course = await this.courseModel.findOne({ _id: id });
 
 			if (course) {
-				if (course.bought === false) {
-					await this.courseModel.deleteOne({ _id:id });
-					return {
-						message: 'Course deleted.',
-						status: HttpStatus.OK,
-						data: ''
-					};
-				} else if (course.bought === true) {
-					throw new HttpException('Course cannot be deleted.', HttpStatus.UNAUTHORIZED);
-				}
+				if (!course) throw new HttpException('Course not found.',HttpStatus.NOT_FOUND);
+
+				if (course.bought) throw new HttpException('Course cannot be deleted.', HttpStatus.UNAUTHORIZED);
+
+				await this.courseModel.deleteOne({ _id: id });
+
+				return {
+					message: 'Course deleted.',
+					status: HttpStatus.OK,
+					data: ''
+				};
 			} else {
 				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
 			}
