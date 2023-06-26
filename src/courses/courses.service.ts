@@ -30,7 +30,7 @@ export class CoursesService {
 	}
 
 	async findAll() {
-		const listCoursesSorted = [];
+		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
 		const { data, message, status } = await this.userService.findAllBoughtCourses( {}, { bought_courses: 1, _id: 0 } ); //cursos comprados de cada usuario
 
@@ -44,24 +44,41 @@ export class CoursesService {
 			// Buscar las puntuaciones del curso
 			data.forEach(boughtCourses => {
 				const bcourses = Array.from(boughtCourses.bought_courses);
-				bcourses.forEach(courses => {
-					if(String(courses.course_id) === String(courseId)){
-						totalStars += courses.stars;
+				bcourses.forEach(courseObj => {
+					if(String(courseObj.course_id) === String(courseId)){
+						totalStars += courseObj.stars;
 						numRating++;
 					}
 				});
-			
 			});
-
+			calculates.push({ 
+				_id: courseId, 
+				name: course.name,
+				totalStars,
+				numRating
+			});
 		});
-		
+
+		const hash = {};
+		const filteredCourses = calculates.filter(course =>{
+			return hash[course._id] || course.numRating === 0 ? false : hash[course._id] = true;
+		});
+
+		filteredCourses.map((course) =>{
+			if(course.numRating > 0){
+				course.average = course.totalStars / course.numRating;
+				return Number(course.average.toFixed(2));
+			}
+		});
+
+		const sortedCourses = filteredCourses.sort((a, b) => b.average - a.average);
+
 		//   respuesta
-		  return {
+		return {
 			message: 'Retrieved all courses succesfully',
 			status: 200,
-			idCourses: idCoursesAll,
-			// users: starsUsersAll 
-		  };
+			data: sortedCourses
+		};
 	}
 
 	async findCreatedCourses(userId: ObjectId){
