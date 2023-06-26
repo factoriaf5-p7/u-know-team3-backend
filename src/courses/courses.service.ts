@@ -134,7 +134,7 @@ export class CoursesService {
 
 			if (course) {
 				if (course.bought === false) {
-					await course.deleteOne();
+					await this.courseModel.deleteOne({ _id:id });
 					return {
 						message: 'Course deleted.',
 						status: HttpStatus.OK,
