@@ -6,6 +6,7 @@ import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId, Types, isValidObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { CoursesModule } from './courses.module';
 
 const response = {
 	user: {
@@ -78,7 +79,7 @@ describe('CoursesService', () => {
 
 	const mockCourseModel = {
 		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
-		create: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
+		save: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
 			return Promise.resolve({
 				_id: '321k90aj211kuu',
 				price: 100,
@@ -90,15 +91,28 @@ describe('CoursesService', () => {
 		})
 	};
 
+	class MockCourseModel {
+
+		constructor(newCourse: CreateCourseDto) { }
+
+		save(newCourse: CreateCourseDto) {
+			return Promise.resolve({
+				_id: '321k90aj211kuu',
+				price: 100,
+				bought: false,
+				createAt: '2023-06-25 17:00',
+				updateAt: '2023-06-25 17:00',
+
+			});
+		}
+	}
+
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [ CoursesService,
 				{
 					provide: getModelToken(Course.name),
-					useValue: {
-						find: jest.fn(),
-						create: jest.fn()
-					}
+					useClass: MockCourseModel
 				},
 				{
 					provide: UsersService,
@@ -113,6 +127,7 @@ describe('CoursesService', () => {
 			.compile();
 
 		service = module.get<CoursesService>(CoursesService);
+		model = module.get<getModelToken(Course.name)>(getModelToken(Course.name));
 	});
 
 	it('should be defined', () => {
@@ -151,9 +166,11 @@ describe('CoursesService', () => {
 			content: '### this is the frontend course you need'
 		};
 		expect(await service.create(newCourse)).toMatchObject({
-		
-			_id: expect.any(String)
-			
+			message: 'New course created successfully.',
+			status: 200,
+			data: {
+				_id: expect.any(String)
+			}
 		});
 	});
 });

@@ -15,12 +15,15 @@ export class CoursesService {
 
 	async create(createCourseDto: CreateCourseDto) {
 		try {
-			const newCourse =  await this.courseModel.create(createCourseDto);
+			const course = new this.courseModel(createCourseDto);
+			const newCourse: any =  await course.save();
+
+			console.log(newCourse);
 
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: newCourse
+				data: newCourse._doc
 			};
 			
 		} catch (error) {
@@ -69,12 +72,12 @@ export class CoursesService {
 	async search(filters: string, keywords: string) {
 		let allCourses = [];
 
-		const regex = new RegExp(keywords, 'i');
-		const arrFilters = filters.split(',');
+		const regex = new RegExp(keywords, 'i'); // (/Web development/i)
+		const arrFilters = filters.split(','); // arrFilter[0] = topic, arrFilter[1] = name, ...
 		
 		try {
 			for await (const filter of arrFilters) {
-				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
+				allCourses.push(...await this.courseModel.find({ [filter] : regex }).select('_id name'));
 			}
 
 			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con 
