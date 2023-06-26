@@ -18,6 +18,7 @@ const courses = [
 		topic: 'Frontend', 
 		difficulty: 'Beginner',
 		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -30,6 +31,7 @@ const courses = [
 		topic: 'Backend', 
 		difficulty: 'Beginner',
 		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -57,7 +59,7 @@ const user = {
 	email: 'jhon@judgementday.com', 
 	wallet_balance: 100,
 	bought_courses: [ 'Course1' ],
-	created_courses: [ 'Course 2', 'Course 3' ],
+	created_courses: [ new Schema.Types.ObjectId('321k90aj211kuu'), new Schema.Types.ObjectId('321k90aj211kuu') ],
 	chat_notifications_sent: [],
 	chat_notifications_recieved: [
 		{
@@ -81,10 +83,15 @@ describe('CoursesController', () => {
 		}),
 
 		findCreatedCourses: jest.fn().mockImplementation((userId: ObjectId) => {
+			const response = [];
+			courses.forEach(course => {
+				response.push({ _id: course._id , name: course.name });
+			});
+			
 			return Promise.resolve({
-				message: 'Retrieved all created courses successfully',
+				message: 'Retrieved a all created courses successfully',
 				status: 200,
-				data: user.created_courses
+				data: response
 			});
 		}),
 

@@ -63,8 +63,8 @@ export class CoursesService {
 		const { user, message, status } = await this.userService.findOne( userId );
 
 		for await (const courseId of user.created_courses) {
-			const res = await this.courseModel.findById(courseId).select('_id name');
-			createdCourses.push(res);
+			const { _id, name } = await this.courseModel.findById(courseId);
+			createdCourses.push({ _id: _id, name: name });
 		}
 
 		return {

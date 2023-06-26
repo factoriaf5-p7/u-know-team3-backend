@@ -18,7 +18,7 @@ const response = {
 		email: 'jhon@judgementday.com', 
 		wallet_balance: 100,
 		bought_courses: [ 'Course1' ],
-		created_courses: [ 'Course 2', 'Course 3' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		chat_notifications_sent: [],
 		chat_notifications_recieved: [
 			{
@@ -38,6 +38,7 @@ const courses = [
 		topic: 'Frontend', 
 		difficulty: 'Beginner',
 		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -50,6 +51,7 @@ const courses = [
 		topic: 'Backend', 
 		difficulty: 'Beginner',
 		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -70,12 +72,30 @@ const course = {
 	content: '### this is the frontend course you need'
 };
 
+const user = {
+	_id: '64ljkh523o54yuo3l3l',
+	name: 'Jhon',
+	last_name: 'Connors',
+	email: 'jhon@judgementday.com', 
+	wallet_balance: 100,
+	bought_courses: [ 'Course1' ],
+	created_courses: [ new Schema.Types.ObjectId('321k90aj211kuu'), new Schema.Types.ObjectId('321k90aj211kuu') ],
+	chat_notifications_sent: [],
+	chat_notifications_recieved: [
+		{
+			requested_from_user: 2,
+			requested_date: '2023-06-20 18:00'
+		}
+	],
+	profile: 'user'
+};
+
 describe('CoursesService', () => {
 	let service: CoursesService;
 
 	const mockUsersService = {
 		findOne: jest.fn().mockImplementation((id: ObjectId) => {
-			return response;
+			return Promise.resolve(response);
 		})
 	};
 
@@ -100,26 +120,11 @@ describe('CoursesService', () => {
 			return Promise.resolve(course);
 		}),
 
-		findById: jest.fn().mockImplementation()
+		findById: jest.fn()
+			.mockReturnValueOnce(Promise.resolve({ _id: course._id, name: course.name }))	
+			.mockReturnValueOnce(Promise.resolve(course))
 		
 	};
-
-	class MockCourseModel {
-
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		constructor(newCourse: CreateCourseDto){}
-
-		save(newCourse: CreateCourseDto) {
-			return Promise.resolve({
-				_id: '321k90aj211kuu',
-				price: 100,
-				bought: false,
-				createAt: '2023-06-25 17:00',
-				updateAt: '2023-06-25 17:00',
-
-			});
-		}
-	}
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -141,7 +146,6 @@ describe('CoursesService', () => {
 			.compile();
 
 		service = module.get<CoursesService>(CoursesService);
-		// model = module.get<getModelToken(Course.name)>(getModelToken(Course.name));
 	});
 
 	it('should be defined', () => {
@@ -152,10 +156,19 @@ describe('CoursesService', () => {
 		const userToGetCreatedCourses = {
 			id: '64905b60558ac28e56d3078e'
 		};
+
 		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: response.user.created_courses
+			data: [ {
+				_id: course._id,
+				name: course.name
+			},
+			{
+				_id: course._id,
+				name: course.name
+			}
+		 ]
 		});
 	});
 
@@ -210,7 +223,9 @@ describe('CoursesService', () => {
 		expect(await service.findOne(id)).toMatchObject({
 			message: 'Course retrieved successfully',
 			status: HttpStatus.OK,
-			data: course
+			data: {
+				...course
+			}
 		});
 	});
 });
