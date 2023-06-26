@@ -18,6 +18,7 @@ const courses = [
 		topic: 'Frontend', 
 		difficulty: 'Beginner',
 		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -30,6 +31,7 @@ const courses = [
 		topic: 'Backend', 
 		difficulty: 'Beginner',
 		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -57,7 +59,7 @@ const user = {
 	email: 'jhon@judgementday.com', 
 	wallet_balance: 100,
 	bought_courses: [ 'Course1' ],
-	created_courses: [ 'Course 2', 'Course 3' ],
+	created_courses: [ new Schema.Types.ObjectId('321k90aj211kuu'), new Schema.Types.ObjectId('321k90aj211kuu') ],
 	chat_notifications_sent: [],
 	chat_notifications_recieved: [
 		{
@@ -81,10 +83,15 @@ describe('CoursesController', () => {
 		}),
 
 		findCreatedCourses: jest.fn().mockImplementation((userId: ObjectId) => {
+			const response = [];
+			courses.forEach(course => {
+				response.push({ _id: course._id , name: course.name });
+			});
+			
 			return Promise.resolve({
-				message: 'Retrieved all created courses successfully',
+				message: 'Retrieved a all created courses successfully',
 				status: 200,
-				data: user.created_courses
+				data: response
 			});
 		}),
 
@@ -142,7 +149,7 @@ describe('CoursesController', () => {
 		expect(controller).toBeDefined();
 	});
 
-	xit('findAll() should return an array of course object', async () => {
+	it('findAll() should return an array of course object', async () => {
 		expect(await controller.findAll()).toMatchObject({
 			message: 'Retrieved all courses succesfully',
 			status: 200,
@@ -150,7 +157,7 @@ describe('CoursesController', () => {
 		});
 	});
 
-	xit('showCreatedCourses() should return an array of courses Ids', async () => {
+	it('showCreatedCourses() should return an array of courses Ids', async () => {
 		expect(await controller.showCreatedCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: 200,
@@ -158,7 +165,7 @@ describe('CoursesController', () => {
 		});
 	});
 
-	xit('search() should return a response standard object with filtered courses as data', async () => {
+	it('search() should return a response standard object with filtered courses as data', async () => {
 		const query = {
 			filters: 'name,tags',
 			keywords: 'web development'
@@ -187,7 +194,7 @@ describe('CoursesController', () => {
 		});
 	});
 
-	it('updateContent() should return response standard object without data', async () => {
+	it('update() should return response standard object without data', async () => {
 		const updatedCourseDto: UpdateCourseDto = {
 			name: 'The best web development course',
 			topic: 'Web development',
