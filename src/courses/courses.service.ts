@@ -120,9 +120,11 @@ export class CoursesService {
 		return `This action updates a #${id} course`;
 	}
 
-	updateContent(id: ObjectId, updatedContent: UpdateContentDto) {
+	async updateContent(id: ObjectId, updateCourse: UpdateContentDto) {
 		try {
-			const courseUpdated = this.courseModel.findOneAndUpdate({ id }, { updatedContent });
+			const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
+				 content: updateCourse.content
+			});
 
 			return {
 				message: 'Content course updated successfully',
