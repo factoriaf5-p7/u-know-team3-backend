@@ -7,7 +7,7 @@ import mongoose, { ObjectId, Types } from 'mongoose';
 import { query } from 'express';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { HttpStatus } from '@nestjs/common';
-import { UpdateContentDto } from './dto/update-content.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
 import { Schema } from 'mongoose';
 
 const courses = [
@@ -109,11 +109,11 @@ describe('CoursesController', () => {
 			});
 		}),
 
-		updateContent: jest.fn().mockImplementation((updatedContent: UpdateContentDto) => {
+		update: jest.fn().mockImplementation((updatedContent: UpdateCourseDto) => {
 			return Promise.resolve({
-				message: 'Content course updated successfully',
+				message: 'Course updated successfully',
 				status: HttpStatus.OK,
-				data: ''	
+				data: course
 			});
 		}),
 
@@ -188,14 +188,18 @@ describe('CoursesController', () => {
 	});
 
 	it('updateContent() should return response standard object without data', async () => {
-		const updatedContentDto: UpdateContentDto = {
+		const updatedCourseDto: UpdateCourseDto = {
+			name: 'The best web development course',
+			topic: 'Web development',
+			difficulty: 'Hard', 
+			tags: [ '#web', '#dev', '#frontend' ],
 			content: '### New course of turbo development'
 		};
 
-		expect(await controller.updateContent(new Schema.Types.ObjectId(course._id), updatedContentDto)).toMatchObject({
-			message: 'Content course updated successfully',
+		expect(await controller.update(new Schema.Types.ObjectId(course._id), updatedCourseDto)).toMatchObject({
+			message: 'Course updated successfully',
 			status: HttpStatus.OK,
-			data: ''
+			data: course
 		});
 	});
 

@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import { Model, ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
-import { UpdateContentDto } from './dto/update-content.dto';
 
 @Injectable()
 export class CoursesService {
@@ -116,20 +115,16 @@ export class CoursesService {
 		}
 	}
 
-	update(id: number, updateCourseDto: UpdateCourseDto) {
-		return `This action updates a #${id} course`;
-	}
-
-	async updateContent(id: ObjectId, updateCourse: UpdateContentDto) {
+	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
 		try {
 			const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
-				 content: updateCourse.content
+				 ...updateCourse
 			});
 
 			return {
-				message: 'Content course updated successfully',
+				message: 'Course updated successfully',
 				status: HttpStatus.OK,
-				data: ''
+				data: courseUpdated
 			};
 		} catch (error) {
 			throw error;

@@ -238,7 +238,7 @@
 					"response": []
 				},
 				{
-					"name": "update content",
+					"name": "update course",
 					"request": {
 						"method": "GET",
 						"header": []
