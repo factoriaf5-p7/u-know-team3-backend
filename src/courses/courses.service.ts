@@ -15,15 +15,12 @@ export class CoursesService {
 
 	async create(createCourseDto: CreateCourseDto) {
 		try {
-			const course = new this.courseModel(createCourseDto);
-			const newCourse: any =  await course.save();
-
-			console.log(newCourse);
+			const newCourse = await this.courseModel.create(createCourseDto);
 
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: newCourse._doc
+				data: newCourse
 			};
 			
 		} catch (error) {
