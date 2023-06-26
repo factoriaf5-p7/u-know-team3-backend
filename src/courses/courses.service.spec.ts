@@ -100,7 +100,7 @@ describe('CoursesService', () => {
 			return Promise.resolve(course);
 		}),
 
-		findById: jest.fn().mockImplementation(
+		findById: jest.fn().mockImplementation()
 		
 	};
 
