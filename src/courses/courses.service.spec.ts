@@ -3,10 +3,9 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId, Types } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { CoursesModule } from './courses.module';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Schema } from 'mongoose';
 
@@ -141,7 +140,7 @@ describe('CoursesService', () => {
 		expect(service).toBeDefined();
 	});
 
-	xit('findCreatedCourses() should return a standard object within a ', async () => {
+	it('findCreatedCourses() should return a standard object within a ', async () => {
 		const userToGetCreatedCourses = {
 			id: '64905b60558ac28e56d3078e'
 		};
@@ -152,7 +151,7 @@ describe('CoursesService', () => {
 		});
 	});
 
-	xit('search() should return response standard object with filtered courses as data', async () => {
+	it('search() should return response standard object with filtered courses as data', async () => {
 		const query = {
 			filters: 'name,tags',
 			keywords: 'web development'
@@ -182,7 +181,7 @@ describe('CoursesService', () => {
 		});
 	});
 
-	xit('remove() should return response standard object if a course is deleted',async () => {
+	it('remove() should return response standard object if a course is deleted',async () => {
 		const course = {
 			id: '6490640b558ac28e56d30793'
 		};
@@ -191,58 +190,31 @@ describe('CoursesService', () => {
 			status: HttpStatus.OK,
 			data: '',
 		  });
-		// const newCourse: CreateCourseDto = {
-		// 	name: 'Java Course',
-		// 	topic: 'Backend',
-		// 	difficulty: 'Advanced',
-		// 	tags: [
-		// 		'coding',
-		// 		'developer',
-		// 		'software'
-		// 	],
-		// 	content: '# Learn Java the best way!'
-		// };
-		// const createdCourse = await service.create(newCourse);
-		// console.log(createdCourse);
-		// console.log(createdCourse.data._id);
-		// const course = {
-		// 	name: 'Java Course',
-		// 	price: 100,
-		// 	topic: 'Backend',
-		// 	difficulty: 'Advanced',
-		// 	tags: [ 'tag1','tag2','tag3' ],
-		// 	bought: false,
-		// 	content: '# Learn Java the best way!',
-		// 	id: '64988aff674a81e41bfd643c',
-		// 	createdAt: '2023-06-25T17:01:32.077Z',
-		// 	updatedAt: '2023-06-25T17:01:32.077Z',
-		// 	__v: 0
-		// };
+	});
 
-		xit('update() should return response standard object within udpated course as data', async () => {
-			const updatedCourseDto: UpdateCourseDto = {
-				name: 'The best web development course',
-				topic: 'Web development',
-				difficulty: 'Hard', 
-				tags: [ '#web', '#dev', '#frontend' ],
-				content: '### New course of turbo development'
-			};
+	it('update() should return response standard object within udpated course as data', async () => {
+		const updatedCourseDto: UpdateCourseDto = {
+			name: 'The best web development course',
+			topic: 'Web development',
+			difficulty: 'Hard', 
+			tags: [ '#web', '#dev', '#frontend' ],
+			content: '### New course of turbo development'
+		};
 
-			expect(await service.update(new Schema.Types.ObjectId(course.id), updatedCourseDto)).toMatchObject({
-				message: 'Course updated successfully',
-				status: HttpStatus.OK,
-				data: course
-			});
+		expect(await service.update(new Schema.Types.ObjectId(course._id), updatedCourseDto)).toMatchObject({
+			message: 'Course updated successfully',
+			status: HttpStatus.OK,
+			data: course
 		});
+	});
 
-		xit('findOne() should return response standard object within a course object as data', async () => {
-			const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+	it('findOne() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
 
-			expect(await service.findOne(id)).toMatchObject({
-				message: 'Course retrieved successfully',
-				status: HttpStatus.OK,
-				data: course
-			});
+		expect(await service.findOne(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
 		});
 	});
 });
