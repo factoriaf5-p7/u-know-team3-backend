@@ -6,6 +6,9 @@ import { Course } from './schemas/course.schema';
 import mongoose, { ObjectId, Types } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { CoursesModule } from './courses.module';
+import { UpdateCourseDto } from './dto/update-course.dto';
+import { Schema } from 'mongoose';
 
 const response = {
 	user: {
@@ -83,8 +86,33 @@ describe('CoursesService', () => {
 				status: HttpStatus.OK,
 				data: ''
 			});
+		}),
+
+		findOneAndUpdate: jest.fn().mockImplementation((id: ObjectId, updateCourse: UpdateCourseDto) => {
+			return Promise.resolve(course);
+		}),
+
+		findById: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve(course);
 		})
 	};
+
+	class MockCourseModel {
+
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		constructor(newCourse: CreateCourseDto){}
+
+		save(newCourse: CreateCourseDto) {
+			return Promise.resolve({
+				_id: '321k90aj211kuu',
+				price: 100,
+				bought: false,
+				createAt: '2023-06-25 17:00',
+				updateAt: '2023-06-25 17:00',
+
+			});
+		}
+	}
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -106,6 +134,7 @@ describe('CoursesService', () => {
 			.compile();
 
 		service = module.get<CoursesService>(CoursesService);
+		// model = module.get<getModelToken(Course.name)>(getModelToken(Course.name));
 	});
 
 	it('should be defined', () => {
@@ -119,7 +148,7 @@ describe('CoursesService', () => {
 		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			course: response.user.created_courses
+			data: response.user.created_courses
 		});
 	});
 
@@ -129,9 +158,9 @@ describe('CoursesService', () => {
 			keywords: 'web development'
 		};
 		expect(await service.search(query.filters, query.keywords)).toMatchObject({
-			message: 'Retrieved all created courses successfully',
+			message: 'Retrieved filtered courses successfully',
 			status: HttpStatus.OK,
-			course: courses
+			data: courses
 		});
 	});
 
@@ -146,7 +175,7 @@ describe('CoursesService', () => {
 
 		expect(await service.create(createNewCourse)).toMatchObject({
 			message: 'New course created successfully.',
-			status: HttpStatus.OK,
+			status: 200,
 			data: {
 				...createNewCourse
 			}
@@ -189,5 +218,30 @@ describe('CoursesService', () => {
 		// 	updatedAt: '2023-06-25T17:01:32.077Z',
 		// 	__v: 0
 		// };
+
+	it('update() should return response standard object within udpated course as data', async () => {
+		const updatedCourseDto: UpdateCourseDto = {
+			name: 'The best web development course',
+			topic: 'Web development',
+			difficulty: 'Hard', 
+			tags: [ '#web', '#dev', '#frontend' ],
+			content: '### New course of turbo development'
+		};
+
+		expect(await service.update(new Schema.Types.ObjectId(course._id), updatedCourseDto)).toMatchObject({
+			message: 'Course updated successfully',
+			status: HttpStatus.OK,
+			data: course
+		});
+	});
+
+	it('findOne() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+
+		expect(await service.findOne(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
+		});
 	});
 });
