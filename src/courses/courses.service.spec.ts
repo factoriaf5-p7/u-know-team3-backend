@@ -97,23 +97,6 @@ describe('CoursesService', () => {
 		})
 	};
 
-	class MockCourseModel {
-
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		constructor(newCourse: CreateCourseDto){}
-
-		save(newCourse: CreateCourseDto) {
-			return Promise.resolve({
-				_id: '321k90aj211kuu',
-				price: 100,
-				bought: false,
-				createAt: '2023-06-25 17:00',
-				updateAt: '2023-06-25 17:00',
-
-			});
-		}
-	}
-
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [ CoursesService,
