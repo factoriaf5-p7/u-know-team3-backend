@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import { Model, ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { UpdateContentDto } from './dto/update-content.dto';
 
 @Injectable()
 export class CoursesService {
@@ -110,6 +111,20 @@ export class CoursesService {
 		return `This action updates a #${id} course`;
 	}
 
+	updateContent(id: ObjectId, updatedContent: UpdateContentDto) {
+		try {
+			const courseUpdated = this.courseModel.findOneAndUpdate({ id }, { updatedContent });
+
+			return {
+				message: 'Content course updated successfully',
+				status: HttpStatus.OK,
+				data: ''
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async remove(id: ObjectId) {
 		try {
 			const course = await this.courseModel.findOne({ _id:id });
@@ -128,4 +143,5 @@ export class CoursesService {
 			throw new HttpException('Course not found.', HttpStatus.UNAUTHORIZED);
 		}
 	}
+
 }
