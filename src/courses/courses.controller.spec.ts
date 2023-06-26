@@ -115,6 +115,14 @@ describe('CoursesController', () => {
 				status: HttpStatus.OK,
 				data: ''	
 			});
+		}),
+
+		findOne: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve({
+				message: 'Course retrieved successfully',
+				status: HttpStatus.OK,
+				data: course
+			});
 		})
 	};
 
@@ -188,6 +196,16 @@ describe('CoursesController', () => {
 			message: 'Content course updated successfully',
 			status: HttpStatus.OK,
 			data: ''
+		});
+	});
+
+	it('findOne() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+
+		expect(await controller.findOne(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
 		});
 	});
 });

@@ -96,7 +96,11 @@ describe('CoursesService', () => {
 			});
 		}),
 
-		findOneAndUpdate: jest.fn()
+		findOneAndUpdate: jest.fn(),
+
+		findById: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve(course);
+		})
 	};
 
 	class MockCourseModel {
@@ -192,6 +196,16 @@ describe('CoursesService', () => {
 			message: 'Content course updated successfully',
 			status: HttpStatus.OK,
 			data: ''
+		});
+	});
+
+	it('findOne() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+
+		expect(await service.findOne(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
 		});
 	});
 });

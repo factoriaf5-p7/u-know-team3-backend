@@ -103,8 +103,17 @@ export class CoursesService {
 		}
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} course`;
+	async findOne(id: ObjectId) {
+		try{
+			const course = await this.courseModel.findById(id);
+			return {
+				message: 'Course retrieved successfully',
+				status: HttpStatus.OK,
+				data: course
+			};
+		}catch(error){
+			throw error;
+		}
 	}
 
 	update(id: number, updateCourseDto: UpdateCourseDto) {
