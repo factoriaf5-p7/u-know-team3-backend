@@ -107,6 +107,19 @@ export class UsersService {
 		}
 	}
 
+	async findAllBoughtCourses( user, filter ) {
+		try {
+			const usersBoughtCourses = await this.userModel.find( user, filter ).lean().exec();		
+			return {
+				message: 'All users retrieved succesfully',
+				status: 200,
+				data: usersBoughtCourses
+			}; 	
+		} catch (error) {
+			
+		}
+	}
+
 	remove(id: number) {
 		return `This action removes a #${id} user`;
 	}
