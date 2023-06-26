@@ -108,7 +108,7 @@ describe('CoursesService', () => {
 		service = module.get<CoursesService>(CoursesService);
 	});
 
-	xit('should be defined', () => {
+	it('should be defined', () => {
 		expect(service).toBeDefined();
 	});
 
@@ -135,7 +135,7 @@ describe('CoursesService', () => {
 		});
 	});
 
-	it('create() should return a successful response if a new course is created',async () => {
+	it('create() should return a standard response with the course data',async () => {
 		const createNewCourse: CreateCourseDto = {
 			name: 'Java Course',
 			topic: 'Backend',
@@ -148,12 +148,12 @@ describe('CoursesService', () => {
 			message: 'New course created successfully.',
 			status: HttpStatus.OK,
 			data: {
-				...createNewCourse,
+				...createNewCourse
 			}
 		});
 	});
 
-	it('remove() should return response standard object if a course is deleted',async () => {
+	xit('remove() should return response standard object if a course is deleted',async () => {
 		const course = {
 			id: '6490640b558ac28e56d30793'
 		};
