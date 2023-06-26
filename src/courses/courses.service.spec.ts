@@ -153,7 +153,7 @@ describe('CoursesService', () => {
 		});
 	});
 
-	xit('remove() should return response standard object if a course is deleted',async () => {
+	it('remove() should return response standard object if a course is deleted',async () => {
 		const course = {
 			id: '6490640b558ac28e56d30793'
 		};
