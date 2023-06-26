@@ -18,8 +18,6 @@ export class CoursesService {
 			const course = new this.courseModel(createCourseDto);
 			const newCourse: any =  await course.save();
 
-			console.log(newCourse);
-
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
@@ -61,11 +59,18 @@ export class CoursesService {
 	}
 
 	async findCreatedCourses(userId: ObjectId){
-		const response  = await this.userService.findOne( userId );
+		const createdCourses = [];
+		const { user, message, status } = await this.userService.findOne( userId );
+
+		for await (const courseId of user.created_courses) {
+			const res = await this.courseModel.findById(courseId).select('_id name');
+			createdCourses.push(res);
+		}
+
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: response.user.created_courses
+			data: createdCourses
 		};
 	}
 
