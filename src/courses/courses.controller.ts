@@ -19,6 +19,11 @@ export class CoursesController {
   	return this.coursesService.findCreatedCourses(userId);
   }
 
+  @Get('average')
+  findAllSortedByAverage() {
+  	return this.coursesService.findAllSortedByAverage();
+  }
+
   @Get()
   findAll() {
   	return this.coursesService.findAll();

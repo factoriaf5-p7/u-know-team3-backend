@@ -281,8 +281,8 @@ describe('CoursesService', () => {
 		});
 	});
 
-	it('findAll() should return response standard object within a list of courses sorted by average as data', async ()=> {
-		expect(await service.findAll()).toMatchObject({
+	it('findAllSortedByAverage() should return response standard object within a list of courses sorted by average as data', async ()=> {
+		expect(await service.findAllSortedByAverage()).toMatchObject({
 			message: 'Retrieved all courses succesfully',
 			status: HttpStatus.OK,
 			data: sortedCourses

@@ -30,6 +30,20 @@ export class CoursesService {
 	}
 
 	async findAll() {
+		try {
+			const allCourses = await this.courseModel.find();
+
+			return {
+				message: 'All courses retrieved successfully',
+				status: HttpStatus.OK,
+				data: allCourses
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async findAllSortedByAverage() {
 		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
 		const { data, message, status } = await this.userService.findAllBoughtCourses( {}, { bought_courses: 1, _id: 0 } ); //cursos comprados de cada usuario
