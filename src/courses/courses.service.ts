@@ -159,7 +159,7 @@ export class CoursesService {
 		}
 	}
 
-	async remove(id: ObjectId) {
+	async deleteCourse(id: ObjectId) {
 		try {
 			const course = await this.courseModel.findOne({ _id: id });
 
