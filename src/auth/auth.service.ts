@@ -22,7 +22,8 @@ export class AuthService {
 		
 		return { 
 			message: 'Login success.', 
-			status: HttpStatus.OK, 
+			status: HttpStatus.OK,
+			data: ''
 		};
 	}
 
