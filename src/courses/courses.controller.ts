@@ -40,7 +40,7 @@ export class CoursesController {
   }
 
   @Delete('delete')
-  remove(@Query('id') id: ObjectId) {
-  	return this.coursesService.remove(id);
+  deleteCourse(@Query('id') id: ObjectId) {
+  	return this.coursesService.deleteCourse(id);
   }
 }
