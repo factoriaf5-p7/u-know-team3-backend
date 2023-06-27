@@ -3,10 +3,9 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId, Types, isValidObjectId } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { CoursesModule } from './courses.module';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Schema } from 'mongoose';
 
@@ -18,7 +17,7 @@ const response = {
 		email: 'jhon@judgementday.com', 
 		wallet_balance: 100,
 		bought_courses: [ 'Course1' ],
-		created_courses: [ 'Course 2', 'Course 3' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		chat_notifications_sent: [],
 		chat_notifications_recieved: [
 			{
@@ -38,6 +37,7 @@ const courses = [
 		topic: 'Frontend', 
 		difficulty: 'Beginner',
 		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -50,6 +50,7 @@ const courses = [
 		topic: 'Backend', 
 		difficulty: 'Beginner',
 		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -58,69 +59,117 @@ const courses = [
 ];
 
 const course = {
-	_id: '321k90aj211kuu',
-	name: 'new course',
+	name: 'Java Course',
 	price: 100,
-	topic: 'Web development',
+	topic: 'Backend',
+	difficulty: 'Advanced',
+	tags: [
+		'coding',
+		'developer',
+		'software'
+	],
 	bought: false,
-	difficulty: 'Medium',
-	tags: [ '#frontend', '#react', '#css' ],
-	createAt: '2023-06-25 17:00',
-	updateAt: '2023-06-25 17:00',
-	content: '### this is the frontend course you need'
+	content: '# Learn Java the best way!',
+	_id: '6499f4e80e48c86ef37897b9',
+	createdAt: '2023-06-26T20:28:24.524Z',
+	updatedAt: '2023-06-26T20:28:24.524Z',
 };
+
+const user = {
+	_id: '64ljkh523o54yuo3l3l',
+	name: 'Jhon',
+	last_name: 'Connors',
+	email: 'jhon@judgementday.com', 
+	wallet_balance: 100,
+	bought_courses: [ 'Course1' ],
+	created_courses: [ new Schema.Types.ObjectId('321k90aj211kuu'), new Schema.Types.ObjectId('321k90aj211kuu') ],
+	chat_notifications_sent: [],
+	chat_notifications_recieved: [
+		{
+			requested_from_user: 2,
+			requested_date: '2023-06-20 18:00'
+		}
+	],
+	profile: 'user'
+};
+
+const sortedCourses = [
+	{
+		_id: '6590640b558ac28e56d30993',
+		name: 'Introduction to Web Development',
+		totalStars: 5,
+		numRating: 1,
+		average: 5
+	},
+	{
+		_id: '649077a6558ac28e56d30796',
+		name: 'Nodemailer para principiantes',
+		totalStars: 10,
+		numRating: 3,
+		average: 3.3333333333333335
+	},
+	{
+		_id: '6490cc44e77da73b3fd0629d',
+		name: 'Be inclusive have in consideration Terminator\'s feelings',
+		totalStars: 5,
+		numRating: 2,
+		average: 2.5
+	},
+	{
+		_id: '6490640b558ac28e56d30793',
+		name: 'Nodemailer para principiantes',
+		totalStars: 2,
+		numRating: 1,
+		average: 2
+	}
+];
 
 describe('CoursesService', () => {
 	let service: CoursesService;
 
 	const mockUsersService = {
 		findOne: jest.fn().mockImplementation((id: ObjectId) => {
-			return response;
-		})
+			return Promise.resolve(response);
+		}),
+
+		findAllBoughtCourses: jest.fn().mockReturnValue(Promise.resolve(sortedCourses))
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue({ 
-			exec: () => Promise.resolve(courses), 
-			select: () => Promise.resolve(courses)
-		}),
+		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(sortedCourses) }),
 
-		save: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
+		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
 			return Promise.resolve({
-				_id: '321k90aj211kuu',
+				...course,
+				_id: '6499e0352835baa915ad78f8',
 				price: 100,
 				bought: false,
-				createAt: '2023-06-25 17:00',
-				updateAt: '2023-06-25 17:00',
-				...newCourse
+				createdAt: '2023-06-26T19:00:05.876Z',
+				updatedAt: '2023-06-26T19:00:05.876Z',
+			});
+		  }),
+
+		remove: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve({
+				message: 'Course deleted.',
+				status: HttpStatus.OK,
+				data: ''
 			});
 		}),
+
+		findOne: jest.fn().mockResolvedValue(course),
+
+		deleteOne: jest.fn().mockResolvedValue(course),
 
 		findOneAndUpdate: jest.fn().mockImplementation((id: ObjectId, updateCourse: UpdateCourseDto) => {
 			return Promise.resolve(course);
 		}),
 
-		findById: jest.fn().mockImplementation((id: ObjectId) => {
-			return Promise.resolve(course);
-		})
+		findById: jest.fn()
+			.mockReturnValueOnce(Promise.resolve({ _id: course._id, name: course.name }))	
+			.mockReturnValueOnce(Promise.resolve(course))
+		
 	};
-
-	class MockCourseModel {
-
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		constructor(newCourse: CreateCourseDto){}
-
-		save(newCourse: CreateCourseDto) {
-			return Promise.resolve({
-				_id: '321k90aj211kuu',
-				price: 100,
-				bought: false,
-				createAt: '2023-06-25 17:00',
-				updateAt: '2023-06-25 17:00',
-
-			});
-		}
-	}
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -131,9 +180,7 @@ describe('CoursesService', () => {
 				},
 				{
 					provide: UsersService,
-					useValue: {
-						findOne: jest.fn(),
-					}
+					useValue: mockUsersService
 				}
 			],
 		})
@@ -142,7 +189,6 @@ describe('CoursesService', () => {
 			.compile();
 
 		service = module.get<CoursesService>(CoursesService);
-		// model = module.get<getModelToken(Course.name)>(getModelToken(Course.name));
 	});
 
 	it('should be defined', () => {
@@ -153,10 +199,19 @@ describe('CoursesService', () => {
 		const userToGetCreatedCourses = {
 			id: '64905b60558ac28e56d3078e'
 		};
+
 		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: response.user.created_courses
+			data: [ {
+				_id: course._id,
+				name: course.name
+			},
+			{
+				_id: course._id,
+				name: course.name
+			}
+		 ]
 		});
 	});
 
@@ -172,21 +227,30 @@ describe('CoursesService', () => {
 		});
 	});
 
-	xit('create() should return a response standard object with new created course object as data', async () => {
-		const newCourse: CreateCourseDto = {	
-			name: 'new course',
-			topic: 'Web development',
-			difficulty: 'Medium',
-			tags: [ '#frontend', '#react', '#css' ],
-			content: '### this is the frontend course you need'
+	it('create() should return a standard response with the course data',async () => {
+		const createNewCourse: CreateCourseDto = {
+			name: 'Java Course',
+			topic: 'Backend',
+			difficulty: 'Advanced',
+			tags: [ 'tag1','tag2','tag3' ],
+			content: '# Learn Java the best way!'
 		};
-		expect(await service.create(newCourse)).toMatchObject({
+
+		expect(await service.create(createNewCourse)).toMatchObject({
 			message: 'New course created successfully.',
 			status: 200,
 			data: {
-				_id: expect.any(String)
+				...createNewCourse
 			}
 		});
+	});
+
+	it('remove() should return response standard object if a course is deleted',async () => {
+		expect(await service.remove(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: '',
+		  });
 	});
 
 	it('update() should return response standard object within udpated course as data', async () => {
@@ -211,7 +275,17 @@ describe('CoursesService', () => {
 		expect(await service.findOne(id)).toMatchObject({
 			message: 'Course retrieved successfully',
 			status: HttpStatus.OK,
-			data: course
+			data: {
+				...course
+			}
+		});
+	});
+
+	it('findAll() should return response standard object within a list of courses sorted by average as data', async ()=> {
+		expect(await service.findAll()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: sortedCourses
 		});
 	});
 });

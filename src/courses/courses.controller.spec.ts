@@ -18,6 +18,7 @@ const courses = [
 		topic: 'Frontend', 
 		difficulty: 'Beginner',
 		tags: [ '#frontend', '#webdevelopment', '#react' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -30,6 +31,7 @@ const courses = [
 		topic: 'Backend', 
 		difficulty: 'Beginner',
 		tags: [ '#backend', '#webdevelopment', '#nestjs' ],
+		created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
 		bought: true,
 		createAt: '2023-06-23 17:00',
 		updateAt: '2023-06-23 17:00',
@@ -57,7 +59,7 @@ const user = {
 	email: 'jhon@judgementday.com', 
 	wallet_balance: 100,
 	bought_courses: [ 'Course1' ],
-	created_courses: [ 'Course 2', 'Course 3' ],
+	created_courses: [ new Schema.Types.ObjectId('321k90aj211kuu'), new Schema.Types.ObjectId('321k90aj211kuu') ],
 	chat_notifications_sent: [],
 	chat_notifications_recieved: [
 		{
@@ -68,6 +70,37 @@ const user = {
 	profile: 'user'
 };
 
+const sortedCourses = [
+	{
+		_id: '6590640b558ac28e56d30993',
+		name: 'Introduction to Web Development',
+		totalStars: 5,
+		numRating: 1,
+		average: 5
+	},
+	{
+		_id: '649077a6558ac28e56d30796',
+		name: 'Nodemailer para principiantes',
+		totalStars: 10,
+		numRating: 3,
+		average: 3.3333333333333335
+	},
+	{
+		_id: '6490cc44e77da73b3fd0629d',
+		name: 'Be inclusive have in consideration Terminator\'s feelings',
+		totalStars: 5,
+		numRating: 2,
+		average: 2.5
+	},
+	{
+		_id: '6490640b558ac28e56d30793',
+		name: 'Nodemailer para principiantes',
+		totalStars: 2,
+		numRating: 1,
+		average: 2
+	}
+];
+
 describe('CoursesController', () => {
 	let controller: CoursesController;
 
@@ -76,15 +109,20 @@ describe('CoursesController', () => {
 			return Promise.resolve({
 				message: 'Retrieved all courses succesfully',
 				status: 200,
-				data: courses
+				data: sortedCourses
 			});
 		}),
 
 		findCreatedCourses: jest.fn().mockImplementation((userId: ObjectId) => {
+			const response = [];
+			courses.forEach(course => {
+				response.push({ _id: course._id , name: course.name });
+			});
+			
 			return Promise.resolve({
 				message: 'Retrieved all created courses successfully',
 				status: 200,
-				data: user.created_courses
+				data: response
 			});
 		}),
 
@@ -124,6 +162,7 @@ describe('CoursesController', () => {
 				data: course
 			});
 		})
+
 	};
 
 	beforeEach(async () => {
@@ -142,23 +181,19 @@ describe('CoursesController', () => {
 		expect(controller).toBeDefined();
 	});
 
-	xit('findAll() should return an array of course object', async () => {
-		expect(await controller.findAll()).toMatchObject({
-			message: 'Retrieved all courses succesfully',
-			status: 200,
-			data: courses
+	it('showCreatedCourses() should return an array of courses Ids', async () => {
+		const response = [];
+		courses.forEach(course => {
+			response.push({ _id: course._id , name: course.name });
 		});
-	});
-
-	xit('showCreatedCourses() should return an array of courses Ids', async () => {
 		expect(await controller.showCreatedCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
 			message: 'Retrieved all created courses successfully',
 			status: 200,
-			data: user.created_courses
+			data: response
 		});
 	});
 
-	xit('search() should return a response standard object with filtered courses as data', async () => {
+	it('search() should return a response standard object with filtered courses as data', async () => {
 		const query = {
 			filters: 'name,tags',
 			keywords: 'web development'
@@ -170,7 +205,7 @@ describe('CoursesController', () => {
 		});
 	});
 
-	xit('create() should return a response standard object with new created course object as data', async () => {
+	it('create() should return a response standard object with new created course object as data', async () => {
 		const newCourse: CreateCourseDto = {	
 			name: 'new course',
 			topic: 'Web development',
@@ -187,7 +222,7 @@ describe('CoursesController', () => {
 		});
 	});
 
-	it('updateContent() should return response standard object without data', async () => {
+	it('update() should return response standard object without data', async () => {
 		const updatedCourseDto: UpdateCourseDto = {
 			name: 'The best web development course',
 			topic: 'Web development',
@@ -210,6 +245,14 @@ describe('CoursesController', () => {
 			message: 'Course retrieved successfully',
 			status: HttpStatus.OK,
 			data: course
+		});
+	});
+
+	it('findAll() should return response standard object within a list of courses sorted by average as data', async ()=> {
+		expect(await controller.findAll()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: sortedCourses
 		});
 	});
 });

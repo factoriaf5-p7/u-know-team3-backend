@@ -3,7 +3,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -15,15 +15,12 @@ export class CoursesService {
 
 	async create(createCourseDto: CreateCourseDto) {
 		try {
-			const course = new this.courseModel(createCourseDto);
-			const newCourse: any =  await course.save();
-
-			console.log(newCourse);
+			const newCourse = await this.courseModel.create(createCourseDto);
 
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: newCourse._doc
+				data: newCourse
 			};
 			
 		} catch (error) {
@@ -33,39 +30,70 @@ export class CoursesService {
 	}
 
 	async findAll() {
-		// return this.courseModel.find().exec();    
+		const calculates = [];
+		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
+		const { data, message, status } = await this.userService.findAllBoughtCourses( {}, { bought_courses: 1, _id: 0 } ); //cursos comprados de cada usuario
+
 		// return 'This action find all users';
-		const courses = await this.courseModel.aggregate([
-			{
-			  $project: {
-					_id: 1,
-					name: 1,
-					price: 1,
-					topic: 1,
-					difficulty: 1,
-					tags: 1,
-					bought: 1,
-					reviews: 1,
-					averageRating: { $avg: '$reviews.stars' }
-			  }
-			},
-			{
-			  $sort: { averageRating: -1 }
+		// const courses = this.courseModel.find();
+		idCoursesAll.forEach( (course) => {
+			const courseId = course._id;
+			let totalStars = 0;
+			let numRating = 0;
+
+			// Buscar las puntuaciones del curso
+			data.forEach(boughtCourses => {
+				const bcourses = Array.from(boughtCourses.bought_courses);
+				bcourses.forEach(courseObj => {
+					if(String(courseObj.course_id) === String(courseId)){
+						totalStars += courseObj.stars;
+						numRating++;
+					}
+				});
+			});
+			calculates.push({ 
+				_id: courseId, 
+				name: course.name,
+				totalStars,
+				numRating
+			});
+		});
+
+		const hash = {};
+		const filteredCourses = calculates.filter(course =>{
+			return hash[course._id] || course.numRating === 0 ? false : hash[course._id] = true;
+		});
+
+		filteredCourses.map((course) =>{
+			if(course.numRating > 0){
+				course.average = course.totalStars / course.numRating;
+				return Number(course.average.toFixed(2));
 			}
-		  ]);
-		  return {
+		});
+
+		const sortedCourses = filteredCourses.sort((a, b) => b.average - a.average);
+
+		//   respuesta
+		return {
 			message: 'Retrieved all courses succesfully',
 			status: 200,
-			course: courses
-		  };
+			data: sortedCourses
+		};
 	}
 
 	async findCreatedCourses(userId: ObjectId){
-		const response  = await this.userService.findOne( userId );
+		const createdCourses = [];
+		const { user, message, status } = await this.userService.findOne( userId );
+
+		for await (const courseId of user.created_courses) {
+			const { _id, name } = await this.courseModel.findById(courseId);
+			createdCourses.push({ _id: _id, name: name });
+		}
+
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: response.user.created_courses
+			data: createdCourses
 		};
 	}
 
@@ -136,16 +164,17 @@ export class CoursesService {
 			const course = await this.courseModel.findOne({ _id: id });
 
 			if (course) {
-				if (course.bought === false) {
-					await course.deleteOne();
-					return {
-						message: 'Course deleted.',
-						status: HttpStatus.OK,
-						data: ''
-					};
-				} else if (course.bought === true) {
-					throw new HttpException('Course cannot be deleted.', HttpStatus.UNAUTHORIZED);
-				}
+				if (!course) throw new HttpException('Course not found.',HttpStatus.NOT_FOUND);
+
+				if (course.bought) throw new HttpException('Course cannot be deleted.', HttpStatus.UNAUTHORIZED);
+
+				await this.courseModel.deleteOne({ _id: id });
+
+				return {
+					message: 'Course deleted.',
+					status: HttpStatus.OK,
+					data: ''
+				};
 			} else {
 				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
 			}
