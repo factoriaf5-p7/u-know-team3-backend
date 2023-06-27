@@ -93,17 +93,50 @@ const user = {
 	profile: 'user'
 };
 
+const sortedCourses = [
+	{
+		_id: '6590640b558ac28e56d30993',
+		name: 'Introduction to Web Development',
+		totalStars: 5,
+		numRating: 1,
+		average: 5
+	},
+	{
+		_id: '649077a6558ac28e56d30796',
+		name: 'Nodemailer para principiantes',
+		totalStars: 10,
+		numRating: 3,
+		average: 3.3333333333333335
+	},
+	{
+		_id: '6490cc44e77da73b3fd0629d',
+		name: 'Be inclusive have in consideration Terminator\'s feelings',
+		totalStars: 5,
+		numRating: 2,
+		average: 2.5
+	},
+	{
+		_id: '6490640b558ac28e56d30793',
+		name: 'Nodemailer para principiantes',
+		totalStars: 2,
+		numRating: 1,
+		average: 2
+	}
+];
+
 describe('CoursesService', () => {
 	let service: CoursesService;
 
 	const mockUsersService = {
 		findOne: jest.fn().mockImplementation((id: ObjectId) => {
 			return Promise.resolve(response);
-		})
+		}),
+
+		findAllBoughtCourses: jest.fn().mockReturnValue(Promise.resolve(sortedCourses))
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(courses) }),
+		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(sortedCourses) }),
 
 		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
 			return Promise.resolve({
@@ -147,9 +180,7 @@ describe('CoursesService', () => {
 				},
 				{
 					provide: UsersService,
-					useValue: {
-						findOne: jest.fn(),
-					}
+					useValue: mockUsersService
 				}
 			],
 		})
@@ -247,6 +278,14 @@ describe('CoursesService', () => {
 			data: {
 				...course
 			}
+		});
+	});
+
+	it('findAll() should return response standard object within a list of courses sorted by average as data', async ()=> {
+		expect(await service.findAll()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: sortedCourses
 		});
 	});
 });
