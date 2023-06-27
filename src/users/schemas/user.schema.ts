@@ -64,7 +64,7 @@ export class User {
     }];
 
   @ApiProperty({ example: 'user | admin' })
-  @Prop({ required: true, enum: [ 'user', 'admin' ] })
+  @Prop({ default: 'user' })
   	profile: string;
 
   @ApiProperty({ example: '4j4jllleu99xaey21' })

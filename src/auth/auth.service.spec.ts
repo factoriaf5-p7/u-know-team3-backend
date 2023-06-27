@@ -9,6 +9,7 @@ import { HttpStatus } from '@nestjs/common';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import * as mailModule from '../utils/mail-sender';
+import * as bcrypt from 'bcrypt';
 
 jest.mock('../utils/mail-sender.ts');
 
@@ -118,11 +119,15 @@ describe('AuthService', () => {
 	});
 
 	it('login() should return a successful user login request',async () => {
+		const spy = jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
+
 		expect(await service.login(loginRequest)).toMatchObject({
 			message: 'Login success.',
 			status: HttpStatus.OK,
 			data: ''
 		});
+
+		spy.mockRestore();
 	});
 
 	it('register() should return a new created user', async () => {
