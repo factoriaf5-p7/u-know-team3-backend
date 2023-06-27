@@ -149,7 +149,7 @@ describe('CoursesService', () => {
 			});
 		  }),
 
-		remove: jest.fn().mockImplementation((id: ObjectId) => {
+		deleteCourse: jest.fn().mockImplementation((id: ObjectId) => {
 			return Promise.resolve({
 				message: 'Course deleted.',
 				status: HttpStatus.OK,
@@ -245,8 +245,8 @@ describe('CoursesService', () => {
 		});
 	});
 
-	it('remove() should return response standard object if a course is deleted',async () => {
-		expect(await service.remove(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
+	it('deleteCourse() should return response standard object if a course is deleted',async () => {
+		expect(await service.deleteCourse(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
 			message: 'Course deleted.',
 			status: HttpStatus.OK,
 			data: '',
