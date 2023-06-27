@@ -17,8 +17,11 @@ export class AuthService {
   
 	async login(user:GetUserLoginDto){
 		const { email, password } = user;
-		const findUser = await this.userService.findOneLogin(email,password);
-		if(findUser === null) throw new HttpException('USER_NOT_FOUND', HttpStatus.NOT_FOUND);
+		const findUser = await this.userService.findOneLogin(email);
+		if (!findUser) throw new HttpException('USER_NOT_FOUND', HttpStatus.NOT_FOUND);
+
+		const checkPassword = await compare(password, findUser.password);
+		if (!checkPassword) throw new HttpException('INCORRECT_PASSWORD', HttpStatus.FORBIDDEN);
 		
 		return { 
 			message: 'Login success.', 
