@@ -19,6 +19,11 @@ export class CoursesController {
   	return this.coursesService.findCreatedCourses(userId);
   }
 
+  @Get('average')
+  findAllSortedByAverage() {
+  	return this.coursesService.findAllSortedByAverage();
+  }
+
   @Get()
   findAll() {
   	return this.coursesService.findAll();
@@ -40,7 +45,7 @@ export class CoursesController {
   }
 
   @Delete('delete')
-  remove(@Query('id') id: ObjectId) {
-  	return this.coursesService.remove(id);
+  deleteCourse(@Query('id') id: ObjectId) {
+  	return this.coursesService.deleteCourse(id);
   }
 }
