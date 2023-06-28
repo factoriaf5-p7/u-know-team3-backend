@@ -23,9 +23,13 @@ let AuthService = exports.AuthService = class AuthService {
     async login(user) {
         const { email, password } = user;
         const findUser = await this.userService.findOneLogin(email, password);
-        if (!findUser)
-            throw new common_1.HttpException('USER_NOT_FOUND', common_1.HttpStatus.UNAUTHORIZED);
-        return { message: 'Login success.', status: common_1.HttpStatus.OK, user: findUser };
+        if (findUser === null)
+            throw new common_1.HttpException('USER_NOT_FOUND', common_1.HttpStatus.NOT_FOUND);
+        return {
+            message: 'Login success.',
+            status: common_1.HttpStatus.OK,
+            data: ''
+        };
     }
     async register(user) {
         try {
@@ -47,7 +51,11 @@ let AuthService = exports.AuthService = class AuthService {
             user.recovery_token = token;
             const updatedUser = await this.userService.updateRecoveryToken(user);
             (0, mail_sender_1.sendEmail)(updatedUser, token);
-            return updatedUser;
+            return {
+                message: 'Recovery link has sent to your email',
+                status: common_1.HttpStatus.OK,
+                data: ''
+            };
         }
         catch (error) {
             throw error;
@@ -60,7 +68,12 @@ let AuthService = exports.AuthService = class AuthService {
             user.email = email;
             user.password = await this.encryptPassword(user.password);
             user.recovery_token = '';
-            return await this.userService.updatePassword(user);
+            await this.userService.updatePassword(user);
+            return {
+                message: 'Password updated successfully',
+                status: common_1.HttpStatus.OK,
+                data: ''
+            };
         }
         catch (error) {
             throw error;

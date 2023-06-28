@@ -53,7 +53,7 @@ let UsersService = exports.UsersService = class UsersService {
         }
     }
     async findOneLogin(email, password) {
-        return await this.userModel.findOne({ email, password }).select('-password');
+        return await this.userModel.findOne({ email, password }).select('-password -recovery_token');
     }
     async findOne(id) {
         try {
@@ -83,11 +83,11 @@ let UsersService = exports.UsersService = class UsersService {
     }
     async updatePassword(user) {
         try {
-            const userPasswordUpdated = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user)).select('-password -recovery_token');
             return {
                 message: 'Password updated successfully',
                 status: 200,
-                user: userPasswordUpdated
+                user: ''
             };
         }
         catch (error) {
@@ -105,6 +105,18 @@ let UsersService = exports.UsersService = class UsersService {
         }
         catch (error) {
             throw error;
+        }
+    }
+    async findAllBoughtCourses(user, filter) {
+        try {
+            const usersBoughtCourses = await this.userModel.find(user, filter).lean().exec();
+            return {
+                message: 'All users retrieved succesfully',
+                status: 200,
+                data: usersBoughtCourses
+            };
+        }
+        catch (error) {
         }
     }
     remove(id) {

@@ -123,6 +123,28 @@ const sortedCourses = [
 		average: 2
 	}
 ];
+const sortedByPriceCourses = [
+	{
+		_id: '6590640b558ac28e56d30993',
+		name: 'Introduction to Web Development',
+		price: 5,
+	},
+	{
+		_id: '649077a6558ac28e56d30796',
+		name: 'Nodemailer avanzado',
+		price: 10,
+	},
+	{
+		_id: '6490cc44e77da73b3fd0629d',
+		name: 'Be inclusive have in consideration Terminator\'s feelings',
+		price: 15,
+	},
+	{
+		_id: '6490640b558ac28e56d30793',
+		name: 'Nodemailer para principiantes',
+		price: 25,
+	}
+];
 
 describe('CoursesService', () => {
 	let service: CoursesService;
@@ -287,5 +309,14 @@ describe('CoursesService', () => {
 			status: HttpStatus.OK,
 			data: sortedCourses
 		});
+	});
+
+	it('findAllSortedByPriceDesc', async() => {
+		expect(await service.findAllSortedByPriceDesc()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: sortedByPriceCourses			
+		});
+
 	});
 });

@@ -194,5 +194,19 @@ export class CoursesService {
 			throw error;
 		}
 	}
+	async findAllSortedByPriceDesc() {
+		try {
+			const sortedCourses = await this.courseModel.find().sort({ price : 'desc' });
+
+			return {
+				message: 'List of Courses sorted by price Desc.',
+				status: HttpStatus.OK,
+				data: sortedCourses
+			};
+
+		} catch (error) {
+			throw error;
+		}
+	}
 
 }

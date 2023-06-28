@@ -23,7 +23,7 @@ let AuthController = exports.AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    findOne(user) {
+    login(user) {
         return this.authService.login(user);
     }
     signup(user) {
@@ -42,7 +42,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [get_user_login_dto_1.GetUserLoginDto]),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "findOne", null);
+], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)()),

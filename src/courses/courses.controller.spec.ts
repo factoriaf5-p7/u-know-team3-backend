@@ -255,4 +255,12 @@ describe('CoursesController', () => {
 			data: sortedCourses
 		});
 	});
+
+	it('findAll() should return response standard object within a list of courses', async ()=> {
+		expect(await controller.findAll()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: courses
+		});
+	});
 });

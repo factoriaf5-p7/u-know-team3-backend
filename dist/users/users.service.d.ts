@@ -65,9 +65,7 @@ export declare class UsersService {
     updatePassword(user: RecoverUserDto): Promise<{
         message: string;
         status: number;
-        user: import("mongoose").Document<unknown, {}, User> & Omit<User & {
-            _id: import("mongoose").Types.ObjectId;
-        }, never>;
+        user: string;
     }>;
     updateRecoveryToken(user: RecoverRequestDto): Promise<{
         message: string;
@@ -75,6 +73,13 @@ export declare class UsersService {
         user: import("mongoose").Document<unknown, {}, User> & Omit<User & {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
+    }>;
+    findAllBoughtCourses(user: any, filter: any): Promise<{
+        message: string;
+        status: number;
+        data: (import("mongoose").FlattenMaps<User> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
     }>;
     remove(id: number): string;
 }
