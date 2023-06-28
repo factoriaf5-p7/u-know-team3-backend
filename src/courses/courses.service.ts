@@ -52,7 +52,8 @@ export class CoursesService {
 
 			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
 				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
-				 idsCoursesBoughts.push(idCourseBought);				
+				 idsCoursesBoughts.push(idCourseBought);	
+				 console.log(idsCoursesBoughts);				 			
 			}
 
 			return {
@@ -221,14 +222,12 @@ export class CoursesService {
 	}
 	async findAllSortedByPriceDesc() {
 		try {
-			const sortedCourses = await this.courseModel.find().sort({ price : 'desc' });
-
+			const coursesByPrice = await this.courseModel.find().sort( { price : -1 } );
 			return {
-				message: 'List of Courses sorted by price Desc.',
+				message: 'All courses retrieved successfully',
 				status: HttpStatus.OK,
-				data: sortedCourses
+				data: coursesByPrice
 			};
-
 		} catch (error) {
 			throw error;
 		}

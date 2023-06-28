@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const user_schema_1 = require("./schemas/user.schema");
+const course_schema_1 = require("../courses/schemas/course.schema");
 let UsersService = exports.UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
@@ -31,9 +32,23 @@ let UsersService = exports.UsersService = class UsersService {
                 await this.userModel.create(user);
                 return {
                     message: 'User created succesfully',
-                    status: 200
+                    status: 200,
+                    data: ''
                 };
             }
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async addCreatedCourse(userId, courseId) {
+        try {
+            await this.userModel.findOneAndUpdate({ _id: userId }, { $push: { created_courses: courseId } });
+            return {
+                message: 'Created course added successfully',
+                status: common_1.HttpStatus.OK,
+                data: ''
+            };
         }
         catch (error) {
             throw error;
@@ -52,8 +67,21 @@ let UsersService = exports.UsersService = class UsersService {
             throw error;
         }
     }
-    async findOneLogin(email, password) {
-        return await this.userModel.findOne({ email, password }).select('-password -recovery_token');
+    async findAllAdmin() {
+        try {
+            const users = await this.userModel.find();
+            return {
+                message: 'All users retrieved succesfully',
+                status: 200,
+                users: users
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findOneLogin(email) {
+        return await this.userModel.findOne({ email });
     }
     async findOne(id) {
         try {
@@ -61,7 +89,20 @@ let UsersService = exports.UsersService = class UsersService {
             return {
                 message: 'User retrived successfully',
                 status: 200,
-                user: user
+                data: user
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findOneWithCreatedCourses(id) {
+        try {
+            console.log(await (await this.userModel.findOne({ _id: id })).populate([{ path: course_schema_1.Course.name, strictPopulate: false }]));
+            return {
+                message: 'User retrived successfully',
+                status: 200,
+                data: ''
             };
         }
         catch (error) {

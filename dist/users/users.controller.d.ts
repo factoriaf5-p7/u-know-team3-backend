@@ -32,9 +32,11 @@ export declare class UsersController {
     create(registerUserDto: RegisterUserDto): Promise<{
         message: string;
         status?: undefined;
+        data?: undefined;
     } | {
         message: string;
         status: number;
+        data: string;
     }>;
     findAll(): Promise<{
         message: string;
@@ -43,10 +45,17 @@ export declare class UsersController {
             _id: import("mongoose").Types.ObjectId;
         })[];
     }>;
+    findAllAdmin(): Promise<{
+        message: string;
+        status: number;
+        users: (import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+            _id: import("mongoose").Types.ObjectId;
+        }, never>)[];
+    }>;
     findOne(id: ObjectId): Promise<{
         message: string;
         status: number;
-        user: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        data: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
     }>;

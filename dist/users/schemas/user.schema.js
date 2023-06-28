@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSchema = exports.User = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const swagger_1 = require("@nestjs/swagger");
+const mongoose_2 = require("mongoose");
+const course_schema_1 = require("../../courses/schemas/course.schema");
 let User = exports.User = class User {
 };
 __decorate([
@@ -46,7 +48,7 @@ __decorate([
 ], User.prototype, "bought_courses", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: ['Created Course 1', 'Created Course 2'] }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.default.Schema.Types.ObjectId, ref: course_schema_1.Course.name }] }),
     __metadata("design:type", Array)
 ], User.prototype, "created_courses", void 0);
 __decorate([
@@ -71,7 +73,7 @@ __decorate([
 ], User.prototype, "chat_notifications_recieved", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'user | admin' }),
-    (0, mongoose_1.Prop)({ required: true, enum: ['user', 'admin'] }),
+    (0, mongoose_1.Prop)({ default: 'user' }),
     __metadata("design:type", String)
 ], User.prototype, "profile", void 0);
 __decorate([

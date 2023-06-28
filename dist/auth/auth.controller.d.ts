@@ -14,9 +14,11 @@ export declare class AuthController {
     signup(user: RegisterUserDto): Promise<{
         message: string;
         status?: undefined;
+        data?: undefined;
     } | {
         message: string;
         status: number;
+        data: string;
     }>;
     recoverPasswordRequest(user: RecoverRequestDto): Promise<{
         message: string;
