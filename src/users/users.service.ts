@@ -6,6 +6,7 @@ import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
+import { Course } from 'src/courses/schemas/course.schema';
 
 @Injectable()
 export class UsersService {
@@ -65,7 +66,7 @@ export class UsersService {
 	async findOneWithCreatedCourses(id : ObjectId) {
 		try {
 			// const { password, recovery_token, ...user } = 
-			console.log(await (await this.userModel.findOne({ _id: id })).populate('Course')); //.populated('Course'));
+			console.log(await (await this.userModel.findOne({ _id: id })).populate([ { path: Course.name, strictPopulate: false } ])); //.populated('Course'));
 			return {
 				message: 'User retrived successfully',
 				status: 200,
