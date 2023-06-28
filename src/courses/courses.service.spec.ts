@@ -136,7 +136,7 @@ describe('CoursesService', () => {
 	};
 
 	const mockCourseModel = {
-		find: jest.fn().mockReturnValue({ exec: () => Promise.resolve(sortedCourses) }),
+		find: jest.fn().mockReturnValue({ select: () => Promise.resolve(sortedCourses) }),
 
 		create: jest.fn().mockImplementation((course: CreateCourseDto) => {
 			return Promise.resolve({
