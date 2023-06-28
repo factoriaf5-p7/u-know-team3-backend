@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from  'mongoose';
+import mongoose, { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
+import { Course } from 'src/courses/schemas/course.schema';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +29,22 @@ export class UsersService {
 				};
 			}
 		}catch(error){
+			throw error;
+		}
+	}
+
+	async addCreatedCourse(userId: ObjectId, courseId: mongoose.Types.ObjectId) {
+		try {
+			await this.userModel.findOneAndUpdate({ _id: userId }, 
+				{ $push: { created_courses: courseId } }
+			);
+
+			return {
+				message: 'Created course added successfully',
+				status: HttpStatus.OK,
+				data: ''
+			};
+		} catch (error) {
 			throw error;
 		}
 	}
@@ -71,6 +88,20 @@ export class UsersService {
 				message: 'User retrived successfully',
 				status: 200,
 				data: user
+			};
+		} catch (error) {
+			throw error;
+		}	
+	}
+
+	async findOneWithCreatedCourses(id : ObjectId) {
+		try {
+			// const { password, recovery_token, ...user } = 
+			console.log(await (await this.userModel.findOne({ _id: id })).populate([ { path: Course.name, strictPopulate: false } ])); //.populated('Course'));
+			return {
+				message: 'User retrived successfully',
+				status: 200,
+				data: ''//user
 			};
 		} catch (error) {
 			throw error;

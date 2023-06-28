@@ -9,9 +9,9 @@ import { ObjectId } from 'mongoose';
 export class CoursesController {
 	constructor(private readonly coursesService: CoursesService) {}
 
-  @Post('create')
-	create(@Body() createCourseDto: CreateCourseDto) {
-		return this.coursesService.create(createCourseDto);
+  @Post('create/:userid')
+	create(@Param('userid') userId: ObjectId, @Body() createCourseDto: CreateCourseDto) {
+		return this.coursesService.create(userId, createCourseDto);
 	}
 
   @Get('created-courses/:userid')
