@@ -45,6 +45,21 @@ export class UsersService {
 		}
 	}
 
+	async findAllAdmin() {
+		try {
+			const users = await this.userModel.find();
+			return {
+				message: 'All users retrieved succesfully',
+				status: 200,
+				users: users
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
+	}
+
 	async findOneLogin(email:string) {
 		return await this.userModel.findOne({ email });
 	}
