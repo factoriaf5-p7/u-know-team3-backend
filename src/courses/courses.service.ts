@@ -43,6 +43,22 @@ export class CoursesService {
 		}
 	}
 
+	async findBoughtCourses(id: ObjectId) {
+		try {
+			const allBoughtCourses = await this.userService.findOne(id).find({})
+
+			return {
+				message: 'All courses retrieved successfully',
+				status: HttpStatus.OK,
+				data: allBoughtCourses
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
+	}
+
 	async findAllSortedByAverage() {
 		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
