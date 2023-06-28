@@ -43,6 +43,29 @@ export class CoursesService {
 		}
 	}
 
+	async findBoughtCourses(id: ObjectId) {
+		try {
+			const user = await this.userService.findOne(id);
+			const arrayIdsBoughtCourses = user.data.bought_courses;
+			const idsCoursesBoughts = [];
+
+			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
+				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
+				 idsCoursesBoughts.push(idCourseBought);				
+			}
+
+			return {
+				message: 'Retrieved all courses purchased by user successfully',
+				status: HttpStatus.OK,
+				data: idsCoursesBoughts
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
+	}
+
 	async findAllSortedByAverage() {
 		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
