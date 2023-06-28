@@ -45,8 +45,8 @@ export class CoursesService {
 
 	async findBoughtCourses(id: ObjectId) {
 		try {
-			const allBoughtCourses = await this.userService.findOne(id).find({})
-
+			const allBoughtCourses = await this.userService.findAllBoughtCourses( {}, { _id: id } );
+	
 			return {
 				message: 'All courses retrieved successfully',
 				status: HttpStatus.OK,
