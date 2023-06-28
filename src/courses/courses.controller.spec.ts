@@ -100,6 +100,28 @@ const sortedCourses = [
 		average: 2
 	}
 ];
+const sortedByPriceCourses = [
+	{
+		_id: '6590640b558ac28e56d30993',
+		name: 'Introduction to Web Development',
+		price: 85
+	},
+	{
+		_id: '649077a6558ac28e56d30796',
+		name: 'Nodemailer para principiantes',
+		price: 50
+	},
+	{
+		_id: '6490cc44e77da73b3fd0629d',
+		name: 'Be inclusive have in consideration Terminator\'s feelings',
+		price: 25
+	},
+	{
+		_id: '6490640b558ac28e56d30793',
+		name: 'Nodemailer para principiantes',
+		price: 10
+	}
+];
 
 describe('CoursesController', () => {
 	let controller: CoursesController;
@@ -164,6 +186,11 @@ describe('CoursesController', () => {
 		}),
 
 		findAll: jest.fn().mockReturnValue(Promise.resolve({
+			message: 'All courses retrieved successfully',
+			status: HttpStatus.OK,
+			data: courses
+		})),
+		findAllSortedByPriceDesc: jest.fn().mockReturnValue(Promise.resolve({
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
 			data: courses
@@ -266,6 +293,14 @@ describe('CoursesController', () => {
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
 			data: courses
+		});
+	});
+
+	it('findAllSortedByPriceDesc should return a list of all courses sorted by price desc', async () => {
+		expect(await controller.findAllSortedByPriceDesc()).toMatchObject({
+			message: 'All courses retrieved successfully',
+			status: HttpStatus.OK,
+			data: sortedByPriceCourses
 		});
 	});
 });
