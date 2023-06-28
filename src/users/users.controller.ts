@@ -14,15 +14,15 @@ export class UsersController {
 		return this.usersService.create(registerUserDto);
 	}
 
-  @Get()
+  	@Get()
 	findAll() {
-  	return this.usersService.findAll();
+		return this.usersService.findAll();
 	}
 
   @Get(':id')
-  findOne(@Param('id') id: ObjectId) {
-  	return this.usersService.findOne(id);
-  }
+  	findOne(@Param('id') id: ObjectId) {
+  		return this.usersService.findOne(id);
+  	}
 
   @Patch(':id')
   update(@Body() updateUserDto: UpdateUserDto) {
