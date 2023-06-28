@@ -1,8 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, Schema as MongooseSchema, Types, ObjectId } from 'mongoose';
 import { Course } from '../../courses/schemas/course.schema';
+import { Type } from 'class-transformer';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -36,9 +37,11 @@ export class User {
       commented: boolean
     }];
 
-  @ApiProperty({ example: [ 'Created Course 1', 'Created Course 2' ] })
-  @Prop({ type: [ { type: mongoose.Schema.Types.ObjectId, ref: Course.name } ] })
-  	created_courses: [ Course ];
+  @ApiProperty({ example: [ '614keiuay455h', '6080asdf7889' ] })
+  @Prop({ type: [ {  type: MongooseSchema.Types.ObjectId , ref: Course.name } ] })
+  @Type(() => Course)
+  // @Prop( { type: MongooseSchema.Types.ObjectId, ref: 'Course' })
+  	created_courses: Course;
 
   @ApiProperty({
   	example: [

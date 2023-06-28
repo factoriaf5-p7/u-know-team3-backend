@@ -81,8 +81,8 @@ export class UsersService {
 
 	async findOneWithCreatedCourses(id : ObjectId) {
 		try {
-			// const { password, recovery_token, ...user } = 
-			console.log(await (await this.userModel.findOne({ _id: id })).populate([ { path: Course.name, strictPopulate: false } ])); //.populated('Course'));
+			const user = await this.userModel.findOne({ _id: id }).populate('Course'); 
+			console.log(user.created_courses);	
 			return {
 				message: 'User retrived successfully',
 				status: 200,

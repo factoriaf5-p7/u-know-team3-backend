@@ -219,3 +219,6 @@ Informe de covarage (que porcentaje tiene test y cuanto no)
 => Normalizar de datos que entran
 
 DBREFS populate, usuario con todos los cursos creados => 
+
+ualmtorres.github.io/nestjs-mongodb-tutorial
+wanago.io => nest
