@@ -45,12 +45,19 @@ export class CoursesService {
 
 	async findBoughtCourses(id: ObjectId) {
 		try {
-			const allBoughtCourses = await this.userService.findAllBoughtCourses( {}, { _id: id } );
-	
+			const user = await this.userService.findOne(id);
+			const arrayIdsBoughtCourses = user.data.bought_courses;
+			const idsCoursesBoughts = [];
+
+			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
+				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
+				 idsCoursesBoughts.push(idCourseBought);				
+			}
+
 			return {
-				message: 'All courses retrieved successfully',
+				message: 'Retrieved all courses purchased by user successfully',
 				status: HttpStatus.OK,
-				data: allBoughtCourses
+				data: idsCoursesBoughts
 			};
 			
 		} catch (error) {
