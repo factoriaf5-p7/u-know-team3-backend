@@ -91,7 +91,7 @@ describe('AuthController', () => {
 			email: 'jhon@judgementday.com',
 			password: '1234'
 		};
-		expect(await controller.signin(userDto)).toMatchObject({
+		expect(await controller.login(userDto)).toMatchObject({
 			message: 'Login success',
 			status: 200,
 			user: {
