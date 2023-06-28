@@ -48,4 +48,9 @@ export class CoursesController {
   deleteCourse(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourse(id);
   }
+
+  @Delete('admin/delete')
+  deleteCourseByAdmin(@Query('id') id: ObjectId) {
+    return this.coursesService.deleteCourseByAdmin(id);
+  }
 }
