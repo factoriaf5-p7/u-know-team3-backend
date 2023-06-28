@@ -62,6 +62,20 @@ export class UsersService {
 		}	
 	}
 
+	async findOneWithCreatedCourses(id : ObjectId) {
+		try {
+			// const { password, recovery_token, ...user } = 
+			console.log(await (await this.userModel.findOne({ _id: id })).populate('Course')); //.populated('Course'));
+			return {
+				message: 'User retrived successfully',
+				status: 200,
+				data: ''//user
+			};
+		} catch (error) {
+			throw error;
+		}	
+	}
+
 	async update(user: UpdateUserDto) {
 		try {
 			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {

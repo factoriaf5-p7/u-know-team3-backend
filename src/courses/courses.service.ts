@@ -96,14 +96,14 @@ export class CoursesService {
 	}
 
 	async findCreatedCourses(userId: ObjectId){
-		const { data, message, status } = await this.userService.findOne( userId );
-
-		const createdCourses = await this.findCoursesCollectionById(data.created_courses);
+		const { data, message, status } = await this.userService.findOneWithCreatedCourses( userId );
+		console.log(data);
+		// const createdCourses = await this.findCoursesCollectionById(data.created_courses);
 	
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: createdCourses
+			data: '' //createdCourses
 		};
 	}
 
