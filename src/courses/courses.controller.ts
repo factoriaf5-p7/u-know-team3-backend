@@ -29,6 +29,11 @@ export class CoursesController {
   	return this.coursesService.findAll();
   }
 
+  @Get('bought-courses/:userid')
+  findBoughtCourses(@Param('userid') userId: ObjectId) {
+  	return this.coursesService.findBoughtCourses(userId);
+  }
+
   @Get('search')
   search(@Query() query) {
   	return this.coursesService.search(query.filters, query.keywords);
