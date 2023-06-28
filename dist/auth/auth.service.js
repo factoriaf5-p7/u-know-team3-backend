@@ -22,9 +22,12 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async login(user) {
         const { email, password } = user;
-        const findUser = await this.userService.findOneLogin(email, password);
-        if (findUser === null)
+        const findUser = await this.userService.findOneLogin(email);
+        if (!findUser)
             throw new common_1.HttpException('USER_NOT_FOUND', common_1.HttpStatus.NOT_FOUND);
+        const checkPassword = await (0, bcrypt_1.compare)(password, findUser.password);
+        if (!checkPassword)
+            throw new common_1.HttpException('INCORRECT_PASSWORD', common_1.HttpStatus.FORBIDDEN);
         return {
             message: 'Login success.',
             status: common_1.HttpStatus.OK,

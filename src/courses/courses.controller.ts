@@ -23,7 +23,7 @@ export class CoursesController {
   findAllSortedByAverage() {
   	return this.coursesService.findAllSortedByAverage();
   }
-  @Get('order-courses-price-desc')
+  @Get('order-courses-price')
   findAllSortedByPriceDesc() {
   	return this.coursesService.findAllSortedByPriceDesc();
   }
