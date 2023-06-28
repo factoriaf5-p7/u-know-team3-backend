@@ -52,7 +52,8 @@ export class CoursesService {
 
 			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
 				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
-				 idsCoursesBoughts.push(idCourseBought);				
+				 idsCoursesBoughts.push(idCourseBought);	
+				 console.log(idsCoursesBoughts);				 			
 			}
 
 			return {
