@@ -221,14 +221,13 @@ export class CoursesService {
 	}
 	async findAllSortedByPriceDesc() {
 		try {
-			const sortedCourses = await this.courseModel.find().sort({ price : 'desc' });
+			const allCoursesByPrice = await this.courseModel.find();
 
 			return {
-				message: 'List of Courses sorted by price Desc.',
+				message: 'All courses retrieved successfully',
 				status: HttpStatus.OK,
-				data: sortedCourses
+				data: allCoursesByPrice
 			};
-
 		} catch (error) {
 			throw error;
 		}
