@@ -3,7 +3,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import { Model, ObjectId, Schema } from 'mongoose';
+import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -13,9 +13,10 @@ export class CoursesService {
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
-	async create(createCourseDto: CreateCourseDto) {
+	async create(userId: ObjectId, createCourseDto: CreateCourseDto) {
 		try {
 			const newCourse = await this.courseModel.create(createCourseDto);
+			this.userService.addCreatedCourse(userId, newCourse._id);
 
 			return {
 				message: 'New course created successfully.',
