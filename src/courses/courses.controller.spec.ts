@@ -161,8 +161,13 @@ describe('CoursesController', () => {
 				status: HttpStatus.OK,
 				data: course
 			});
-		})
+		}),
 
+		findAll: jest.fn().mockReturnValue(Promise.resolve({
+			message: 'All courses retrieved successfully',
+			status: HttpStatus.OK,
+			data: courses
+		})),
 	};
 
 	beforeEach(async () => {
@@ -256,9 +261,9 @@ describe('CoursesController', () => {
 		});
 	});
 
-	it('findAll() should return response standard object within a list of courses', async ()=> {
+	it('findAll should return a list of all courses', async () => {
 		expect(await controller.findAll()).toMatchObject({
-			message: 'Retrieved all courses succesfully',
+			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
 			data: courses
 		});
