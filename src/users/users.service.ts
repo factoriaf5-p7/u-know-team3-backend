@@ -45,8 +45,8 @@ export class UsersService {
 		}
 	}
 
-	async findOneLogin(email:string,password:string) {
-		return await this.userModel.findOne({ email,password }).select('-password -recovery_token');
+	async findOneLogin(email:string) {
+		return await this.userModel.findOne({ email });
 	}
 
 	async findOne(id : ObjectId) {
