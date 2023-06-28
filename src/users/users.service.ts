@@ -14,7 +14,6 @@ export class UsersService {
 	) { }
 
 	async create(user: RegisterUserDto) {
-
 		try{
 			const result = await this.userModel.find({ email: user.email });
 
@@ -24,7 +23,8 @@ export class UsersService {
 				await this.userModel.create( user );
 				return { 
 					message: 'User created succesfully',
-					status: 200
+					status: 200,
+					data: ''
 				};
 			}
 		}catch(error){
@@ -45,8 +45,8 @@ export class UsersService {
 		}
 	}
 
-	async findOneLogin(email:string,password:string) {
-		return await this.userModel.findOne({ email,password }).select('-password -recovery_token');
+	async findOneLogin(email:string) {
+		return await this.userModel.findOne({ email });
 	}
 
 	async findOne(id : ObjectId) {
@@ -55,7 +55,7 @@ export class UsersService {
 			return {
 				message: 'User retrived successfully',
 				status: 200,
-				user: user
+				data: user
 			};
 		} catch (error) {
 			throw error;

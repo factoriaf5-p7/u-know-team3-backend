@@ -213,3 +213,9 @@ wdC2Ur2kNYY9sbFEUY
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+Informe de covarage (que porcentaje tiene test y cuanto no)
+=> Normalizar de datos que entran
+
+DBREFS populate, usuario con todos los cursos creados => 
