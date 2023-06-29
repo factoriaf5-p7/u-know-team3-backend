@@ -122,9 +122,9 @@ describe('AuthService', () => {
 		const spy = jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
 
 		expect(await service.login(loginRequest)).toMatchObject({
-			message: 'Login success.',
+			message: 'Login success.', 
 			status: HttpStatus.OK,
-			data: ''
+			data: expect.any(String)			
 		});
 
 		spy.mockRestore();

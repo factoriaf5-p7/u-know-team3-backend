@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
+import { HttpStatus } from '@nestjs/common';
 
 const recoveryUser: RecoverUserDto = {
 	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
@@ -19,6 +20,14 @@ describe('UsersService', () => {
 				message: 'Password updated successfully',
 				status: 200,
 				user: ''
+			};
+		}),
+
+		deleteUserByAdmin: jest.fn().mockImplementation((id: ObjectId) => {
+			return {
+				message: 'User deleted by Admin',
+				status: HttpStatus.OK,
+				data: ''
 			};
 		})
 	};
@@ -43,6 +52,14 @@ describe('UsersService', () => {
 			message: 'Password updated successfully',
 			status: 200,
 			user: ''
+		});
+	});
+
+	it('deleteUserByAdmin() should return standard response if a user is deleted',async () => {
+		expect(await service.deleteUserByAdmin(new mongoose.Schema.Types.ObjectId('6490c8971191c2854f5453f2'))).toMatchObject({
+			message: 'User deleted by Admin',
+			status: HttpStatus.OK,
+			data: ''
 		});
 	});
 });

@@ -122,13 +122,18 @@ export class CoursesService {
 
 	async findCreatedCourses(userId: ObjectId){
 		const { data, message, status } = await this.userService.findOneWithCreatedCourses( userId );
-		console.log(data);
-		// const createdCourses = await this.findCoursesCollectionById(data.created_courses);
-	
+
+		const createdCourses = [];
+		
+		const entries = Object.entries(data.created_courses);
+		entries.forEach(course=> { 
+			createdCourses.push({ _id: course[1]._id, name: course[1].name });
+		});
+
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: '' //createdCourses
+			data: createdCourses
 		};
 	}
 
@@ -233,4 +238,21 @@ export class CoursesService {
 		}
 	}
 
+	async deleteCourseByAdmin(id: ObjectId) {
+		try {
+			const course = await this.courseModel.findOne({ _id: id });
+			if (course) {
+				await this.courseModel.deleteOne({ _id: id });
+				return {
+					message: 'Course deleted by admin',
+					status: HttpStatus.OK,
+					data: ''
+				};
+			} else {
+				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
+			}
+		} catch (error){
+			throw error;
+		}
+	}
 }

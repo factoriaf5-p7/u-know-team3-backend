@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, ObjectId } from  'mongoose';
@@ -6,7 +6,7 @@ import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
-import { Course } from 'src/courses/schemas/course.schema';
+import { Course } from '../courses/schemas/course.schema';
 
 @Injectable()
 export class UsersService {
@@ -96,12 +96,11 @@ export class UsersService {
 
 	async findOneWithCreatedCourses(id : ObjectId) {
 		try {
-			// const { password, recovery_token, ...user } = 
-			console.log(await (await this.userModel.findOne({ _id: id })).populate([ { path: Course.name, strictPopulate: false } ])); //.populated('Course'));
+			const createdCourses = await this.userModel.findOne({ _id: id }).select('created_courses').populate('created_courses');
 			return {
-				message: 'User retrived successfully',
+				message: 'User with created courses retrived successfully',
 				status: 200,
-				data: ''//user
+				data: createdCourses
 			};
 		} catch (error) {
 			throw error;
@@ -162,12 +161,21 @@ export class UsersService {
 				data: usersBoughtCourses
 			}; 	
 		} catch (error) {
-			
+			throw error;
 		}
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} user`;
+	async deleteUserByAdmin(id: ObjectId) {
+		try {
+			const findUser = await this.userModel.findByIdAndDelete( id );
+			if (!findUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+			return {
+				message: 'User deleted by Admin',
+				status: HttpStatus.OK,
+				data: ''
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
-
 }
