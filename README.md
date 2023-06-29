@@ -222,3 +222,5 @@ DBREFS populate, usuario con todos los cursos creados =>
 
 ualmtorres.github.io/nestjs-mongodb-tutorial
 wanago.io => nest
+
+CAMPO created_courses = unique
