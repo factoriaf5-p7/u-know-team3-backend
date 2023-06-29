@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from  'mongoose';
+import mongoose, { Model, ObjectId } from  'mongoose';
 import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
+import { Course } from '../courses/schemas/course.schema';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +33,22 @@ export class UsersService {
 		}
 	}
 
+	async addCreatedCourse(userId: ObjectId, courseId: mongoose.Types.ObjectId) {
+		try {
+			await this.userModel.findOneAndUpdate({ _id: userId }, 
+				{ $push: { created_courses: courseId } }
+			);
+
+			return {
+				message: 'Created course added successfully',
+				status: HttpStatus.OK,
+				data: ''
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async findAll() {
 		try{
 			const users = await this.userModel.find().select('-password').lean().exec();
@@ -42,6 +59,21 @@ export class UsersService {
 			};
 		}catch(error){
 			throw error;
+		}
+	}
+
+	async findAllAdmin() {
+		try {
+			const users = await this.userModel.find();
+			return {
+				message: 'All users retrieved succesfully',
+				status: 200,
+				users: users
+			};
+			
+		} catch (error) {
+			throw error;
+			
 		}
 	}
 
@@ -56,6 +88,19 @@ export class UsersService {
 				message: 'User retrived successfully',
 				status: 200,
 				data: user
+			};
+		} catch (error) {
+			throw error;
+		}	
+	}
+
+	async findOneWithCreatedCourses(id : ObjectId) {
+		try {
+			const createdCourses = await this.userModel.findOne({ _id: id }).select('created_courses').populate('created_courses');
+			return {
+				message: 'User with created courses retrived successfully',
+				status: 200,
+				data: createdCourses
 			};
 		} catch (error) {
 			throw error;

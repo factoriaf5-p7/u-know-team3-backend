@@ -15,18 +15,29 @@ export class AuthService {
 	private readonly jwtService: JwtService,
 	) {}
   
-	async login(user:GetUserLoginDto){
+	async validatePassword (password: string, encriptedPassword: string) {
+		return compare(password, encriptedPassword);
+	}
+
+	async login(user: GetUserLoginDto){
 		const { email, password } = user;
 		const findUser = await this.userService.findOneLogin(email);
 		if (!findUser) throw new HttpException('USER_NOT_FOUND', HttpStatus.NOT_FOUND);
 
-		const checkPassword = await compare(password, findUser.password);
+		const checkPassword = await this.validatePassword(password, findUser.password);
 		if (!checkPassword) throw new HttpException('INCORRECT_PASSWORD', HttpStatus.FORBIDDEN);
+
+		const payload = {
+			sub: findUser._id,
+			email: findUser.email
+		};
+		
+		const token = await this.jwtService.signAsync(payload, { expiresIn: '1d' });
 		
 		return { 
 			message: 'Login success.', 
 			status: HttpStatus.OK,
-			data: ''
+			data: token
 		};
 	}
 

@@ -3,7 +3,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import { Model, ObjectId, Schema } from 'mongoose';
+import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -13,9 +13,10 @@ export class CoursesService {
 		@InjectModel(Course.name) private courseModel: Model<Course>,
 	){}
 
-	async create(createCourseDto: CreateCourseDto) {
+	async create(userId: ObjectId, createCourseDto: CreateCourseDto) {
 		try {
 			const newCourse = await this.courseModel.create(createCourseDto);
+			this.userService.addCreatedCourse(userId, newCourse._id);
 
 			return {
 				message: 'New course created successfully.',
@@ -40,6 +41,30 @@ export class CoursesService {
 			};
 		} catch (error) {
 			throw error;
+		}
+	}
+
+	async findBoughtCourses(id: ObjectId) {
+		try {
+			const user = await this.userService.findOne(id);
+			const arrayIdsBoughtCourses = user.data.bought_courses;
+			const idsCoursesBoughts = [];
+
+			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
+				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
+				 idsCoursesBoughts.push(idCourseBought);	
+				 console.log(idsCoursesBoughts);				 			
+			}
+
+			return {
+				message: 'Retrieved all courses purchased by user successfully',
+				status: HttpStatus.OK,
+				data: idsCoursesBoughts
+			};
+			
+		} catch (error) {
+			throw error;
+			
 		}
 	}
 
@@ -96,10 +121,15 @@ export class CoursesService {
 	}
 
 	async findCreatedCourses(userId: ObjectId){
-		const { data, message, status } = await this.userService.findOne( userId );
+		const { data, message, status } = await this.userService.findOneWithCreatedCourses( userId );
 
-		const createdCourses = await this.findCoursesCollectionById(data.created_courses);
-	
+		const createdCourses = [];
+		
+		const entries = Object.entries(data.created_courses);
+		entries.forEach(course=> { 
+			createdCourses.push({ _id: course[1]._id, name: course[1].name });
+		});
+
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
