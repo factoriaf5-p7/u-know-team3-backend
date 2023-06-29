@@ -81,12 +81,11 @@ export class UsersService {
 
 	async findOneWithCreatedCourses(id : ObjectId) {
 		try {
-			// const { password, recovery_token, ...user } = 
-			console.log(await (await this.userModel.findOne({ _id: id })).populate([ { path: Course.name, strictPopulate: false } ])); //.populated('Course'));
+			const createdCourses = await this.userModel.findOne({ _id: id }).select('created_courses').populate('created_courses');
 			return {
-				message: 'User retrived successfully',
+				message: 'User with created courses retrived successfully',
 				status: 200,
-				data: ''//user
+				data: createdCourses
 			};
 		} catch (error) {
 			throw error;
