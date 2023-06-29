@@ -6,7 +6,7 @@ import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
-import { Course } from 'src/courses/schemas/course.schema';
+import { Course } from '../courses/schemas/course.schema';
 
 @Injectable()
 export class UsersService {
