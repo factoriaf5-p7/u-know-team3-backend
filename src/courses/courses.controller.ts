@@ -62,7 +62,8 @@ export class CoursesController {
   }
 
   @Delete('admin/delete')
+  @UseGuards(AuthGuard)
   deleteCourseByAdmin(@Query('id') id: ObjectId) {
-    return this.coursesService.deleteCourseByAdmin(id);
+  	return this.coursesService.deleteCourseByAdmin(id);
   }
 }

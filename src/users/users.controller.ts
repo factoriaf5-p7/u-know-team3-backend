@@ -37,11 +37,12 @@ export class UsersController {
   	@Patch(':id')
 	@UseGuards(AuthGuard)
   	update(@Body() updateUserDto: UpdateUserDto) {
-  	return this.usersService.update(updateUserDto);
+  		return this.usersService.update(updateUserDto);
 	  }
 
-  @Delete('admin/delete')
-  @UseGuards(AuthGuard) //admin
-  deleteUserByAdmin(@Query('id') id: ObjectId) {
-  	return this.usersService.deleteUserByAdmin(id);
-  }
+	@Delete('admin/delete')
+  	@UseGuards(AuthGuard) //admin
+  	deleteUserByAdmin(@Query('id') id: ObjectId) {
+  		return this.usersService.deleteUserByAdmin(id);
+  	}
+}

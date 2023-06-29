@@ -168,7 +168,7 @@ export class UsersService {
 	async deleteUserByAdmin(id: ObjectId) {
 		try {
 			const findUser = await this.userModel.findByIdAndDelete( id );
-			if (!findUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+			if (!findUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 			return {
 				message: 'User deleted by Admin',
 				status: HttpStatus.OK,
