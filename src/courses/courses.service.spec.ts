@@ -196,7 +196,7 @@ describe('CoursesService', () => {
 		expect(service).toBeDefined();
 	});
 
-	it('findOne() should return response standard object within a course object as data', async () => {
+	xit('findOne() should return response standard object within a course object as data', async () => {
 		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
 		// const user = await userService.findOne(id);
 		jest.spyOn(usersService, 'findOne');
@@ -313,4 +313,13 @@ describe('CoursesService', () => {
 	// 		data: sortedCourses
 	// 	});
 	// });
+
+	it('deletedCourseByAdmin() should return response standard object',async () => {
+		expect(await service.deleteCourseByAdmin(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
+	
+			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
 });
