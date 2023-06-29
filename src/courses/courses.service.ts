@@ -122,13 +122,18 @@ export class CoursesService {
 
 	async findCreatedCourses(userId: ObjectId){
 		const { data, message, status } = await this.userService.findOneWithCreatedCourses( userId );
-		console.log(data);
-		// const createdCourses = await this.findCoursesCollectionById(data.created_courses);
-	
+
+		const createdCourses = [];
+		
+		const entries = Object.entries(data.created_courses);
+		entries.forEach(course=> { 
+			createdCourses.push({ _id: course[1]._id, name: course[1].name });
+		});
+
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: '' //createdCourses
+			data: createdCourses
 		};
 	}
 

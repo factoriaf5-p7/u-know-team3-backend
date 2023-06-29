@@ -37,10 +37,8 @@ export class User {
       commented: boolean
     }];
 
-  @ApiProperty({ example: [ '614keiuay455h', '6080asdf7889' ] })
-  @Prop({ type: [ {  type: MongooseSchema.Types.ObjectId , ref: Course.name } ] })
-  @Type(() => Course)
-  // @Prop( { type: MongooseSchema.Types.ObjectId, ref: 'Course' })
+  @ApiProperty({ example: [ 'Created Course 1', 'Created Course 2' ] })
+  @Prop({ type: [ { type: mongoose.Schema.Types.ObjectId, ref: Course.name } ] })
   	created_courses: Course;
 
   @ApiProperty({
