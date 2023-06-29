@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
@@ -40,9 +40,8 @@ export class UsersController {
   	return this.usersService.update(updateUserDto);
 	  }
 
-	@Delete(':id')
-	@UseGuards(AuthGuard) //admin
-  	remove(@Param('id') id: string) {
-  		return this.usersService.remove(+id);
-  	}
-}
+  @Delete('admin/delete')
+  @UseGuards(AuthGuard) //admin
+  deleteUserByAdmin(@Query('id') id: ObjectId) {
+  	return this.usersService.deleteUserByAdmin(id);
+  }

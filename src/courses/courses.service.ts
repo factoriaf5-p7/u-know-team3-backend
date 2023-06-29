@@ -226,4 +226,21 @@ export class CoursesService {
 		}
 	}
 
+	async deleteCourseByAdmin(id: ObjectId) {
+        try {
+            const course = await this.courseModel.findOne({ _id: id });
+            if (course) {
+                await this.courseModel.deleteOne({ _id: id });
+                return {
+                    message: 'Course deleted by admin',
+                    status: HttpStatus.OK,
+                    data: ''
+                };
+            } else {
+                throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
+            }
+        } catch (error){
+            throw error;
+        }
+    }
 }
