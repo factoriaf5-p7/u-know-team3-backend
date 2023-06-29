@@ -26,7 +26,10 @@ export class AuthService {
 		return { 
 			message: 'Login success.', 
 			status: HttpStatus.OK,
-			data: ''
+			data: {
+				email,
+				password: findUser.password
+			}
 		};
 	}
 
