@@ -1,9 +1,10 @@
-import { Controller, Get, Body, Post, Patch } from '@nestjs/common';
+import { Controller, Get, Body, Post, Patch, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RecoverUserDto } from './dto/recover-user.dto';
 import { RecoverRequestDto } from './dto/recover-request.dto';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {

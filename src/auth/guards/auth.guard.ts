@@ -1,22 +1,17 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
 	constructor(
-		private userServcie: UsersService,
 		private jwtService: JwtService
 	) {}
 
 	async canActivate(context: ExecutionContext,): Promise<boolean>{
 		const request = context.switchToHttp().getRequest();
 		const token = this._extractTokenFromHeader(request);
-
-		console.log(token);
 
 		if(!token) throw new Error('No token in request');
 
