@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from  'mongoose';
@@ -116,12 +116,21 @@ export class UsersService {
 				data: usersBoughtCourses
 			}; 	
 		} catch (error) {
-			
+			throw error;
 		}
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} user`;
+	async deleteUserByAdmin(id: ObjectId) {
+		try {
+			const findUser = await this.userModel.findByIdAndDelete( id );
+			if (!findUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+			return {
+				message: 'User deleted by Admin',
+				status: HttpStatus.OK,
+				data: ''
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
-
 }
