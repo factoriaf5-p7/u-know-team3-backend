@@ -1,15 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
 import { RegisterUserDto } from '../auth/dto/register-user.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
 	@Post()
+	@UseGuards(AuthGuard)
 	create(@Body() registerUserDto: RegisterUserDto) {
 		return this.usersService.create(registerUserDto);
 	}
