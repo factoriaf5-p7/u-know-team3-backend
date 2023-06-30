@@ -43,7 +43,7 @@ __decorate([
 ], User.prototype, "wallet_balance", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: ['Bought Course 1', 'Bought Course 2'] }),
-    (0, mongoose_1.Prop)(),
+    (0, mongoose_1.Prop)({ type: [{ course_id: { type: mongoose_2.default.Schema.Types.ObjectId, ref: course_schema_1.Course.name }, stars: { type: Number }, commented: { type: Boolean } }] }),
     __metadata("design:type", Array)
 ], User.prototype, "bought_courses", void 0);
 __decorate([

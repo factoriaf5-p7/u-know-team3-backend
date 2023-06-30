@@ -5,19 +5,20 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RatedCourseDto } from './dto/rate-course.dto';
 
 @Controller('courses')
 export class CoursesController {
 	constructor(private readonly coursesService: CoursesService) {}
 
   @Post('create/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
 	create(@Param('userid') userId: ObjectId, @Body() createCourseDto: CreateCourseDto) {
 		return this.coursesService.create(userId, createCourseDto);
 	}
 
   @Get('created-courses/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   showCreatedCourses(@Param('userid') userId: ObjectId){
   	return this.coursesService.findCreatedCourses(userId);
   }
@@ -32,13 +33,13 @@ export class CoursesController {
   }
 
   @Get()
-  @UseGuards(AuthGuard) //'admin'
+  // @UseGuards(AuthGuard) //'admin'
   findAll() {
   	return this.coursesService.findAll();
   }
 
   @Get('bought-courses/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   findBoughtCourses(@Param('userid') userId: ObjectId) {
   	return this.coursesService.findBoughtCourses(userId);
   }
@@ -54,13 +55,13 @@ export class CoursesController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
-  update(@Param('userid') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
-  	return this.coursesService.update(userId, updateCourseDto);
+  // @UseGuards(AuthGuard)
+  update(@Param('id') id: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
+  	return this.coursesService.update(id, updateCourseDto);
   }
 
   @Delete('delete')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   deleteCourse(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourse(id);
   }
@@ -69,5 +70,11 @@ export class CoursesController {
   @UseGuards(AuthGuard)
   deleteCourseByAdmin(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourseByAdmin(id);
+  }
+
+  @Patch('rating/:userid')
+  // @UseGuards(AuthGuard)
+  addRating(@Param('userid') userId: ObjectId, @Body() ratedCourse: RatedCourseDto) {
+  	return this.coursesService.addRating(userId, ratedCourse);
   }
 }

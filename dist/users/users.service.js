@@ -108,6 +108,20 @@ let UsersService = exports.UsersService = class UsersService {
             throw error;
         }
     }
+    async findOneWithBoughtCourses(id) {
+        try {
+            const boughtCourses = await this.userModel.findOne({ _id: id }, { bought_courses: 1 }).populate('bought_courses.course_id', 'name');
+            console.log(boughtCourses.bought_courses);
+            return {
+                message: 'User with bought courses retrived successfully',
+                status: 200,
+                data: boughtCourses
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async update(user) {
         try {
             const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
@@ -174,6 +188,24 @@ let UsersService = exports.UsersService = class UsersService {
         catch (error) {
             throw error;
         }
+    }
+    async addRating(userId, ratedCourse) {
+        try {
+            const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id }, {
+                'bought_courses.$.stars': ratedCourse.stars
+            }).select('bought_courses');
+            return {
+                message: 'Course rated successfully',
+                status: common_1.HttpStatus.OK,
+                data: updatedUser.bought_courses
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    remove(id) {
+        return `This action removes a #${id} user`;
     }
 };
 exports.UsersService = UsersService = __decorate([

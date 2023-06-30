@@ -5,6 +5,8 @@ import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
+import { Course } from '../courses/schemas/course.schema';
+import { RatedCourseDto } from '../courses/dto/rate-course.dto';
 export declare class UsersService {
     private userModel;
     constructor(userModel: Model<User>);
@@ -53,6 +55,13 @@ export declare class UsersService {
             _id: mongoose.Types.ObjectId;
         }, never>;
     }>;
+    findOneWithBoughtCourses(id: ObjectId): Promise<{
+        message: string;
+        status: number;
+        data: mongoose.Document<unknown, {}, User> & Omit<User & {
+            _id: mongoose.Types.ObjectId;
+        }, never>;
+    }>;
     update(user: UpdateUserDto): Promise<{
         message: string;
         status: number;
@@ -84,4 +93,14 @@ export declare class UsersService {
         status: HttpStatus;
         data: string;
     }>;
+    addRating(userId: ObjectId, ratedCourse: RatedCourseDto): Promise<{
+        message: string;
+        status: HttpStatus;
+        data: {
+            course_id: Course;
+            stars: number;
+            commented: boolean;
+        }[];
+    }>;
+    remove(id: number): string;
 }

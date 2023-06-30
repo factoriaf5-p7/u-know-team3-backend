@@ -11,31 +11,31 @@ export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
 	@Post()
-	@UseGuards(AuthGuard) // admin
+	// @UseGuards(AuthGuard) // admin
 	create(@Body() registerUserDto: RegisterUserDto) {
 		return this.usersService.create(registerUserDto);
 	}
 
-  	@Get()
-	@UseGuards(AuthGuard) //admin
-	findAll() {
-		return this.usersService.findAll();
-	}
-
-	@Get(':admin')
-	@UseGuards(AuthGuard) //admin
+	@Get('admin')
+	// @UseGuards(AuthGuard) //admin
   	findAllAdmin() {
   		return this.usersService.findAllAdmin();
   	}
 
   	@Get(':id')
-	@UseGuards(AuthGuard) //admin
+	// @UseGuards(AuthGuard) //admin
   	findOne(@Param('id') id: ObjectId) {
   		return this.usersService.findOne(id);
   	}
 
+	@Get()
+	// @UseGuards(AuthGuard) //admin
+  	findAll() {
+  		return this.usersService.findAll();
+  	}
+
   	@Patch(':id')
-	@UseGuards(AuthGuard)
+  	// @UseGuards(AuthGuard)
   	update(@Body() updateUserDto: UpdateUserDto) {
   		return this.usersService.update(updateUserDto);
 	  }
@@ -44,5 +44,11 @@ export class UsersController {
   	@UseGuards(AuthGuard) //admin
   	deleteUserByAdmin(@Query('id') id: ObjectId) {
   		return this.usersService.deleteUserByAdmin(id);
+  	}
+
+	@Delete(':id')
+	// @UseGuards(AuthGuard) //admin
+  	remove(@Param('id') id: string) {
+  		return this.usersService.remove(+id);
   	}
 }

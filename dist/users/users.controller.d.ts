@@ -38,13 +38,6 @@ export declare class UsersController {
         status: number;
         data: string;
     }>;
-    findAll(): Promise<{
-        message: string;
-        status: number;
-        users: (import("mongoose").FlattenMaps<import("./schemas/user.schema").User> & {
-            _id: import("mongoose").Types.ObjectId;
-        })[];
-    }>;
     findAllAdmin(): Promise<{
         message: string;
         status: number;
@@ -59,6 +52,13 @@ export declare class UsersController {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
     }>;
+    findAll(): Promise<{
+        message: string;
+        status: number;
+        users: (import("mongoose").FlattenMaps<import("./schemas/user.schema").User> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+    }>;
     update(updateUserDto: UpdateUserDto): Promise<{
         message: string;
         status: number;
@@ -71,4 +71,5 @@ export declare class UsersController {
         status: import("@nestjs/common").HttpStatus;
         data: string;
     }>;
+    remove(id: string): string;
 }
