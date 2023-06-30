@@ -43,6 +43,7 @@ export class AuthService {
 
 	async register(user: RegisterUserDto) {
 		try {
+			console.log(await this.encryptPassword('securepass321'));
 			user.password = await this.encryptPassword(user.password);
 			const result = await this.userService.create(user);
 			return result;
