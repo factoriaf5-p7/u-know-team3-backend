@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
-import { User } from 'src/users/schemas/user.schema';
+import { RatedCourseDto } from './dto/rate-course.dto';
 
 @Injectable()
 export class CoursesService {
@@ -47,25 +47,72 @@ export class CoursesService {
 
 	async findBoughtCourses(id: ObjectId) {
 		try {
-			const user = await this.userService.findOne(id);
-			const arrayIdsBoughtCourses = user.data.bought_courses;
-			const idsCoursesBoughts = [];
+			const { message, status, data } = await this.userService.findOneWithBoughtCourses(id);
+	
+			const boughtCourses = [];
 
-			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
-				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
-				 idsCoursesBoughts.push(idCourseBought);	
-				 console.log(idsCoursesBoughts);				 			
-			}
+			const entries = Object.entries(data.bought_courses);
+			console.log(entries);
+
+			entries.forEach(course=> { 
+				boughtCourses.push({ _id: course[1].course_id['_id'] ,name: course[1].course_id.name });
+			});
 
 			return {
 				message: 'Retrieved all courses purchased by user successfully',
 				status: HttpStatus.OK,
-				data: idsCoursesBoughts
+				data: boughtCourses
 			};
 			
 		} catch (error) {
 			throw error;
 			
+		}
+	}
+
+	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
+		try {
+			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
+
+			return {
+				message: 'Course rated successfully',
+				status: HttpStatus.OK,
+				data: data
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async searchAdmin(filters: string, keywords: string){
+		try {
+			let allCourses = [];
+			const arrFilters = filters.split(',');
+			let regex;
+			
+			for await (const filter of arrFilters) {
+				if (filter !== 'price'){
+					regex = new RegExp(keywords, 'i');
+				} else if(!isNaN(+keywords)) {
+					regex = +keywords;
+				}
+				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
+			}
+
+			allCourses = allCourses.flat(Infinity);
+
+			const hash = {};
+			const filteredCourses = allCourses.filter(course =>{
+				return hash[course._id] ? false : hash[course._id] = true;
+			});
+
+			return {
+				message: 'Retrieved filtered courses successfully',
+				status: HttpStatus.OK,
+				data: filteredCourses
+			};
+		} catch (error) {
+			throw error;
 		}
 	}
 
@@ -144,23 +191,22 @@ export class CoursesService {
 	}
 
 	async search(filters: string, keywords: string) {
-		let allCourses = [];
-
-		const regex = new RegExp(keywords, 'i'); // (/Web development/i)
-		const arrFilters = filters.split(','); // arrFilter[0] = topic, arrFilter[1] = name, ...
-		
 		try {
+			let allCourses = [];
+			let regex;
+			const arrFilters = filters.split(',');
+
 			for await (const filter of arrFilters) {
+				if (filter !== 'price'){
+					regex = new RegExp(keywords, 'i');
+				} else if(!isNaN(+keywords)) {
+					regex = +keywords;
+				}
 				allCourses.push(...await this.courseModel.find({ [filter] : regex }).select('_id name'));
 			}
 
-			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con 
-			// los diferentes filtros.
 			allCourses = allCourses.flat(Infinity);
 
-			// Se eliminan duplicados para mostrar los cursos que coinciden con las palabras clave solicitadas.
-			// Si el id de course guardado en hash ya existe devuelve false, por lo que no se guarda en el nuevo array.
-			// Si no existe se le asigna true y se guarda en el nuevo array.
 			const hash = {};
 			const filteredCourses = allCourses.filter(course =>{
 				return hash[course._id] ? false : hash[course._id] = true;
@@ -178,7 +224,7 @@ export class CoursesService {
 
 	async findOne(id: ObjectId) {
 		try{
-			const course = await this.courseModel.findById(id);
+			const course = (await this.courseModel.findById(id));
 			return {
 				message: 'Course retrieved successfully',
 				status: HttpStatus.OK,
@@ -247,8 +293,8 @@ export class CoursesService {
 
 	async purchaseCourse(userId: ObjectId , courseId: ObjectId) {
 		try{
-			const user = await this.userService.findOne( userId )
-			return user
+			const user = await this.userService.findOne( userId );
+			return user;
 		}catch (error){
 			throw error;
 		}

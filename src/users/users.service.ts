@@ -7,6 +7,7 @@ import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 import { Course } from '../courses/schemas/course.schema';
+import { RatedCourseDto } from '../courses/dto/rate-course.dto';
 
 @Injectable()
 export class UsersService {
@@ -91,7 +92,7 @@ export class UsersService {
 			};
 		} catch (error) {
 			throw error;
-		}	
+		}
 	}
 
 	async findOneWithCreatedCourses(id : ObjectId) {
@@ -105,6 +106,25 @@ export class UsersService {
 		} catch (error) {
 			throw error;
 		}	
+	}
+
+	async findOneWithBoughtCourses(id: ObjectId){
+		
+		try {
+			const boughtCourses = await this.userModel.findOne({ _id: id }, { bought_courses: 1 }).populate('bought_courses.course_id');
+			// console.log(boughtCourses.bought_courses);
+			// console.log(boughtCourses.bought_courses[0].course_id.name);
+			
+			return {
+				message: 'User with bought courses retrived successfully',
+				status: 200,
+				data: boughtCourses
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
 	}
 
 	async update(user: UpdateUserDto) {
@@ -177,5 +197,25 @@ export class UsersService {
 		} catch (error) {
 			throw error;
 		}
+	}
+
+	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
+		try {
+			const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id }, {
+				'bought_courses.$.stars': ratedCourse.stars
+			}).select('bought_courses');
+
+			return {
+				message: 'Course rated successfully',
+				status: HttpStatus.OK,
+				data: updatedUser.bought_courses
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	remove(id: number) {
+		return `This action removes a #${id} user`;
 	}
 }

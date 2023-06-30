@@ -5,20 +5,20 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { User } from 'src/users/schemas/user.schema';
+import { RatedCourseDto } from './dto/rate-course.dto';
 
 @Controller('courses')
 export class CoursesController {
 	constructor(private readonly coursesService: CoursesService) {}
 
   @Post('create/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
 	create(@Param('userid') userId: ObjectId, @Body() createCourseDto: CreateCourseDto) {
 		return this.coursesService.create(userId, createCourseDto);
 	}
 
   @Get('created-courses/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   showCreatedCourses(@Param('userid') userId: ObjectId){
   	return this.coursesService.findCreatedCourses(userId);
   }
@@ -29,13 +29,13 @@ export class CoursesController {
   }
 
   @Get()
-  @UseGuards(AuthGuard) //'admin'
+  // @UseGuards(AuthGuard) //'admin'
   findAll() {
   	return this.coursesService.findAll();
   }
 
   @Get('bought-courses/:userid')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   findBoughtCourses(@Param('userid') userId: ObjectId) {
   	return this.coursesService.findBoughtCourses(userId);
   }
@@ -45,33 +45,38 @@ export class CoursesController {
   	return this.coursesService.search(query.filters, query.keywords);
   }
 
+  @Get('search/admin')
+  // @UseGuards(AuthGuard)
+  searchAdmin(@Query() query) {
+  	return this.coursesService.searchAdmin(query.filters, query.keywords);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: ObjectId) {
   	return this.coursesService.findOne(id);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   update(@Param('id') id: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
   	return this.coursesService.update(id, updateCourseDto);
   }
 
   @Delete('delete')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   deleteCourse(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourse(id);
   }
 
   @Delete('admin/delete')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   deleteCourseByAdmin(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourseByAdmin(id);
   }
 
-  @Post('purchase')
-  @UseGuards(AuthGuard)
-  purchaseCourse(@Body() userId: ObjectId , courseId : ObjectId) {
-    return this.coursesService.purchaseCourse(userId, courseId);
+  @Patch('rating/:userid')
+  // @UseGuards(AuthGuard)
+  addRating(@Param('userid') userId: ObjectId, @Body() ratedCourse: RatedCourseDto) {
+  	return this.coursesService.addRating(userId, ratedCourse);
   }
-
 }
