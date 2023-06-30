@@ -84,6 +84,38 @@ export class CoursesService {
 		}
 	}
 
+	async searchAdmin(filters: string, keywords: string){
+		try {
+			let allCourses = [];
+			const arrFilters = filters.split(',');
+			let regex;
+			
+			for await (const filter of arrFilters) {
+				if (filter !== 'price'){
+					regex = new RegExp(keywords, 'i');
+				} else if(!isNaN(+keywords)) {
+					regex = +keywords;
+				}
+				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
+			}
+
+			allCourses = allCourses.flat(Infinity);
+
+			const hash = {};
+			const filteredCourses = allCourses.filter(course =>{
+				return hash[course._id] ? false : hash[course._id] = true;
+			});
+
+			return {
+				message: 'Retrieved filtered courses successfully',
+				status: HttpStatus.OK,
+				data: filteredCourses
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async findAllSortedByAverage() {
 		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
@@ -159,23 +191,22 @@ export class CoursesService {
 	}
 
 	async search(filters: string, keywords: string) {
-		let allCourses = [];
-
-		const regex = new RegExp(keywords, 'i'); // (/Web development/i)
-		const arrFilters = filters.split(','); // arrFilter[0] = topic, arrFilter[1] = name, ...
-		
 		try {
+			let allCourses = [];
+			let regex;
+			const arrFilters = filters.split(',');
+
 			for await (const filter of arrFilters) {
+				if (filter !== 'price'){
+					regex = new RegExp(keywords, 'i');
+				} else if(!isNaN(+keywords)) {
+					regex = +keywords;
+				}
 				allCourses.push(...await this.courseModel.find({ [filter] : regex }).select('_id name'));
 			}
 
-			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con 
-			// los diferentes filtros.
 			allCourses = allCourses.flat(Infinity);
 
-			// Se eliminan duplicados para mostrar los cursos que coinciden con las palabras clave solicitadas.
-			// Si el id de course guardado en hash ya existe devuelve false, por lo que no se guarda en el nuevo array.
-			// Si no existe se le asigna true y se guarda en el nuevo array.
 			const hash = {};
 			const filteredCourses = allCourses.filter(course =>{
 				return hash[course._id] ? false : hash[course._id] = true;
