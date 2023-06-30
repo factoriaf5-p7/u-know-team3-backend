@@ -63,7 +63,7 @@ export class CoursesController {
 
   @Patch(':id')
   // @UseGuards(AuthGuard)
-  update(@Param('userId') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
+  update(@Param('id') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
   	return this.coursesService.update(userId, updateCourseDto);
   }
 
