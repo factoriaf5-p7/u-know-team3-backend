@@ -1,0 +1,18 @@
+exit
+db.courses.drop()
+db.users.drop()
+show collections
+use uknow
+db.auth.find()
+show collections
+use admin
+db.users.find()
+db.user.find()
+db.users.insertOne({ name: 'RAul' })
+db.user.find()
+db.users.insert({ name: 'RAul' })
+show collections
+use uknow
+exit
+show collections
+use uknow
