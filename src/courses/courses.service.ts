@@ -3,9 +3,10 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import mongoose, { Model, ObjectId, Schema } from 'mongoose';
+import mongoose, { Model, ObjectId, Schema, Types } from 'mongoose';
 import { UsersService } from '../users/users.service';
 import { RatedCourseDto } from './dto/rate-course.dto';
+import { PurchaseCourseDto } from './dto/buy-course.dto';
 
 @Injectable()
 export class CoursesService {
@@ -291,10 +292,28 @@ export class CoursesService {
 		}
 	}
 
-	async purchaseCourse(userId: ObjectId , courseId: ObjectId) {
+	async purchaseCourse(purchaseCourseDto: PurchaseCourseDto) {
 		try{
-			const user = await this.userService.findOne( userId );
-			return user;
+			const user = (await this.userService.findOne(purchaseCourseDto.userId)).data;
+			const course = await this.courseModel.findOne({ _id: purchaseCourseDto.courseId });
+			
+			if (user.wallet_balance < course.price) {
+				throw new HttpException('INSUFFICIENT_BALANCE', HttpStatus.FORBIDDEN);
+			} else {
+				if (!course.bought) {
+					course.bought = true;
+					await course.save();
+				}
+				user.wallet_balance -= course.price;
+				await user.save();
+
+				return {
+					message: 'Course purchased.',
+					status: HttpStatus.OK,
+					data: ''
+				};
+			}
+
 		}catch (error){
 			throw error;
 		}

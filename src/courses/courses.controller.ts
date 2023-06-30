@@ -6,6 +6,8 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RatedCourseDto } from './dto/rate-course.dto';
+import { PurchaseCourseDto } from './dto/buy-course.dto';
+import { Course } from './schemas/course.schema';
 
 @Controller('courses')
 export class CoursesController {
@@ -78,5 +80,11 @@ export class CoursesController {
   // @UseGuards(AuthGuard)
   addRating(@Param('userid') userId: ObjectId, @Body() ratedCourse: RatedCourseDto) {
   	return this.coursesService.addRating(userId, ratedCourse);
+  }
+
+  @Post('purchase')
+  @UseGuards(AuthGuard)
+  purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
+  	return this.coursesService.purchaseCourse(purchaseCourseDto);
   }
 }
