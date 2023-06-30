@@ -22,12 +22,7 @@ export class UsersController {
 		return this.usersService.findAll();
 	}
 
-<<<<<<< HEAD
-	@Get(':admin')
-	@UseGuards(AuthGuard) //admin
-=======
 	@Get('admin')
->>>>>>> listarcursoscomprados/angela
   	findAllAdmin() {
   		return this.usersService.findAllAdmin();
   	}
