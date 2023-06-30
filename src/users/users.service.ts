@@ -108,6 +108,24 @@ export class UsersService {
 		}	
 	}
 
+	async findOneWithBoughtCourses(id: ObjectId){
+		
+		try {
+			const boughtCourses = await this.userModel.findOne({ _id: id }, { bought_courses: 1 }).populate('bought_courses.course_id', 'name');
+			console.log(boughtCourses.bought_courses);
+			
+			return {
+				message: 'User with bought courses retrived successfully',
+				status: 200,
+				data: boughtCourses
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
+	}
+
 	async update(user: UpdateUserDto) {
 		try {
 			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {
