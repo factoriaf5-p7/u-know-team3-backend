@@ -25,7 +25,6 @@ export class UsersController {
   	@Get(':id')
 	// @UseGuards(AuthGuard) //admin
   	findOne(@Param('id') id: ObjectId) {
-		console.log('controller findone');
   		return this.usersService.findOne(id);
   	}
 

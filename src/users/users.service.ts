@@ -85,7 +85,6 @@ export class UsersService {
 	async findOne(id : ObjectId) {
 		try {
 			const user = await this.userModel.findOne({ _id: id }).select('-password -recovery_token');
-			console.log('user => ', user);
 			return {
 				message: 'User retrived successfully',
 				status: 200,
@@ -93,7 +92,7 @@ export class UsersService {
 			};
 		} catch (error) {
 			throw error;
-		}	
+		}
 	}
 
 	async findOneWithCreatedCourses(id : ObjectId) {
