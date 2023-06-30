@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:18.16.1-alpine3.17
 
 WORKDIR /user/uknow-backend
 
