@@ -6,6 +6,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RatedCourseDto } from './dto/rate-course.dto';
+import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -56,8 +57,8 @@ export class CoursesController {
 
   @Patch(':id')
   // @UseGuards(AuthGuard)
-  update(@Param('id') id: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
-  	return this.coursesService.update(id, updateCourseDto);
+  update(@Param('userId') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
+  	return this.coursesService.update(userId, updateCourseDto);
   }
 
   @Delete('delete')

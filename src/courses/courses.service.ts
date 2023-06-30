@@ -205,19 +205,36 @@ export class CoursesService {
 	}
 
 	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
-		try {
-			const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
-				 ...updateCourse
-			});
 
-			return {
-				message: 'Course updated successfully',
-				status: HttpStatus.OK,
-				data: courseUpdated
-			};
-		} catch (error) {
-			throw error;
-		}
+		const { data, message, status } = await this.userService.findOne( id );
+		//const createdCourses = data.created_courses;
+		console.log(data);
+		//if (createdCourses.includes())
+		
+		// const entries = Object.entries(data.created_courses);
+		// entries.forEach(course => { 
+		// 	console.log(course);
+		// 	if ( course == UpdateCourse._id) {
+		// 		console.log('Este es el curso que quieres actualizar');
+		// 	} else {
+		// 		console.log('Este curso creado no es el que quieres actualizar');
+		// 	}
+		// });
+		
+		//VERSIO ANTERIOR
+		// try {
+		// 	const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
+		// 		 ...updateCourse
+		// 	});
+
+		// 	return {
+		// 		message: 'Course updated successfully',
+		// 		status: HttpStatus.OK,
+		// 		data: courseUpdated
+		// 	};
+		// } catch (error) {
+		// 	throw error;
+		// }
 	}
 
 	async deleteCourse(id: ObjectId) {
