@@ -66,5 +66,9 @@ export declare class UsersController {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
     }>;
-    remove(id: string): string;
+    deleteUserByAdmin(id: ObjectId): Promise<{
+        message: string;
+        status: import("@nestjs/common").HttpStatus;
+        data: string;
+    }>;
 }
