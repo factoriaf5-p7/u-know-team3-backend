@@ -1,9 +1,13 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateCourseDto } from './create-course.dto';
 import { ObjectId } from 'mongoose';
-import { ArrayMaxSize, IsArray, IsNotEmpty } from 'class-validator';
+import { ArrayMaxSize, IsArray, IsNotEmpty, IsMongoId } from 'class-validator';
 
 export class UpdateCourseDto {
+	@ApiProperty({ example: '6590640b558ac28e56d30993' })
+	@IsMongoId()
+	@IsNotEmpty()
+		_id: ObjectId;
 
 	@ApiProperty({ example: 'The best course of web development' })
 	@IsNotEmpty()

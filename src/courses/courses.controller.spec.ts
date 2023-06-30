@@ -243,6 +243,7 @@ describe('CoursesController', () => {
 
 	it('update() should return response standard object without data', async () => {
 		const updatedCourseDto: UpdateCourseDto = {
+			_id: new mongoose.Schema.Types.ObjectId('649444f55599cad2702d065a'),
 			name: 'The best web development course',
 			topic: 'Web development',
 			difficulty: 'Hard', 
