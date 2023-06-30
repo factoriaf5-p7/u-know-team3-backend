@@ -84,6 +84,41 @@ export class CoursesService {
 		}
 	}
 
+	async searchAdmin(filters: string, keywords: string | number){
+		let allCourses = [];
+		const arrFilters = filters.split(',');
+		
+		try {
+			for await (const filter of arrFilters) {
+				let regex: string | number;
+				if (filter === 'price'){
+					console.log(typeof keywords);
+					regex = +keywords;
+				} else {
+					console.log('no price ', typeof keywords);
+					regex = String(new RegExp(''+keywords, 'i'));
+				}
+					
+				allCourses.push(...await this.courseModel.find({ [filter] : regex }));
+			}
+
+			allCourses = allCourses.flat(Infinity);
+
+			const hash = {};
+			const filteredCourses = allCourses.filter(course =>{
+				return hash[course._id] ? false : hash[course._id] = true;
+			});
+
+			return {
+				message: 'Retrieved filtered courses successfully',
+				status: HttpStatus.OK,
+				data: filteredCourses
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async findAllSortedByAverage() {
 		const calculates = [];
 		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos

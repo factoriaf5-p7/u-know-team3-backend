@@ -45,6 +45,12 @@ export class CoursesController {
   	return this.coursesService.search(query.filters, query.keywords);
   }
 
+  @Get('search/admin')
+  // @UseGuards(AuthGuard)
+  searchAdmin(@Query() query) {
+  	return this.coursesService.searchAdmin(query.filters, query.keywords);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: ObjectId) {
   	return this.coursesService.findOne(id);
