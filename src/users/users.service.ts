@@ -7,6 +7,7 @@ import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 import { Course } from '../courses/schemas/course.schema';
+import { log } from 'console';
 
 @Injectable()
 export class UsersService {
@@ -112,6 +113,7 @@ export class UsersService {
 		try {
 			const boughtCourses = await this.userModel.findOne({ _id: id }, { bought_courses: 1 }).populate('bought_courses.course_id', 'name');
 			console.log(boughtCourses.bought_courses);
+			console.log(boughtCourses.bought_courses[0].course_id.name);
 			
 			return {
 				message: 'User with bought courses retrived successfully',
