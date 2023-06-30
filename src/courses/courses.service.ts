@@ -74,7 +74,6 @@ export class CoursesService {
 		try {
 			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
 
-			// console.log(updatedCourse);
 			return {
 				message: 'Course rated successfully',
 				status: HttpStatus.OK,
