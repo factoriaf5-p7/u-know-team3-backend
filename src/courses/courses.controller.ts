@@ -5,6 +5,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { User } from 'src/users/schemas/user.schema';
 
 @Controller('courses')
 export class CoursesController {
@@ -66,4 +67,11 @@ export class CoursesController {
   deleteCourseByAdmin(@Query('id') id: ObjectId) {
   	return this.coursesService.deleteCourseByAdmin(id);
   }
+
+  @Post('purchase')
+  @UseGuards(AuthGuard)
+  purchaseCourse(@Body() userId: ObjectId , courseId : ObjectId) {
+    return this.coursesService.purchaseCourse(userId, courseId);
+  }
+
 }

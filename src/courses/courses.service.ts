@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class CoursesService {
@@ -240,6 +241,15 @@ export class CoursesService {
 				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
 			}
 		} catch (error){
+			throw error;
+		}
+	}
+
+	async purchaseCourse(userId: ObjectId , courseId: ObjectId) {
+		try{
+			const user = await this.userService.findOne( userId )
+			return user
+		}catch (error){
 			throw error;
 		}
 	}
