@@ -7,6 +7,7 @@ import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 import { Course } from '../courses/schemas/course.schema';
+import { RatedCourseDto } from '../courses/dto/rate-course.dto';
 
 @Injectable()
 export class UsersService {
@@ -84,6 +85,7 @@ export class UsersService {
 	async findOne(id : ObjectId) {
 		try {
 			const user = await this.userModel.findOne({ _id: id }).select('-password -recovery_token');
+			console.log('user => ', user);
 			return {
 				message: 'User retrived successfully',
 				status: 200,
@@ -162,6 +164,23 @@ export class UsersService {
 			}; 	
 		} catch (error) {
 			
+		}
+	}
+
+	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
+		try {
+			const updatedUser = await this.userModel.findOneAndUpdate({ '_id': userId, 'bought_courses.$._id': ratedCourse._id }, {
+				'bought_courses.$.stars': ratedCourse.stars
+			});
+
+			console.log(updatedUser);
+			return {
+				message: 'Course rated successfully',
+				status: HttpStatus.OK,
+				data: '' //updatedUser.bought_courses
+			};
+		} catch (error) {
+			throw error;
 		}
 	}
 
