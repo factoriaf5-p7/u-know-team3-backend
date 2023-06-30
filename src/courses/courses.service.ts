@@ -48,19 +48,20 @@ export class CoursesService {
 	async findBoughtCourses(id: ObjectId) {
 		try {
 			const { message, status, data } = await this.userService.findOneWithBoughtCourses(id);
-			const arrayIdsBoughtCourses = data.bought_courses;
-			
-			const idsCoursesBoughts = [];
+	
+			const boughtCourses = [];
 
-			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
-				 const idCourseBought = arrayIdsBoughtCourses[i].course_id.name;
-				 idsCoursesBoughts.push(idCourseBought);	
-			}
+			const entries = Object.entries(data.bought_courses);
+			console.log(entries);
+
+			entries.forEach(course=> { 
+				boughtCourses.push({ _id: course[1].course_id['_id'] ,name: course[1].course_id.name });
+			});
 
 			return {
 				message: 'Retrieved all courses purchased by user successfully',
 				status: HttpStatus.OK,
-				data: idsCoursesBoughts
+				data: boughtCourses
 			};
 			
 		} catch (error) {
@@ -73,7 +74,6 @@ export class CoursesService {
 		try {
 			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
 
-			// console.log(updatedCourse);
 			return {
 				message: 'Course rated successfully',
 				status: HttpStatus.OK,

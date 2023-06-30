@@ -132,7 +132,7 @@ describe('CoursesController', () => {
 			data: courses
 		})),
 
-		create: jest.fn().mockImplementation((newCourse: CreateCourseDto) => {
+		create: jest.fn().mockImplementation(( userId: ObjectId, newCourse: CreateCourseDto) => {
 			return Promise.resolve({
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
@@ -198,6 +198,19 @@ describe('CoursesController', () => {
 		});
 	});
 
+	it('findBoughtCourses() should return an array of object courses id and name', async () => {
+		const response = [];
+		courses.forEach(course => {
+			response.push({ _id: course._id , name: course.name });
+		});
+		expect(await controller.findBoughtCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
+			message: 'Retrieved all created courses successfully',
+			status: HttpStatus.OK,
+			data: response
+		});
+
+	});
+
 	it('search() should return a response standard object with filtered courses as data', async () => {
 		const query = {
 			filters: 'name,tags',
@@ -211,6 +224,7 @@ describe('CoursesController', () => {
 	});
 
 	it('create() should return a response standard object with new created course object as data', async () => {
+		const userId = new mongoose.Schema.Types.ObjectId('649444f55599cad2702d065a');
 		const newCourse: CreateCourseDto = {	
 			name: 'new course',
 			topic: 'Web development',
@@ -218,7 +232,7 @@ describe('CoursesController', () => {
 			tags: [ '#frontend', '#react', '#css' ],
 			content: '### this is the frontend course you need'
 		};
-		expect(await controller.create(newCourse)).toMatchObject({
+		expect(await controller.create(userId, newCourse)).toMatchObject({
 			message: 'New course created successfully.',
 			status: 200,
 			data: {
