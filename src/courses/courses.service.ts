@@ -6,13 +6,14 @@ import { Course } from './schemas/course.schema';
 import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
 import { RatedCourseDto } from './dto/rate-course.dto';
+import { async } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
 	constructor(
-		private readonly userService: UsersService,
-		@InjectModel(Course.name) private courseModel: Model<Course>,
-	){}
+    private readonly userService: UsersService,
+    @InjectModel(Course.name) private courseModel: Model<Course>,
+	) {}
 
 	async create(userId: ObjectId, createCourseDto: CreateCourseDto) {
 		try {
@@ -22,13 +23,11 @@ export class CoursesService {
 			return {
 				message: 'New course created successfully.',
 				status: HttpStatus.OK,
-				data: newCourse
+				data: newCourse,
 			};
-			
 		} catch (error) {
 			throw error;
 		}
-
 	}
 
 	async findAll() {
@@ -38,7 +37,7 @@ export class CoursesService {
 			return {
 				message: 'All courses retrieved successfully',
 				status: HttpStatus.OK,
-				data: allCourses
+				data: allCourses,
 			};
 		} catch (error) {
 			throw error;
@@ -47,37 +46,39 @@ export class CoursesService {
 
 	async findBoughtCourses(id: ObjectId) {
 		try {
-			const { message, status, data } = await this.userService.findOneWithBoughtCourses(id);
+			const { message, status, data } =
+        await this.userService.findOneWithBoughtCourses(id);
 			const arrayIdsBoughtCourses = data.bought_courses;
-			
+
 			const idsCoursesBoughts = [];
 
 			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
-				 const idCourseBought = arrayIdsBoughtCourses[i].course_id.name;
-				 idsCoursesBoughts.push(idCourseBought);	
+				const idCourseBought = arrayIdsBoughtCourses[i].course_id.name;
+				idsCoursesBoughts.push(idCourseBought);
 			}
 
 			return {
 				message: 'Retrieved all courses purchased by user successfully',
 				status: HttpStatus.OK,
-				data: idsCoursesBoughts
+				data: idsCoursesBoughts,
 			};
-			
 		} catch (error) {
 			throw error;
-			
 		}
 	}
 
 	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
 		try {
-			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
+			const { data, message, status } = await this.userService.addRating(
+				userId,
+				ratedCourse,
+			);
 
 			// console.log(updatedCourse);
 			return {
 				message: 'Course rated successfully',
 				status: HttpStatus.OK,
-				data: data
+				data: data,
 			};
 		} catch (error) {
 			throw error;
@@ -86,41 +87,43 @@ export class CoursesService {
 
 	async findAllSortedByAverage() {
 		const calculates = [];
-		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 });    //id de todos los cursos
-		const { data, message, status } = await this.userService.findAllBoughtCourses( {}, { bought_courses: 1, _id: 0 } ); //cursos comprados de cada usuario
+		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 }); //id de todos los cursos
+		const { data, message, status } = await this.userService.findAllBoughtCourses({},{ bought_courses: 1, _id: 0 }); //cursos comprados de cada usuario
 
 		// return 'This action find all users';
 		// const courses = this.courseModel.find();
-		idCoursesAll.forEach( (course) => {
+		idCoursesAll.forEach((course) => {
 			const courseId = course._id;
 			let totalStars = 0;
 			let numRating = 0;
 
 			// Buscar las puntuaciones del curso
-			data.forEach(boughtCourses => {
+			data.forEach((boughtCourses) => {
 				const bcourses = Array.from(boughtCourses.bought_courses);
-				bcourses.forEach(courseObj => {
-					if(String(courseObj.course_id) === String(courseId)){
+				bcourses.forEach((courseObj) => {
+					if (String(courseObj.course_id) === String(courseId)) {
 						totalStars += courseObj.stars;
 						numRating++;
 					}
 				});
 			});
-			calculates.push({ 
-				_id: courseId, 
+			calculates.push({
+				_id: courseId,
 				name: course.name,
 				totalStars,
-				numRating
+				numRating,
 			});
 		});
 
 		const hash = {};
-		const filteredCourses = calculates.filter(course =>{
-			return hash[course._id] || course.numRating === 0 ? false : hash[course._id] = true;
+		const filteredCourses = calculates.filter((course) => {
+			return hash[course._id] || course.numRating === 0
+				? false
+				: (hash[course._id] = true);
 		});
 
-		filteredCourses.map((course) =>{
-			if(course.numRating > 0){
+		filteredCourses.map((course) => {
+			if (course.numRating > 0) {
 				course.average = course.totalStars / course.numRating;
 				return Number(course.average.toFixed(2));
 			}
@@ -132,30 +135,34 @@ export class CoursesService {
 		return {
 			message: 'Retrieved all courses succesfully',
 			status: 200,
-			data: sortedCourses
+			data: sortedCourses,
 		};
 	}
 
-	async findCreatedCourses(userId: ObjectId){
-		const { data, message, status } = await this.userService.findOneWithCreatedCourses( userId );
+	async findCreatedCourses(userId: ObjectId) {
+		const { data, message, status } =
+      await this.userService.findOneWithCreatedCourses(userId);
 
 		const createdCourses = [];
-		
+
 		const entries = Object.entries(data.created_courses);
-		entries.forEach(course=> { 
+		entries.forEach((course) => {
 			createdCourses.push({ _id: course[1]._id, name: course[1].name });
 		});
 
 		return {
 			message: 'Retrieved all created courses successfully',
 			status: HttpStatus.OK,
-			data: createdCourses
+			data: createdCourses,
 		};
 	}
 
 	async findCoursesCollectionById(courseId: ObjectId[]) {
-		return await Promise.all(courseId.map(async (courseId) => await this.courseModel.findById(courseId)));
-		
+		return await Promise.all(
+			courseId.map(
+				async (courseId) => await this.courseModel.findById(courseId),
+			),
+		);
 	}
 
 	async search(filters: string, keywords: string) {
@@ -163,13 +170,17 @@ export class CoursesService {
 
 		const regex = new RegExp(keywords, 'i'); // (/Web development/i)
 		const arrFilters = filters.split(','); // arrFilter[0] = topic, arrFilter[1] = name, ...
-		
+
 		try {
 			for await (const filter of arrFilters) {
-				allCourses.push(...await this.courseModel.find({ [filter] : regex }).select('_id name'));
+				allCourses.push(
+					...(await this.courseModel
+						.find({ [filter]: regex })
+						.select('_id name')),
+				);
 			}
 
-			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con 
+			// Se eliminan los sub arrays que se puedan crear al realizar varias peticiones a la bbdd con
 			// los diferentes filtros.
 			allCourses = allCourses.flat(Infinity);
 
@@ -177,14 +188,14 @@ export class CoursesService {
 			// Si el id de course guardado en hash ya existe devuelve false, por lo que no se guarda en el nuevo array.
 			// Si no existe se le asigna true y se guarda en el nuevo array.
 			const hash = {};
-			const filteredCourses = allCourses.filter(course =>{
-				return hash[course._id] ? false : hash[course._id] = true;
+			const filteredCourses = allCourses.filter((course) => {
+				return hash[course._id] ? false : (hash[course._id] = true);
 			});
 
 			return {
 				message: 'Retrieved filtered courses successfully',
 				status: HttpStatus.OK,
-				data: filteredCourses
+				data: filteredCourses,
 			};
 		} catch (error) {
 			throw error;
@@ -192,14 +203,14 @@ export class CoursesService {
 	}
 
 	async findOne(id: ObjectId) {
-		try{
-			const course = (await this.courseModel.findById(id));
+		try {
+			const course = await this.courseModel.findById(id);
 			return {
 				message: 'Course retrieved successfully',
 				status: HttpStatus.OK,
-				data: course
+				data: course,
 			};
-		}catch(error){
+		} catch (error) {
 			throw error;
 		}
 	}
@@ -207,29 +218,30 @@ export class CoursesService {
 	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
 		try {
 			// user que quiere actualizar curso
-			const { data, message, status } = await this.userService.findOne( id );
+			const { data, message, status } = await this.userService.findOne(id);
+			
+			const entries = Object.entries(data.created_courses);
+			let courseUpdated;
 
-			// cursos que ha creado el usuario
-			const createdCourses =  Object.entries(data.created_courses) ;
-
-			console.log(createdCourses);
-
-			if (createdCourses.includes(updateCourse._id)) {
-
-				console.log('actualizo curso que cresate');
-				// const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
-				// 	 ...updateCourse
-				// }); 
-
-				// return {
-				// 	message: 'Course updated successfully',
-				// 	status: HttpStatus.OK,
-				// 	data: courseUpdated
-				// };
-			} else {
-				console.log('No creaste el curso que quieres modificar');
-			}
-
+			entries.forEach(async( course) => {
+				console.log(course[1]._id);
+				if (String(updateCourse._id) === String(course[1]._id)) {
+					console.log('actualizando');
+					courseUpdated = await this.courseModel.findOneAndUpdate(
+						{ _id: updateCourse._id },
+						{
+							...updateCourse,
+						},
+					);
+				} else {
+					throw new Error('Course not found');
+				}
+			});
+			return {
+				message: 'Course updated successfully',
+				status: HttpStatus.OK,
+				data: courseUpdated,
+			};
 		} catch (error) {
 			throw error;
 		}
@@ -240,29 +252,33 @@ export class CoursesService {
 			const course = await this.courseModel.findOne({ _id: id });
 
 			if (course) {
-				if (course.bought) throw new HttpException('Course cannot be deleted.', HttpStatus.UNAUTHORIZED);
+				if (course.bought)
+					throw new HttpException(
+						'Course cannot be deleted.',
+						HttpStatus.UNAUTHORIZED,
+					);
 
 				await this.courseModel.deleteOne({ _id: id });
 
 				return {
 					message: 'Course deleted.',
 					status: HttpStatus.OK,
-					data: ''
+					data: '',
 				};
 			} else {
 				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
 			}
-		} catch (error){
+		} catch (error) {
 			throw error;
 		}
 	}
 	async findAllSortedByPriceDesc() {
 		try {
-			const coursesByPrice = await this.courseModel.find().sort( { price : -1 } );
+			const coursesByPrice = await this.courseModel.find().sort({ price: -1 });
 			return {
 				message: 'All courses retrieved successfully',
 				status: HttpStatus.OK,
-				data: coursesByPrice
+				data: coursesByPrice,
 			};
 		} catch (error) {
 			throw error;
@@ -277,12 +293,12 @@ export class CoursesService {
 				return {
 					message: 'Course deleted by admin',
 					status: HttpStatus.OK,
-					data: ''
+					data: '',
 				};
 			} else {
 				throw new HttpException('Course not found.', HttpStatus.NOT_FOUND);
 			}
-		} catch (error){
+		} catch (error) {
 			throw error;
 		}
 	}
