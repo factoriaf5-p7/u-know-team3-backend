@@ -71,10 +71,14 @@ export class CoursesService {
 
 	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
 		try {
-			const updatedCourse = await this.userService.addRating(userId, ratedCourse);
+			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
 
-			console.log(updatedCourse);
-
+			// console.log(updatedCourse);
+			return {
+				message: 'Course rated successfully',
+				status: HttpStatus.OK,
+				data: data
+			};
 		} catch (error) {
 			throw error;
 		}

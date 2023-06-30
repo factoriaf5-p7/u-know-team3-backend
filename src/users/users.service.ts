@@ -168,15 +168,14 @@ export class UsersService {
 
 	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
 		try {
-			const updatedUser = await this.userModel.findOneAndUpdate({ '_id': userId, 'bought_courses.$._id': ratedCourse._id }, {
+			const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id }, {
 				'bought_courses.$.stars': ratedCourse.stars
-			});
+			}).select('bought_courses');
 
-			console.log(updatedUser);
 			return {
 				message: 'Course rated successfully',
 				status: HttpStatus.OK,
-				data: '' //updatedUser.bought_courses
+				data: updatedUser.bought_courses
 			};
 		} catch (error) {
 			throw error;
