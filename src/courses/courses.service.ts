@@ -206,15 +206,30 @@ export class CoursesService {
 
 	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
 		try {
-			const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
-				 ...updateCourse
-			});
+			// user que quiere actualizar curso
+			const { data, message, status } = await this.userService.findOne( id );
 
-			return {
-				message: 'Course updated successfully',
-				status: HttpStatus.OK,
-				data: courseUpdated
-			};
+			// cursos que ha creado el usuario
+			const createdCourses =  Object.entries(data.created_courses) ;
+
+			console.log(createdCourses);
+
+			if (createdCourses.includes(updateCourse._id)) {
+
+				console.log('actualizo curso que cresate');
+				// const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
+				// 	 ...updateCourse
+				// }); 
+
+				// return {
+				// 	message: 'Course updated successfully',
+				// 	status: HttpStatus.OK,
+				// 	data: courseUpdated
+				// };
+			} else {
+				console.log('No creaste el curso que quieres modificar');
+			}
+
 		} catch (error) {
 			throw error;
 		}

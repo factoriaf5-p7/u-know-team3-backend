@@ -56,8 +56,8 @@ export class CoursesController {
 
   @Patch(':id')
   // @UseGuards(AuthGuard)
-  update(@Param('id') id: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
-  	return this.coursesService.update(id, updateCourseDto);
+  update(@Param('id') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
+  	return this.coursesService.update(userId, updateCourseDto);
   }
 
   @Delete('delete')
