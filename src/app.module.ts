@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
+		// MongooseModule.forRoot('mongodb://127.0.0.1:27017/uknow'),
 		MongooseModule.forRoot('mongodb://127.0.0.1:27017/uknow'),
 		UsersModule,
 		CoursesModule,
