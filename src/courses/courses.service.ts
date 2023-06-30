@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
 import mongoose, { Model, ObjectId, Schema } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { RatedCourseDto } from './dto/rate-course.dto';
 
 @Injectable()
 export class CoursesService {
@@ -65,6 +66,21 @@ export class CoursesService {
 		} catch (error) {
 			throw error;
 			
+		}
+	}
+
+	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
+		try {
+			const { data, message, status } = await this.userService.addRating(userId, ratedCourse);
+
+			// console.log(updatedCourse);
+			return {
+				message: 'Course rated successfully',
+				status: HttpStatus.OK,
+				data: data
+			};
+		} catch (error) {
+			throw error;
 		}
 	}
 
