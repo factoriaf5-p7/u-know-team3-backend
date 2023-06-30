@@ -49,7 +49,9 @@ export declare class UsersService {
     findOneWithCreatedCourses(id: ObjectId): Promise<{
         message: string;
         status: number;
-        data: string;
+        data: mongoose.Document<unknown, {}, User> & Omit<User & {
+            _id: mongoose.Types.ObjectId;
+        }, never>;
     }>;
     update(user: UpdateUserDto): Promise<{
         message: string;
@@ -77,5 +79,9 @@ export declare class UsersService {
             _id: mongoose.Types.ObjectId;
         })[];
     }>;
-    remove(id: number): string;
+    deleteUserByAdmin(id: ObjectId): Promise<{
+        message: string;
+        status: HttpStatus;
+        data: string;
+    }>;
 }

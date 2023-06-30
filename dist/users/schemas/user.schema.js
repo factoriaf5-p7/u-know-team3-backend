@@ -49,7 +49,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ example: ['Created Course 1', 'Created Course 2'] }),
     (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.default.Schema.Types.ObjectId, ref: course_schema_1.Course.name }] }),
-    __metadata("design:type", Array)
+    __metadata("design:type", course_schema_1.Course)
 ], User.prototype, "created_courses", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({

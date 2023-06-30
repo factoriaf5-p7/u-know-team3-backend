@@ -20,18 +20,26 @@ let AuthService = exports.AuthService = class AuthService {
         this.userService = userService;
         this.jwtService = jwtService;
     }
+    async validatePassword(password, encriptedPassword) {
+        return (0, bcrypt_1.compare)(password, encriptedPassword);
+    }
     async login(user) {
         const { email, password } = user;
         const findUser = await this.userService.findOneLogin(email);
         if (!findUser)
             throw new common_1.HttpException('USER_NOT_FOUND', common_1.HttpStatus.NOT_FOUND);
-        const checkPassword = await (0, bcrypt_1.compare)(password, findUser.password);
+        const checkPassword = await this.validatePassword(password, findUser.password);
         if (!checkPassword)
             throw new common_1.HttpException('INCORRECT_PASSWORD', common_1.HttpStatus.FORBIDDEN);
+        const payload = {
+            sub: findUser._id,
+            email: findUser.email
+        };
+        const token = await this.jwtService.signAsync(payload, { expiresIn: '1d' });
         return {
             message: 'Login success.',
             status: common_1.HttpStatus.OK,
-            data: ''
+            data: token
         };
     }
     async register(user) {

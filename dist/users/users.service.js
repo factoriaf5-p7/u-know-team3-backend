@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const user_schema_1 = require("./schemas/user.schema");
-const course_schema_1 = require("../courses/schemas/course.schema");
 let UsersService = exports.UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
@@ -98,11 +97,11 @@ let UsersService = exports.UsersService = class UsersService {
     }
     async findOneWithCreatedCourses(id) {
         try {
-            console.log(await (await this.userModel.findOne({ _id: id })).populate([{ path: course_schema_1.Course.name, strictPopulate: false }]));
+            const createdCourses = await this.userModel.findOne({ _id: id }).select('created_courses').populate('created_courses');
             return {
-                message: 'User retrived successfully',
+                message: 'User with created courses retrived successfully',
                 status: 200,
-                data: ''
+                data: createdCourses
             };
         }
         catch (error) {
@@ -158,10 +157,23 @@ let UsersService = exports.UsersService = class UsersService {
             };
         }
         catch (error) {
+            throw error;
         }
     }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async deleteUserByAdmin(id) {
+        try {
+            const findUser = await this.userModel.findByIdAndDelete(id);
+            if (!findUser)
+                throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+            return {
+                message: 'User deleted by Admin',
+                status: common_1.HttpStatus.OK,
+                data: ''
+            };
+        }
+        catch (error) {
+            throw error;
+        }
     }
 };
 exports.UsersService = UsersService = __decorate([

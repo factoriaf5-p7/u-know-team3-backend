@@ -9,6 +9,7 @@ export declare class AuthService {
     private userService;
     private readonly jwtService;
     constructor(userService: UsersService, jwtService: JwtService);
+    validatePassword(password: string, encriptedPassword: string): Promise<boolean>;
     login(user: GetUserLoginDto): Promise<{
         message: string;
         status: HttpStatus;

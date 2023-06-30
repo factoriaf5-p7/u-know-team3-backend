@@ -188,17 +188,30 @@ export class CoursesService {
 		}
 	}
 
-	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
+	async update(userId: ObjectId, updateCourse: UpdateCourseDto, ) {
 		try {
-			const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
-				 ...updateCourse
-			});
+			//encuentra usuario que ha creado curso
+			const { data, message, status } = await this.userService.findOne( userId );
+			
+			// Array de los cursos creados del usuario seleccionado
+			const createdCoursesByUser = data.created_courses; 
+			console.log (createdCoursesByUser);
 
-			return {
-				message: 'Course updated successfully',
-				status: HttpStatus.OK,
-				data: courseUpdated
-			};
+			// Recorrer array para ver si existe el curso
+			for (let i = 0; i < createdCoursesByUser.length; i ++) {
+
+			}
+				
+				// const courseUpdated = await this.courseModel.findOneAndUpdate({ _id: id }, {
+				// 	...updateCourse
+
+				// return {
+				// 		message: 'Course deleted.',
+				// 		status: HttpStatus.OK,
+				// 		data: ''
+				// 	}
+				// });
+
 		} catch (error) {
 			throw error;
 		}
