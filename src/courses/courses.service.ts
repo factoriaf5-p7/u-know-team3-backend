@@ -46,14 +46,14 @@ export class CoursesService {
 
 	async findBoughtCourses(id: ObjectId) {
 		try {
-			const user = await this.userService.findOne(id);
-			const arrayIdsBoughtCourses = user.data.bought_courses;
+			const { message, status, data } = await this.userService.findOneWithBoughtCourses(id);
+			const arrayIdsBoughtCourses = data.bought_courses;
+			
 			const idsCoursesBoughts = [];
 
 			for (let i = 0; i < arrayIdsBoughtCourses.length; i++) {
-				 const idCourseBought = arrayIdsBoughtCourses[i].course_id;
+				 const idCourseBought = arrayIdsBoughtCourses[i].course_id.name;
 				 idsCoursesBoughts.push(idCourseBought);	
-				 console.log(idsCoursesBoughts);				 			
 			}
 
 			return {
@@ -177,7 +177,7 @@ export class CoursesService {
 
 	async findOne(id: ObjectId) {
 		try{
-			const course = await this.courseModel.findById(id);
+			const course = (await this.courseModel.findById(id));
 			return {
 				message: 'Course retrieved successfully',
 				status: HttpStatus.OK,

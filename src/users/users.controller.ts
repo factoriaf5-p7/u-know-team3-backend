@@ -19,7 +19,7 @@ export class UsersController {
 		return this.usersService.findAll();
 	}
 
-	@Get(':admin')
+	@Get('admin')
   	findAllAdmin() {
   		return this.usersService.findAllAdmin();
   	}
