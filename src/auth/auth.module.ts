@@ -8,7 +8,7 @@ import { UsersService } from 'src/users/users.service';
 @Module({
 	imports: [ UsersModule, JwtModule.register({
 		global: true,
-		secret: process.env.SECRET 
+		secret: process.env.SECRET
 	}) ],
 	controllers: [ AuthController ],
 	providers: [ AuthService ],
