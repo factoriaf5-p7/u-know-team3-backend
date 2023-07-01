@@ -9,4 +9,6 @@ services:
     ports:
       - 4000:4000
     volumes:
-        - ./containers/nestjs/nestjs-volume:/data/api
+      - ./containers/nestjs/nestjs-volume:/data/api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
