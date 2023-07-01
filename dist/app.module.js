@@ -14,12 +14,22 @@ const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./users/users.module");
 const courses_module_1 = require("./courses/courses.module");
 const auth_module_1 = require("./auth/auth.module");
+const config_1 = require("@nestjs/config");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1:27017/uknow'),
+            mongoose_1.MongooseModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => ({
+                    uri: configService.get('MONGODB_URI'),
+                }),
+                inject: [ConfigService],
+            }),
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             users_module_1.UsersModule,
             courses_module_1.CoursesModule,
             auth_module_1.AuthModule,

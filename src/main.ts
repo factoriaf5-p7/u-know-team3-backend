@@ -20,6 +20,6 @@ async function bootstrap() {
 	// Configuración de la validación de los tipos en los DTOs
 	app.useGlobalPipes(new ValidationPipe());
 
-	await app.listen(3000);
+	await app.listen(process.env.PORT);
 }
 bootstrap();
