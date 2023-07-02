@@ -7,9 +7,13 @@ import mongoose, { Model, ObjectId, Schema, Types } from 'mongoose';
 import { UsersService } from '../users/users.service';
 import { RatedCourseDto } from './dto/rate-course.dto';
 import { PurchaseCourseDto } from './dto/buy-course.dto';
+import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class CoursesService {
+	prototype(prototype: any, arg1: string) {
+		throw new Error('Method not implemented.');
+	}
 	constructor(
 		private readonly userService: UsersService,
 		@InjectModel(Course.name) private courseModel: Model<Course>,
@@ -305,6 +309,11 @@ export class CoursesService {
 					await course.save();
 				}
 				user.wallet_balance -= course.price;
+				user.bought_courses.push({
+					course_id: course.id,
+					stars: 0,
+					commented: false
+				});
 				await user.save();
 
 				return {
