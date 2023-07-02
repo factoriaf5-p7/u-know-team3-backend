@@ -5,8 +5,10 @@ import {
 	OnGatewayConnection,
 	OnGatewayDisconnect,
 	OnGatewayInit,
+	MessageBody,
+	ConnectedSocket
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(4000, {
 	cors: {
@@ -18,9 +20,17 @@ export class ChatGateway implements OnGatewayInit {
 		server: Server;
 	users = 0;
 
+	@SubscribeMessage('room')
+	async createRoom(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+		client.join((data: string) => {
+			console.log('data ', data);
+		});
+	}
+
 	@SubscribeMessage('chat')
 	async onChat(client, message) {
-		client.broadcast.emit('chat', message);
+		console.log('mssg from client = ', message);
+		this.server.emit('chat', message );
 	}
 
 	afterInit(server: Server) {
@@ -30,19 +40,15 @@ export class ChatGateway implements OnGatewayInit {
 	async handleConnection(client) {
 		// this.users++;
 		// this.server.emit('users', this.users);
-		client.broadcast.emit('hello', 'Yeah!');
+		console.log('New client connected', client.id);
+		this.server.emit('chat', { data: 'Yeah!' });
 		
 	}
 
 	async handleDisconnect() {
 		this.users--;
+		console.log('disconnected');
 		this.server.emit('users', this.users);
-	}
-
-	@SubscribeMessage('hello')
-	async onHello(client, message) {
-		console.log(message);
-		client.broadcast.emit('hello', 'You are welcom!');
 	}
 
 }
