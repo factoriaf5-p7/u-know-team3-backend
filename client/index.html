@@ -16,42 +16,16 @@
     </style>
   </head>
   <body>
-    <ul>
-        <li value="room1">Room 1</li>
-        <li value="room2">Room 2</li>
-        <li value="room3">Room 3</li>
+    <ul style="width: 100%; display: inline-flex; justify-content: space-evenly; list-style-type: none;">
+        <li id="r1" value="room1">Room 1</li>
+        <li id="r2" value="room2">Room 2</li>
+        <li id="r3" value="room3">Room 3</li>
     </ul>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button id="send-button">Send</button>
     </form>
-    <script type="module">
-        import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-
-        const socket = io('http://localhost:4000');
-
-        const sendMessage = (e) => {
-            e.preventDefault();
-            const sendMsg = document.getElementById('input');
-            socket.emit('chat', { data: sendMsg.value });
-        }
-
-        const printMessage = (msg) => {
-            const ulEl = document.getElementById('messages');
-            ulEl.innerHTML += `<p>&nbsp;${msg.data}</p>`;
-        }
-
-        socket.on('connect', function onConnect(msg) {
-            console.log('>> Connected to server');
-        });
-
-        socket.on('chat', (msg) => {
-            console.log('msg => ', msg);
-            printMessage(msg);
-        });
-
-        const sendBtn = document.getElementById('send-button');
-        sendBtn.addEventListener('click', sendMessage);
-      </script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="./socket.io.js" type="module" ></script>
   </body>
 </html>
