@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  mongodb_container:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=uknow
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - 27019:27017

@@ -18,8 +18,11 @@ async function bootstrap() {
 	SwaggerModule.setup('docs', app, document);
 
 	// Configuración de la validación de los tipos en los DTOs
-	app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalPipes(new ValidationPipe({
+		whitelist: true,
+		forbidNonWhitelisted: true
+	}));
 
-	await app.listen(3000);
+	await app.listen(process.env.PORT);
 }
 bootstrap();

@@ -9,6 +9,12 @@ export const sendEmail = (user, token) => {
 		auth: {
 			user: 'alexie35@ethereal.email',
 			pass: 'wdC2Ur2kNYY9sbFEUY',
+
+		// host: process.env.SMTP_HOST, //'smtp.ethereal.email'
+		// port: process.env.SMTP_PORT, //587
+		// auth: {
+		// user: process.env.SMTP_USER, //'alexie35@ethereal.email'
+		// pass: process.env.SMTP_PASSW //'wdC2Ur2kNYY9sbFEUY'
 		},
 	});
 
@@ -32,7 +38,7 @@ export const sendEmail = (user, token) => {
 
 			console.log('Message sent: %s', info.messageId);
 			// Preview only available when sending through an Ethereal account
-			console.log('Preview URL: %s', getTestMessageUrl(info));
+			console.log('Preview URL: %s', getTestMessageUrl(info.messageId));
 		},
 	);
 };
