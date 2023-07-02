@@ -7,8 +7,6 @@ import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RatedCourseDto } from './dto/rate-course.dto';
 import { PurchaseCourseDto } from './dto/buy-course.dto';
-import { Course } from './schemas/course.schema';
-import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 
 @Controller('courses')
 export class CoursesController {

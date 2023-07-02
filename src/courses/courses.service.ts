@@ -3,11 +3,10 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schemas/course.schema';
-import mongoose, { Model, ObjectId, Schema, Types } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
 import { RatedCourseDto } from './dto/rate-course.dto';
 import { PurchaseCourseDto } from './dto/buy-course.dto';
-import { async } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
