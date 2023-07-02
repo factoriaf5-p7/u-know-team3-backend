@@ -33,8 +33,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 		// STATIC DOCKER VERSION FOR MAC AN LINUX, ¿WINDOWS?
 		// MongooseModule.forRoot('mongodb://host.docker.internal:27017/uknow'), DOCKER VERSION FOR MAC AND LINUX
 		ConfigModule.forRoot({
-			isGlobal: true,
-			// envFilePath: `${process.env.NODE_ENV}.env` 
+			isGlobal: true
 		}),
 		UsersModule,
 		CoursesModule,

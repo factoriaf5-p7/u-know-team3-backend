@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 inject: [config_1.ConfigService],
             }),
             config_1.ConfigModule.forRoot({
-                isGlobal: true,
+                isGlobal: true
             }),
             users_module_1.UsersModule,
             courses_module_1.CoursesModule,
