@@ -17,11 +17,7 @@ export declare class AuthService {
     }>;
     register(user: RegisterUserDto): Promise<{
         message: string;
-        status?: undefined;
-        data?: undefined;
-    } | {
-        message: string;
-        status: number;
+        status: HttpStatus;
         data: string;
     }>;
     recoverPasswordRequest(user: RecoverRequestDto): Promise<{

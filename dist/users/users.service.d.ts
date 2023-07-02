@@ -65,19 +65,19 @@ export declare class UsersService {
     update(user: UpdateUserDto): Promise<{
         message: string;
         status: number;
-        user: mongoose.Document<unknown, {}, User> & Omit<User & {
+        data: mongoose.Document<unknown, {}, User> & Omit<User & {
             _id: mongoose.Types.ObjectId;
         }, never>;
     }>;
     updatePassword(user: RecoverUserDto): Promise<{
         message: string;
         status: number;
-        user: string;
+        data: string;
     }>;
     updateRecoveryToken(user: RecoverRequestDto): Promise<{
         message: string;
         status: number;
-        user: mongoose.Document<unknown, {}, User> & Omit<User & {
+        data: mongoose.Document<unknown, {}, User> & Omit<User & {
             _id: mongoose.Types.ObjectId;
         }, never>;
     }>;

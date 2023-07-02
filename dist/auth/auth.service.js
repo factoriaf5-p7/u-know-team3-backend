@@ -44,10 +44,13 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async register(user) {
         try {
-            console.log(await this.encryptPassword('securepass321'));
             user.password = await this.encryptPassword(user.password);
-            const result = await this.userService.create(user);
-            return result;
+            const { data, message, status } = await this.userService.create(user);
+            return {
+                message: 'User registered successfully',
+                status: common_1.HttpStatus.OK,
+                data: data
+            };
         }
         catch (error) {
             throw error;
@@ -61,8 +64,8 @@ let AuthService = exports.AuthService = class AuthService {
         try {
             const token = await this.jwtService.signAsync(payload, { expiresIn: '60s' });
             user.recovery_token = token;
-            const updatedUser = await this.userService.updateRecoveryToken(user);
-            (0, mail_sender_1.sendEmail)(updatedUser, token);
+            const { data, message, status } = await this.userService.updateRecoveryToken(user);
+            (0, mail_sender_1.sendEmail)(data, token);
             return {
                 message: 'Recovery link has sent to your email',
                 status: common_1.HttpStatus.OK,

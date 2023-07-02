@@ -127,7 +127,7 @@ let UsersService = exports.UsersService = class UsersService {
             return {
                 message: 'User updated successfully',
                 status: 200,
-                user: updatedUser
+                data: updatedUser
             };
         }
         catch (error) {
@@ -140,7 +140,7 @@ let UsersService = exports.UsersService = class UsersService {
             return {
                 message: 'Password updated successfully',
                 status: 200,
-                user: ''
+                data: ''
             };
         }
         catch (error) {
@@ -153,7 +153,7 @@ let UsersService = exports.UsersService = class UsersService {
             return {
                 message: 'Recovery token created successfully',
                 status: 200,
-                user: userTokenCreated
+                data: userTokenCreated
             };
         }
         catch (error) {

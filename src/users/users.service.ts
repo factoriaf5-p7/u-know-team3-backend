@@ -112,8 +112,6 @@ export class UsersService {
 		
 		try {
 			const boughtCourses = await this.userModel.findOne({ _id: id }, { bought_courses: 1 }).populate('bought_courses.course_id');
-			// console.log(boughtCourses.bought_courses);
-			// console.log(boughtCourses.bought_courses[0].course_id.name);
 			
 			return {
 				message: 'User with bought courses retrived successfully',
@@ -135,7 +133,7 @@ export class UsersService {
 			return {
 				message: 'User updated successfully',
 				status: 200,
-				user: updatedUser
+				data: updatedUser
 			};
 		} catch (error) {
 			throw error;
@@ -150,7 +148,7 @@ export class UsersService {
 			return {
 				message: 'Password updated successfully',
 				status: 200,
-				user: ''
+				data: ''
 			};
 		} catch (error) {
 			throw error;
@@ -165,7 +163,7 @@ export class UsersService {
 			return {
 				message: 'Recovery token created successfully',
 				status: 200,
-				user: userTokenCreated
+				data: userTokenCreated
 			};
 		} catch (error) {
 			throw error;

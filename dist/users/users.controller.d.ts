@@ -62,7 +62,7 @@ export declare class UsersController {
     update(updateUserDto: UpdateUserDto): Promise<{
         message: string;
         status: number;
-        user: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        data: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
     }>;
