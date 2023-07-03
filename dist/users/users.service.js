@@ -190,9 +190,11 @@ let UsersService = exports.UsersService = class UsersService {
     }
     async addRating(userId, ratedCourse) {
         try {
-            const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id }, {
+            const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id, 'bought_courses.stars': { $eq: 0 } }, {
                 'bought_courses.$.stars': ratedCourse.stars
             }).select('bought_courses');
+            if (!updatedUser)
+                throw new common_1.HttpException('Failed rating course', common_1.HttpStatus.BAD_REQUEST);
             return {
                 message: 'Course rated successfully',
                 status: common_1.HttpStatus.OK,

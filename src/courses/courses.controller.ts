@@ -85,7 +85,7 @@ export class CoursesController {
   	return this.coursesService.addRating(userId, ratedCourse);
   }
 
-  @Post('purchase')
+  @Patch('purchase')
   //@UseGuards(AuthGuard)
   purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
   	return this.coursesService.purchaseCourse(purchaseCourseDto);
