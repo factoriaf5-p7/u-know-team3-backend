@@ -3,11 +3,12 @@ import { CoursesService } from './courses.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Course } from './schemas/course.schema';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Types } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Schema } from 'mongoose';
+import { PurchaseCourseDto } from './dto/buy-course.dto';
 
 const response = {
 	user: {
@@ -157,7 +158,9 @@ describe('CoursesService', () => {
 			data: user
 		})),
 
-		findAllBoughtCourses: jest.fn().mockReturnValue(Promise.resolve(sortedCourses))
+		findAllBoughtCourses: jest.fn().mockReturnValue(Promise.resolve(sortedCourses)),
+
+		updateUserBoughtCourses: jest.fn().mockResolvedValue({})
 	};
 
 	const mockCourseModel = {
@@ -350,6 +353,19 @@ describe('CoursesService', () => {
 		expect(await service.deleteCourseByAdmin(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
 	
 			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('purchaseCourse() should return response standard object and update user and course (if necessary)',async () => {
+		const purchaseCourseDto: PurchaseCourseDto = {
+			userId: expect.any(Types.ObjectId),
+			courseId: expect.any(Types.ObjectId)
+		};
+
+		expect(await service.purchaseCourse(purchaseCourseDto)).toMatchObject({
+			message: 'Course purchased.',
 			status: HttpStatus.OK,
 			data: ''
 		});

@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
 import { RegisterUserDto } from '../auth/dto/register-user.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { UpdateUserByAdminDto } from './dto/update-user-byadmin.dto ';
 
 @Controller('users')
@@ -43,12 +43,12 @@ export class UsersController {
 
 	@Patch('admin')
 	// @UseGuards(AuthGuard)
-  	updateUserByAdmmin(@Body() updateUserByAdminDto: UpdateUserByAdminDto) {
-  		return this.usersService.updateUserByAdmmin(updateUserByAdminDto);
+  	updateUserByAdmin(@Body() updateUserByAdminDto: UpdateUserByAdminDto) {
+  		return this.usersService.updateUserByAdmin(updateUserByAdminDto);
   	}
 
 	@Delete('admin/delete')
-  	@UseGuards(AuthGuard) //admin
+  	// @UseGuards(AuthGuard) //admin
   	deleteUserByAdmin(@Query('id') id: ObjectId) {
   		return this.usersService.deleteUserByAdmin(id);
   	}

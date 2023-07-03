@@ -75,6 +75,18 @@ describe('UsersController', () => {
 					profile: 'user'
 				}
 			});
+		}),
+
+		updateUserByAdmin: jest.fn().mockReturnValue({
+			message: 'User updated successfully',
+			status: 200,
+			data: user
+		}),
+
+		deleteUserByAdmin: jest.fn().mockReturnValue({
+			message: 'User deleted by Admin',
+			status: HttpStatus.OK,
+			data: ''
 		})
 	};
 
@@ -155,10 +167,18 @@ describe('UsersController', () => {
 	});
 	
 	it('updateUserByAdmin() should return standard response with the user updated',async () => {
-		expect(await controller.updateUserByAdmmin(updateUser)).toMatchObject({
-			message: 'User updated by Admin',
+		expect(await controller.updateUserByAdmin(updateUser)).toMatchObject({
+			message: 'User updated successfully',
+			status: 200,
+			data: user
+		});
+	});
+
+	it('deleteUserByAdmin() should return standard response if a user is deleted',async () => {
+		expect(await controller.deleteUserByAdmin(expect.any(Types.ObjectId))).toMatchObject({
+			message: 'User deleted by Admin',
 			status: HttpStatus.OK,
-			data: updateUser
+			data: ''
 		});
 	});
 
