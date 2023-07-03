@@ -163,6 +163,14 @@ describe('CoursesController', () => {
 			});
 		}),
 
+		findOneAdmin: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve({
+				message: 'Course retrieved successfully',
+				status: HttpStatus.OK,
+				data: course
+			});
+		}),
+
 		findAll: jest.fn().mockReturnValue(Promise.resolve({
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
@@ -179,6 +187,24 @@ describe('CoursesController', () => {
 				status: HttpStatus.OK,
 				data: response
 			});
+		}),
+		
+		purchaseCourse: jest.fn().mockResolvedValue({
+			message: 'Course purchased.',
+			status: HttpStatus.OK,
+			data: ''
+		}),
+
+		deleteCourse: jest.fn().mockResolvedValue({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: '',
+		}),
+
+		deleteCourseByAdmin: jest.fn().mockResolvedValue({
+			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: '',
 		})
 	};
 
@@ -280,6 +306,16 @@ describe('CoursesController', () => {
 		});
 	});
 
+	it('findOneAdmin() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+
+		expect(await controller.findOneAdmin(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
+		});
+	});
+
 	it('findAllSortedByAverage() should return response standard object within a list of courses sorted by average as data', async ()=> {
 		expect(await controller.findAllSortedByAverage()).toMatchObject({
 			message: 'Retrieved all courses succesfully',
@@ -293,6 +329,34 @@ describe('CoursesController', () => {
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
 			data: courses
+		});
+	});
+
+	it('purchaseCourse should return standard response object when a course is purchased',async () => {
+		const purchaseCourseDto = {
+			userId: expect.any(Types.ObjectId),
+			courseId: expect.any(Types.ObjectId)
+		};
+		expect(await controller.purchaseCourse(purchaseCourseDto)).toMatchObject({
+			message: 'Course purchased.',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('deleteCourse should return a standard response object when a course is deleted',async () => {
+		expect(await controller.deleteCourse(expect.any(Types.ObjectId))).toMatchObject({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('deleteCourseByAdmin should return a standard response object when a course is deleted by an admin',async () => {
+		expect(await controller.deleteCourseByAdmin(expect.any(Types.ObjectId))).toMatchObject({
+			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: ''
 		});
 	});
 });

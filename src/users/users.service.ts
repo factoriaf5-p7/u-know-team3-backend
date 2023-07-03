@@ -140,7 +140,7 @@ export class UsersService {
 			throw error;
 		}
 	}
-	async updateUserByAdmmin(user: UpdateUserDto) {
+	async updateUserByAdmin(user: UpdateUserDto) {
 		try {
 			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {
 				...user

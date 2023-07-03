@@ -69,6 +69,7 @@ export class CoursesController {
   purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
   	return this.coursesService.purchaseCourse(purchaseCourseDto);
   }
+
   @Get('admin/:id')
   @Roles(Role.Admin)
   @UseGuards(RolesGuard)
