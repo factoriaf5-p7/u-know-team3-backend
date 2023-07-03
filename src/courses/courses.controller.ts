@@ -66,6 +66,11 @@ export class CoursesController {
   purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
   	return this.coursesService.purchaseCourse(purchaseCourseDto);
   }
+  @Get('admin/:id')
+  // @UseGuards(AuthGuard)
+  findOneAdmin(@Param('id') id: ObjectId ) {
+  	return this.coursesService.findOneAdmin(id);
+  }
 
   @Patch(':id')
   // @UseGuards(AuthGuard)

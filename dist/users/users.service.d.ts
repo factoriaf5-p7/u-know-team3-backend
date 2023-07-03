@@ -34,7 +34,7 @@ export declare class UsersService {
     findAllAdmin(): Promise<{
         message: string;
         status: number;
-        users: (mongoose.Document<unknown, {}, User> & Omit<User & {
+        data: (mongoose.Document<unknown, {}, User> & Omit<User & {
             _id: mongoose.Types.ObjectId;
         }, never>)[];
     }>;

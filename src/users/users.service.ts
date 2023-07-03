@@ -69,7 +69,7 @@ export class UsersService {
 			return {
 				message: 'All users retrieved succesfully',
 				status: 200,
-				users: users
+				data: users
 			};
 			
 		} catch (error) {
