@@ -211,7 +211,7 @@ export class UsersService {
 			throw error;
 		}
 	}
-
+	
 	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
 		try {
 			const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id, 'bought_courses.stars': { $eq: 0 } }, {
