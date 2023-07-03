@@ -10,6 +10,39 @@ const recoveryUser: RecoverUserDto = {
 	password: '123456',
 	recovery_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDkwYzlkM2U3N2RhNzNiM2ZkMDYyOTkiLCJlbWFpbCI6Impob25AY29ubm9ycy5jb20iLCJpYXQiOjE2ODczODg3NTcsImV4cCI6MTY4NzM4ODc2N30.FQjOTQSBrZSVJ1AhJ5EBpAsx_XMaXY39sTvvFSI7uOs'
 };
+const users = [{
+
+    _id: '64ljkh523o54yuo3l3l',
+    name: 'Jhon',
+    last_name: 'Connors',
+    email: 'jhon@judgementday.com', 
+    wallet_balance: 100,
+    bought_courses: [ 'Course1' ],
+    created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
+    chat_notifications_sent: [],
+    chat_notifications_recieved: [
+        {
+            requested_from_user: 2,
+            requested_date: '2023-06-20 18:00'
+        }
+    ],
+    profile: 'user'
+},   {
+ _id: '64ljkh523o54yio3l3l',
+    name: 'Jhona',
+    last_name: 'Coannors',
+    email: 'jhona@judgementday.com', 
+    wallet_balance: 100,
+    bought_courses: [ 'Course1' ],
+    created_courses: [ '321k90aj211kuu', '321k90aj211kuu' ],
+    chat_notifications_sent: [],
+    chat_notifications_recieved: [
+        {
+            requested_from_user: 2,
+            requested_date: '2023-06-20 18:00'
+        }
+    ],
+    profile: 'user'    } ];
 
 describe('UsersService', () => {
 	let service: UsersService;
@@ -29,7 +62,12 @@ describe('UsersService', () => {
 				status: HttpStatus.OK,
 				data: ''
 			};
-		})
+		}),
+		findAllAdmin: jest.fn().mockImplementation(() => ({
+			message: 'All users retrieved succesfully',
+			status: 200,
+			users: users
+		})),
 	};
 
 	beforeEach(async () => {
@@ -62,4 +100,12 @@ describe('UsersService', () => {
 			data: ''
 		});
 	});
+
+	it('findAllAdmin() should return a list of users', async () => {
+        expect(await service.findAllAdmin()).toMatchObject({
+            message: 'All users retrieved succesfully',
+            status: 200,
+            users: users
+        });
+    });
 });
