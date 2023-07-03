@@ -183,6 +183,7 @@ describe('CoursesService', () => {
 		}),
 
 		findOne: jest.fn().mockResolvedValue(course),
+		findOneAdmin: jest.fn().mockResolvedValue(course),
 
 		deleteOne: jest.fn().mockResolvedValue(course),
 
@@ -252,6 +253,15 @@ describe('CoursesService', () => {
 		// 	}
 		//  ]
 		// });
+	});
+
+	it('findOneAdmin() should return response standard object within a course object as data', async() => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+		expect(await service.findOneAdmin(id)).toMatchObject({ 
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
+		 });
 	});
 
 	// xit('findCreatedCourses() should return a standard object within a ', async () => {

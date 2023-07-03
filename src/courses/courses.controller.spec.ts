@@ -163,6 +163,14 @@ describe('CoursesController', () => {
 			});
 		}),
 
+		findOneAdmin: jest.fn().mockImplementation((id: ObjectId) => {
+			return Promise.resolve({
+				message: 'Course retrieved successfully',
+				status: HttpStatus.OK,
+				data: course
+			});
+		}),
+
 		findAll: jest.fn().mockReturnValue(Promise.resolve({
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
@@ -274,6 +282,16 @@ describe('CoursesController', () => {
 		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
 
 		expect(await controller.findOne(id)).toMatchObject({
+			message: 'Course retrieved successfully',
+			status: HttpStatus.OK,
+			data: course
+		});
+	});
+
+	it('findOneAdmin() should return response standard object within a course object as data', async () => {
+		const id = new Schema.Types.ObjectId('6490640b558ac28e56d30793');
+
+		expect(await controller.findOneAdmin(id)).toMatchObject({
 			message: 'Course retrieved successfully',
 			status: HttpStatus.OK,
 			data: course

@@ -60,16 +60,17 @@ export class CoursesController {
   findOne(@Param('id') id: ObjectId) {
   	return this.coursesService.findOne(id);
   }
+  
+  @Get('admin/:id')
+  // @UseGuards(AuthGuard)
+  findOneAdmin(@Param('id') id: ObjectId ) {
+  	return this.coursesService.findOneAdmin(id);
+  }
 
   @Patch('purchase')
   //@UseGuards(AuthGuard)
   purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
   	return this.coursesService.purchaseCourse(purchaseCourseDto);
-  }
-  @Get('admin/:id')
-  // @UseGuards(AuthGuard)
-  findOneAdmin(@Param('id') id: ObjectId ) {
-  	return this.coursesService.findOneAdmin(id);
   }
 
   @Patch(':id')
