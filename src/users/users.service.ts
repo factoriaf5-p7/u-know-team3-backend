@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, ObjectId } from  'mongoose';
@@ -8,6 +8,7 @@ import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
 import { Course } from '../courses/schemas/course.schema';
 import { RatedCourseDto } from '../courses/dto/rate-course.dto';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UsersService {
@@ -210,12 +211,13 @@ export class UsersService {
 			throw error;
 		}
 	}
-
+	
 	async addRating(userId: ObjectId, ratedCourse: RatedCourseDto) {
 		try {
-			const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id }, {
+			const updatedUser = await this.userModel.findOneAndUpdate({ 'bought_courses.course_id': ratedCourse._id, 'bought_courses.stars': { $eq: 0 } }, {
 				'bought_courses.$.stars': ratedCourse.stars
 			}).select('bought_courses');
+			if(!updatedUser) throw new HttpException('Failed rating course', HttpStatus.BAD_REQUEST);
 
 			return {
 				message: 'Course rated successfully',
