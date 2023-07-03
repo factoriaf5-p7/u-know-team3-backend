@@ -179,6 +179,24 @@ describe('CoursesController', () => {
 				status: HttpStatus.OK,
 				data: response
 			});
+		}),
+		
+		purchaseCourse: jest.fn().mockResolvedValue({
+			message: 'Course purchased.',
+			status: HttpStatus.OK,
+			data: ''
+		}),
+
+		deleteCourse: jest.fn().mockResolvedValue({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: '',
+		}),
+
+		deleteCourseByAdmin: jest.fn().mockResolvedValue({
+			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: '',
 		})
 	};
 
@@ -293,6 +311,34 @@ describe('CoursesController', () => {
 			message: 'All courses retrieved successfully',
 			status: HttpStatus.OK,
 			data: courses
+		});
+	});
+
+	it('purchaseCourse should return standard response object when a course is purchased',async () => {
+		const purchaseCourseDto = {
+			userId: expect.any(Types.ObjectId),
+			courseId: expect.any(Types.ObjectId)
+		};
+		expect(await controller.purchaseCourse(purchaseCourseDto)).toMatchObject({
+			message: 'Course purchased.',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('deleteCourse should return a standard response object when a course is deleted',async () => {
+		expect(await controller.deleteCourse(expect.any(Types.ObjectId))).toMatchObject({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: ''
+		});
+	});
+
+	it('deleteCourseByAdmin should return a standard response object when a course is deleted by an admin',async () => {
+		expect(await controller.deleteCourseByAdmin(expect.any(Types.ObjectId))).toMatchObject({
+			message: 'Course deleted by admin',
+			status: HttpStatus.OK,
+			data: ''
 		});
 	});
 });
