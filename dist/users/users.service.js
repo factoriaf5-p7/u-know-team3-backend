@@ -134,6 +134,19 @@ let UsersService = exports.UsersService = class UsersService {
             throw error;
         }
     }
+    async updateUserByAdmmin(user) {
+        try {
+            const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            return {
+                message: 'User updated successfully',
+                status: 200,
+                data: updatedUser
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async updatePassword(user) {
         try {
             await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user)).select('-password -recovery_token');
