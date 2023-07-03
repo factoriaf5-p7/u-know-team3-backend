@@ -7,6 +7,9 @@ import { ObjectId } from 'mongoose';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RatedCourseDto } from './dto/rate-course.dto';
 import { PurchaseCourseDto } from './dto/buy-course.dto';
+import { Roles } from 'src/auth/guards/roles';
+import { Role } from 'src/auth/guards/roles.enum';
+import { RolesGuard } from 'src/auth/guards/role.guard';
 
 @Controller('courses')
 export class CoursesController {
@@ -67,6 +70,8 @@ export class CoursesController {
   	return this.coursesService.purchaseCourse(purchaseCourseDto);
   }
   @Get('admin/:id')
+  @Roles(Role.Admin)
+  @UseGuards(RolesGuard)
   // @UseGuards(AuthGuard)
   findOneAdmin(@Param('id') id: ObjectId ) {
   	return this.coursesService.findOneAdmin(id);
