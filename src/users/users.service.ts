@@ -217,7 +217,17 @@ export class UsersService {
 		return `This action removes a #${id} user`;
 	}
 
-	async findOneAndUpdate(userId: ObjectId) {
-		return await this.userModel.findOneAndUpdate({ _id: userId });
+	async updateUserBoughtCourses(userId: mongoose.Types.ObjectId , course: any) {
+		const update = {
+			$push: {
+			  bought_courses: {
+					course_id: course.id,
+					stars: 0,
+					commented: false,
+			  },
+			},
+		  };
+
+		  return this.userModel.findOneAndUpdate(userId, update);
 	}
 }

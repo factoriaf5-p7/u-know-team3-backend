@@ -362,12 +362,12 @@ export class CoursesService {
 					);
 				}
 				user.wallet_balance -= course.price;
-				user.bought_courses.push({
+				const object = {
 					course_id: course.id,
 					stars: 0,
 					commented: false
-				});
-				await user.save();
+				};
+				await this.userService.updateUserBoughtCourses(user._id, object);
 
 				return {
 					message: 'Course purchased.',

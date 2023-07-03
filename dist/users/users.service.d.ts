@@ -103,7 +103,7 @@ export declare class UsersService {
         }[];
     }>;
     remove(id: number): string;
-    findOneAndUpdate(userId: ObjectId): Promise<mongoose.Document<unknown, {}, User> & Omit<User & {
+    updateUserBoughtCourses(userId: mongoose.Types.ObjectId, course: any): Promise<mongoose.Document<unknown, {}, User> & Omit<User & {
         _id: mongoose.Types.ObjectId;
     }, never>>;
 }
