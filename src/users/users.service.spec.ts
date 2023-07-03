@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import mongoose, { ObjectId } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
+import { UpdateUserByAdminDto } from './dto/update-user-byadmin.dto ';
 
 const recoveryUser: RecoverUserDto = {
 	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
@@ -62,4 +63,5 @@ describe('UsersService', () => {
 			data: ''
 		});
 	});
+
 });

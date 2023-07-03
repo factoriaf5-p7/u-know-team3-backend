@@ -69,6 +69,13 @@ export declare class UsersService {
             _id: mongoose.Types.ObjectId;
         }, never>;
     }>;
+    updateUserByAdmmin(user: UpdateUserDto): Promise<{
+        message: string;
+        status: number;
+        data: mongoose.Document<unknown, {}, User> & Omit<User & {
+            _id: mongoose.Types.ObjectId;
+        }, never>;
+    }>;
     updatePassword(user: RecoverUserDto): Promise<{
         message: string;
         status: number;
