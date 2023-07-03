@@ -20,29 +20,31 @@ export class ChatGateway implements OnGatewayInit {
 		server: Server;
 	users = 0;
 
+	afterInit(server: Server) {
+		console.log('Websocket Server up...');
+	}
+
 	@SubscribeMessage('room')
-	async createRoom(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
-		client.join((data: string) => {
-			console.log('data ', data);
-		});
+	async createRoom(client: Socket, data) {
+		console.log('In ', data.room);
+		this.server.emit('chat', `Welcome #${ data.userName }! Your are in ${data.room} room`);
 	}
 
 	@SubscribeMessage('chat')
-	async onChat(client, message) {
-		console.log('mssg from client = ', message);
-		this.server.emit('chat', message );
-	}
-
-	afterInit(server: Server) {
-		console.log(server);
+	async onChat(client, data) {
+		console.log(`Message from client ${client.id} (${data.userName}) = `, data.message);
+		this.server.to(data.room).emit(data.message);
+		this.server.emit('chat', `#${ data.userName }: ${data.message}` );
 	}
 	
-	async handleConnection(client) {
-		// this.users++;
-		// this.server.emit('users', this.users);
+	async handleConnection(client, data) {
+		// console.log('data room', data.room)
+		// client.on('room', (data) => {
+		// 	client.join(data.room);
+		// 	this.users++;
+		// 	this.server.to(data.room).emit('users', { numUsers: this.users });
+		// });
 		console.log('New client connected', client.id);
-		this.server.emit('chat', { data: 'Yeah!' });
-		
 	}
 
 	async handleDisconnect() {
