@@ -41,7 +41,7 @@ export declare class UsersController {
     findAllAdmin(): Promise<{
         message: string;
         status: number;
-        users: (import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+        data: (import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
             _id: import("mongoose").Types.ObjectId;
         }, never>)[];
     }>;
