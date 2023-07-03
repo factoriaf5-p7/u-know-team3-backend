@@ -61,6 +61,12 @@ export class CoursesController {
   	return this.coursesService.findOne(id);
   }
 
+  @Get('admin/:id')
+  // @UseGuards(AuthGuard)
+  findOneAdmin(@Param('id') id: ObjectId ) {
+  	return this.coursesService.findOneAdmin(id);
+  }
+
   @Patch(':id')
   // @UseGuards(AuthGuard)
   update(@Param('id') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
