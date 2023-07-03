@@ -244,6 +244,21 @@ export class CoursesService {
 		}
 	}
 
+	async findOneAdmin(id: ObjectId) {
+		try {
+			const course = await this.courseModel.findById(id);
+			return {
+				message: 'Course retrieved successfully',
+				status: HttpStatus.OK,
+				data: course
+			};
+			
+		} catch (error) {
+			throw error;
+			
+		}
+	}
+
 	async update(id: ObjectId, updateCourse: UpdateCourseDto) {
 		try {
 			// user que quiere actualizar curso
