@@ -67,7 +67,7 @@ export declare class UsersController {
             _id: import("mongoose").Types.ObjectId;
         }, never>;
     }>;
-    updateUserByAdmmin(updateUserByAdminDto: UpdateUserByAdminDto): Promise<{
+    updateUserByAdmin(updateUserByAdminDto: UpdateUserByAdminDto): Promise<{
         message: string;
         status: number;
         data: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
