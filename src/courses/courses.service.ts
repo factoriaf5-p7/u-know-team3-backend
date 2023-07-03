@@ -341,8 +341,10 @@ export class CoursesService {
 				throw new HttpException('INSUFFICIENT_BALANCE', HttpStatus.FORBIDDEN);
 			} else {
 				if (!course.bought) {
-					course.bought = true;
-					await course.save();
+					await this.courseModel.findOneAndUpdate(
+						{ _id: course._id },
+						{ bought: true },
+					);
 				}
 				user.wallet_balance -= course.price;
 				user.bought_courses.push({

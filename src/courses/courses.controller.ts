@@ -61,6 +61,12 @@ export class CoursesController {
   	return this.coursesService.findOne(id);
   }
 
+  @Patch('purchase')
+  //@UseGuards(AuthGuard)
+  purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
+  	return this.coursesService.purchaseCourse(purchaseCourseDto);
+  }
+
   @Patch(':id')
   // @UseGuards(AuthGuard)
   update(@Param('id') userId: ObjectId, @Body() updateCourseDto: UpdateCourseDto){
@@ -83,11 +89,5 @@ export class CoursesController {
   // @UseGuards(AuthGuard)
   addRating(@Param('userid') userId: ObjectId, @Body() ratedCourse: RatedCourseDto) {
   	return this.coursesService.addRating(userId, ratedCourse);
-  }
-
-  @Post('purchase')
-  //@UseGuards(AuthGuard)
-  purchaseCourse(@Body() purchaseCourseDto: PurchaseCourseDto) {
-  	return this.coursesService.purchaseCourse(purchaseCourseDto);
   }
 }
