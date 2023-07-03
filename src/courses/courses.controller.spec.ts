@@ -168,6 +168,18 @@ describe('CoursesController', () => {
 			status: HttpStatus.OK,
 			data: courses
 		})),
+
+		findBoughtCourses: jest.fn().mockImplementation((userId: ObjectId) => {
+			const response = [];
+			courses.forEach(course => {
+				response.push({ _id: course._id, name: course.name });
+			});
+			return Promise.resolve({
+				message: 'Retrieved all courses purchased by user successfully',
+				status: HttpStatus.OK,
+				data: response
+			});
+		})
 	};
 
 	beforeEach(async () => {
@@ -201,10 +213,10 @@ describe('CoursesController', () => {
 	it('findBoughtCourses() should return an array of object courses id and name', async () => {
 		const response = [];
 		courses.forEach(course => {
-			response.push({ _id: course._id , name: course.name });
+			response.push({ _id: course._id, name: course.name });
 		});
 		expect(await controller.findBoughtCourses(new mongoose.Schema.Types.ObjectId(user._id))).toMatchObject({
-			message: 'Retrieved all created courses successfully',
+			message: 'Retrieved all courses purchased by user successfully',
 			status: HttpStatus.OK,
 			data: response
 		});
