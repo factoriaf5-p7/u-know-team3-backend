@@ -134,6 +134,19 @@ let UsersService = exports.UsersService = class UsersService {
             throw error;
         }
     }
+    async updateUserByAdmmin(user) {
+        try {
+            const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
+            return {
+                message: 'User updated successfully',
+                status: 200,
+                data: updatedUser
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async updatePassword(user) {
         try {
             await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user)).select('-password -recovery_token');
@@ -208,8 +221,17 @@ let UsersService = exports.UsersService = class UsersService {
     remove(id) {
         return `This action removes a #${id} user`;
     }
-    async findOneAndUpdate(userId) {
-        return await this.userModel.findOneAndUpdate({ _id: userId });
+    async updateUserBoughtCourses(userId, course) {
+        const update = {
+            $push: {
+                bought_courses: {
+                    course_id: course.id,
+                    stars: 0,
+                    commented: false,
+                },
+            },
+        };
+        return this.userModel.findOneAndUpdate(userId, update);
     }
 };
 exports.UsersService = UsersService = __decorate([

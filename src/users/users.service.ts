@@ -140,6 +140,20 @@ export class UsersService {
 			throw error;
 		}
 	}
+	async updateUserByAdmmin(user: UpdateUserDto) {
+		try {
+			const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, {
+				...user
+			});
+			return {
+				message: 'User updated successfully',
+				status: 200,
+				data: updatedUser
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
 
 	async updatePassword(user: RecoverUserDto) {
 		try {
@@ -219,7 +233,17 @@ export class UsersService {
 		return `This action removes a #${id} user`;
 	}
 
-	async findOneAndUpdate(userId: ObjectId) {
-		return await this.userModel.findOneAndUpdate({ _id: userId });
+	async updateUserBoughtCourses(userId: mongoose.Types.ObjectId , course: any) {
+		const update = {
+			$push: {
+			  bought_courses: {
+					course_id: course.id,
+					stars: 0,
+					commented: false,
+			  },
+			},
+		  };
+
+		  return this.userModel.findOneAndUpdate(userId, update);
 	}
 }
