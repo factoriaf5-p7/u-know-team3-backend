@@ -134,7 +134,7 @@ let UsersService = exports.UsersService = class UsersService {
             throw error;
         }
     }
-    async updateUserByAdmmin(user) {
+    async updateUserByAdmin(user) {
         try {
             const updatedUser = await this.userModel.findOneAndUpdate({ _id: user._id }, Object.assign({}, user));
             return {

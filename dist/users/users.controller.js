@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const register_user_dto_1 = require("../auth/dto/register-user.dto");
-const auth_guard_1 = require("../auth/guards/auth.guard");
 const update_user_byadmin_dto_1 = require("./dto/update-user-byadmin.dto ");
 let UsersController = exports.UsersController = class UsersController {
     constructor(usersService) {
@@ -38,8 +37,8 @@ let UsersController = exports.UsersController = class UsersController {
     update(updateUserDto) {
         return this.usersService.update(updateUserDto);
     }
-    updateUserByAdmmin(updateUserByAdminDto) {
-        return this.usersService.updateUserByAdmmin(updateUserByAdminDto);
+    updateUserByAdmin(updateUserByAdminDto) {
+        return this.usersService.updateUserByAdmin(updateUserByAdminDto);
     }
     deleteUserByAdmin(id) {
         return this.usersService.deleteUserByAdmin(id);
@@ -87,10 +86,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_byadmin_dto_1.UpdateUserByAdminDto]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "updateUserByAdmmin", null);
+], UsersController.prototype, "updateUserByAdmin", null);
 __decorate([
     (0, common_1.Delete)('admin/delete'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Query)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
