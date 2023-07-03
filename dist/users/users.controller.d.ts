@@ -26,6 +26,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
 import { RegisterUserDto } from '../auth/dto/register-user.dto';
+import { UpdateUserByAdminDto } from './dto/update-user-byadmin.dto ';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -60,6 +61,13 @@ export declare class UsersController {
         })[];
     }>;
     update(updateUserDto: UpdateUserDto): Promise<{
+        message: string;
+        status: number;
+        data: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {
+            _id: import("mongoose").Types.ObjectId;
+        }, never>;
+    }>;
+    updateUserByAdmmin(updateUserByAdminDto: UpdateUserByAdminDto): Promise<{
         message: string;
         status: number;
         data: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").User> & Omit<import("./schemas/user.schema").User & {

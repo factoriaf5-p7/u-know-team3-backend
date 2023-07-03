@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectId } from 'mongoose';
 import { RegisterUserDto } from '../auth/dto/register-user.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { UpdateUserByAdminDto } from './dto/update-user-byadmin.dto ';
 
 @Controller('users')
 export class UsersController {
@@ -34,11 +35,17 @@ export class UsersController {
   		return this.usersService.findAll();
   	}
 
-  	@Patch(':id')
+  	@Patch()
   	// @UseGuards(AuthGuard)
   	update(@Body() updateUserDto: UpdateUserDto) {
   		return this.usersService.update(updateUserDto);
-	  }
+	}
+
+	@Patch('admin')
+	// @UseGuards(AuthGuard)
+  	updateUserByAdmmin(@Body() updateUserByAdminDto: UpdateUserByAdminDto) {
+  		return this.usersService.updateUserByAdmmin(updateUserByAdminDto);
+  	}
 
 	@Delete('admin/delete')
   	@UseGuards(AuthGuard) //admin

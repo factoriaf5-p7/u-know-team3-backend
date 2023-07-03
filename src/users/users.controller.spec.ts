@@ -7,6 +7,8 @@ import mongoose, { Types } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserLoginDto } from 'src/auth/dto/get-user-login.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
+import { HttpStatus } from '@nestjs/common';
+import { UpdateUserByAdminDto } from './dto/update-user-byadmin.dto ';
 
 const user = {
 	_id: '64ljkh523o54yuo3l3l',
@@ -24,6 +26,20 @@ const user = {
 		}
 	],
 	profile: 'user'
+};
+const updateUser: UpdateUserByAdminDto = {
+	_id: new mongoose.Schema.Types.ObjectId('64ljkh523o54yuo3l3l'),
+	email: 'jhon@judgementday.com',
+	password: '123456',
+	recovery_token: 'no me token los webs',
+	name: '',
+	last_name: '',
+	wallet_balance: 1200,
+	chat_notifications_sent: [],
+	chat_notifications_recieved: [],
+	profile: 'user',
+	bought_courses: [],
+	created_courses: []
 };
 
 describe('UsersController', () => {
@@ -135,6 +151,14 @@ describe('UsersController', () => {
 				],
 				profile: 'user'
 			}
+		});
+	});
+	
+	it('updateUserByAdmin() should return standard response with the user updated',async () => {
+		expect(await controller.updateUserByAdmmin(updateUser)).toMatchObject({
+			message: 'User updated by Admin',
+			status: HttpStatus.OK,
+			data: updateUser
 		});
 	});
 
