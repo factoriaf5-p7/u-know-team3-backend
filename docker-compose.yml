@@ -7,7 +7,7 @@
 #       context: .
 #       dockerfile: dockerfile
 #     ports:
-#       - 4000:4000
+#       - 3000:3000
 #     volumes:
 #       - ./containers/nestjs/nestjs-volume:/data/api
 #     extra_hosts:
