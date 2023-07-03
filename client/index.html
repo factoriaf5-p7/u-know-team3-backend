@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./styles.css">
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <header>
+        <section id="user-info">
+            <p>Username:</p><input type="text" id="user-name" disabled>
+        </section>
+        <section id="rooms-info">
+            <ul id="rooms">
+                <li><input type="radio" name="rooms" value="room1" checked>Room 1</li>
+                <li><input type="radio" name="rooms" value="room2">Room 2</li>
+                <li><input type="radio" name="rooms" value="room3">Room 3</li>
+            </ul>
+        </section>
+    </header>
+    <main>
+        <ul id="messages"></ul>
+        <form id="form" action="">
+          <input id="input" autocomplete="off" /><button id="send-button">Send</button>
+        </form>
+    </main>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="./socket.io.js" type="module" ></script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": ""
+  },
+  "name": "JavaScript Advanced Techniques",
+  "price": 69.99,
+  "topic": "Web Development",
+  "difficulty": "Advanced",
+  "tags": [
+    "JavaScript",
+    "Web Development",
+    "Frontend"
+  ],
+  "bought": true,
+  "reviews": [
+    {
+      "_id_comment": "80c2ef21eef77c001f84c8f6",
+      "stars": 4
+    },
+    {
+      "_id_comment": "80c2ef21eef77c001f84c8f7",
+      "stars": 5
+    }
+  ],
+  "content": "# JavaScript Advanced Techniques\n\nWelcome to the JavaScript Advanced Techniques course! In this course, you will dive deep into advanced JavaScript concepts and techniques for building robust web applications.\n\n## Course Outline\n\n### Chapter 1: Object-Oriented JavaScript\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to object-oriented programming\n- Creating and using objects\n- Inheritance and prototypes\n\n### Chapter 2: Asynchronous JavaScript\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to asynchronous programming\n- Callbacks, Promises, and async/await\n- Handling errors and exceptions\n\n### Chapter 3: Design Patterns in JavaScript\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to design patterns\n- Singleton, Observer, and Factory patterns\n- Applying design patterns in JavaScript\n\n## Conclusion\n\nCongratulations on completing the JavaScript Advanced Techniques course! We hope you've gained a deeper understanding of JavaScript and its advanced features."
+},
+{
+  "_id": {
+    "$oid": ""
+  },
+  "name": "Python for Data Science",
+  "price": 79.99,
+  "topic": "Data Science",
+  "difficulty": "Intermediate",
+  "tags": [
+    "Python",
+    "Data Science",
+    "Machine Learning"
+  ],
+  "bought": false,
+  "reviews": [
+    {
+      "_id_comment": "70c2ef21eef77c001f84c8f4",
+      "stars": 5
+    },
+    {
+      "_id_comment": "70c2ef21eef77c001f84c8f5",
+      "stars": 4
+    }
+  ],
+  "content": "# Python for Data Science\n\nWelcome to the Python for Data Science course! In this course, you will learn how to use Python for data analysis, visualization, and machine learning.\n\n## Course Outline\n\n### Chapter 1: Introduction to Python\n\nIn this chapter, we will cover the following topics:\n\n- Python basics and syntax\n- Data types and variables\n- Control flow and loops\n\n### Chapter 2: Data Analysis with Pandas\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to Pandas\n- Data manipulation with DataFrames\n- Data cleaning and preprocessing\n\n### Chapter 3: Data Visualization with Matplotlib\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to Matplotlib\n- Creating line plots, scatter plots, and bar plots\n- Customizing plot appearance\n\n### Chapter 4: Machine Learning with Scikit-Learn\n\nIn this chapter, we will cover the following topics:\n\n- Introduction to machine learning\n- Supervised and unsupervised learning\n- Model training and evaluation\n\n## Conclusion\n\nCongratulations on completing the Python for Data Science course! We hope you find these skills valuable in your data science journey."
+}]

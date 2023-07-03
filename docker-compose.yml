@@ -1,0 +1,14 @@
+# version: '3.8'
+
+# services:
+#   nest_container:
+#     image: firstdockernestjs/raul
+#     build:
+#       context: .
+#       dockerfile: dockerfile
+#     ports:
+#       - 4000:4000
+#     volumes:
+#       - ./containers/nestjs/nestjs-volume:/data/api
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"

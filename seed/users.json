@@ -1,0 +1,34 @@
+
+
+[
+    {
+        "name": "John",
+        "last_name": "Doe",
+        "email": "johndoe@example.com",
+        "password": "mypassword",
+        "wallet_balance": 1000,
+        "bought_courses": ["course1", "course2"],
+        "created_courses": ["course3", "course4"],
+        "chat_notifications_sent": [ "60c2ef21eee77c003f84c8f4", "70c2ef21eee77c003f84c8f4"],
+        "chat_notifications_received": [],
+        "profile": "user",
+        "recovery_token": "abc123"
+      },
+      {
+        "name": "Jane",
+        "last_name": "Smith",
+        "email": "janesmith@example.com",
+        "password": "secretpassword",
+        "wallet_balance": 500,
+        "bought_courses": ["course2", "course5"],
+        "created_courses": ["course6"],
+        "chat_notifications_sent": [ "60c2ef21eee56c003f84e8f4"],
+        "chat_notifications_received": ["45c2ef21eee56c003f84e8f6","89c2ef21eee56c003f84e8f7"],
+        "profile": "user",
+        "recovery_token": "xyz789"
+      }
+
+      
+
+]
+

@@ -15,27 +15,27 @@ Hemos seguido analizando los requerimientos que queremos tener en nuestra aplica
 <details>
   <summary><b>Usuaria no registrada</b></summary>
   
-  - Puede ver la lista de contenidos ordenada por valoración
-  - Puede realizar búsquedas por palabras claves o etiquetas
-  - Puede registrarse
+  J Puede ver la lista de contenidos ordenada por valoración
+  J  Puede realizar búsquedas por palabras claves o etiquetas
+  J Puede registrarse
   
   </details>
   <details>
   <summary><b>Usuaria registrada</b></summary>
   
-  - Puede logarse
-  - Puede recuperar la contraseña
-  - Puede ver la lista de contenidos ordenada por valoración
-  - Puede realizar búsquedas por palabras claves o etiquetas
-  - Puede actualizar su perfil (menos nombre, email y wallet)
-  - Puede crear contenido
-  - Puede editar contenido
-  - Puede eliminar contenido, si no ha sido comprado
-  - Puede visualizar la lista de contenido creado
+  J  Puede logarse
+  J  Puede recuperar la contraseña
+  J  Puede ver la lista de contenidos ordenada por valoración
+  J  Puede realizar búsquedas por palabras claves o etiquetas
+  J  Puede actualizar su perfil (menos nombre, email y wallet)
+  J  Puede crear contenido
+  J  Puede editar contenido
+  J  Puede eliminar contenido, si no ha sido comprado
+  J  Puede visualizar la lista de contenido creado
   - Puede comprar contenido
-  - Puede visualiza la lista de contenido comprado
-  - Puede visualizar un contenido comprado
-  - Puede valorar contenido comprado (sólo 1 vez)
+  J  Puede visualiza la lista de contenido comprado
+    Puede visualizar un contenido comprado
+  J  Puede valorar contenido comprado (sólo 1 vez)
   - Puede comentar contenido comprado (sólo 1 vez)
   - Puede enviar una notificación de chat a una autora de contenido
   - Puede visualizar notificaciones de chat sobre algún contenido
@@ -45,23 +45,23 @@ Hemos seguido analizando los requerimientos que queremos tener en nuestra aplica
   <details>
   <summary><b>Administradora de la aplicación</b></summary>
   
-  - Puede ver la lista de contenidos
-  - Puede realizar búsquedas por palabras claves o etiquetas
-  - Puede eliminar contenido
-  - Puede ver lista de usuarias
-  - Puede eliminar una usuaria
-  - Puede actualizar una usuaria
+  J  Puede ver la lista de contenidos
+  J  Puede realizar búsquedas por palabras claves o etiquetas
+  J  Puede eliminar contenido
+  J  Puede ver lista de usuarias
+  J  Puede eliminar una usuaria
+  J  Puede actualizar una usuaria
     
   </details>
 
   <details>
   <summary><b>Sistema</b></summary>
   
-  - Actualiza el wallet de la usuaria cuando se registra
+  J  Actualiza el wallet de la usuaria cuando se registra
   - Actualiza el wallet de la usuaria cuando compra contenido
   - Actualiza el precio del contenido cuando se publica
   - Notifica a la usuaria que no tiene saldo para comprar contenido si el wallet es inferior al precio del contenido
-  - Ajusta la valoración del curso con cada valoración de una usuaria
+  J  Ajusta la valoración del curso con cada valoración de una usuaria
     - Las 4 primeras valoraciones solo contarán como >= a 4.8
     - A partir de la 5ª valoración se hace la media
     - Comunica en tiempo real la valoración del curso   
@@ -74,10 +74,10 @@ Hemos seguido analizando los requerimientos que queremos tener en nuestra aplica
 ## Requerimientos Técnicos
   
   - Incluir una o varias medidas de seguridad: https://nodejs.org/en/docs/guides/security
-  - Incluir medidas de perfomance de bbdd (índices)
-  - Incluir Linting
+  J  Incluir medidas de perfomance de bbdd (índices)
+  J  Incluir Linting
   - Incluir testing unitario y testing de integración de todos los endpoints
-  - Incluir documentación con OpenAPI ([Swagger](https://swagger.io/tools/open-source/getting-started/))
+  J  Incluir documentación con OpenAPI ([Swagger](https://swagger.io/tools/open-source/getting-started/))
   - Dockerizar API y BBDD
   - Desplegar mediante CI/CD con GitHub Actions
 
