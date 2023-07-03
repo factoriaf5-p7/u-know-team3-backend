@@ -208,6 +208,9 @@ let UsersService = exports.UsersService = class UsersService {
     remove(id) {
         return `This action removes a #${id} user`;
     }
+    async findOneAndUpdate(userId) {
+        return await this.userModel.findOneAndUpdate({ _id: userId });
+    }
 };
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
