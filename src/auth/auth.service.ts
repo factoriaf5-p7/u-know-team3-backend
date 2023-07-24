@@ -46,9 +46,9 @@ export class AuthService {
 			user.password = await this.encryptPassword(user.password);
 			const { data, message, status } = await this.userService.create(user);
 			return {
-				message: 'User registered successfully',
-				status: HttpStatus.OK,
-				data: data
+				message,
+				status,
+				data
 			};
 		} catch (error) {
 			throw error;

@@ -53,9 +53,4 @@ export class UsersController {
   		return this.usersService.deleteUserByAdmin(id);
   	}
 
-	@Delete(':id')
-	// @UseGuards(AuthGuard) //admin
-  	remove(@Param('id') id: string) {
-  		return this.usersService.remove(+id);
-  	}
 }

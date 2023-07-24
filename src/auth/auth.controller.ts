@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Post, Patch, UseGuards, HttpStatus, HttpException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetUserLoginDto } from './dto/get-user-login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -16,8 +16,10 @@ export class AuthController {
 	}
 
 	@Post('signup')
-	signup(@Body() user: RegisterUserDto) {
-		return this.authService.register(user);
+	async signup(@Body() user: RegisterUserDto) {
+		const response = await this.authService.register(user);
+		if(response.status !== HttpStatus.OK) throw new HttpException(response.message, response.status);
+		return response;
 	}
 
 	@Patch('recover')

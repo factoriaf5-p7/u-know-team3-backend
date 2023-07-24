@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {  HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, ObjectId } from  'mongoose';
@@ -6,9 +6,7 @@ import { User } from './schemas/user.schema';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { RecoverUserDto } from 'src/auth/dto/recover-user.dto';
 import { RecoverRequestDto } from 'src/auth/dto/recover-request.dto';
-import { Course } from '../courses/schemas/course.schema';
 import { RatedCourseDto } from '../courses/dto/rate-course.dto';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UsersService {
@@ -21,12 +19,16 @@ export class UsersService {
 			const result = await this.userModel.find({ email: user.email });
 
 			if(result.length !== 0){
-				return { message: 'User already exists' };
+				return {
+					message: 'Error in your request',
+					status: HttpStatus.BAD_REQUEST,
+					data: ''
+				};
 			} else {
 				await this.userModel.create( user );
 				return { 
 					message: 'User created succesfully',
-					status: 200,
+					status: HttpStatus.OK,
 					data: ''
 				};
 			}
@@ -56,7 +58,7 @@ export class UsersService {
 			const users = await this.userModel.find().select('-password').lean().exec();
 			return {
 				message: 'All users retrieved succesfully',
-				status: 200,
+				status: HttpStatus.OK,
 				users: users
 			};
 		}catch(error){
@@ -69,7 +71,7 @@ export class UsersService {
 			const users = await this.userModel.find();
 			return {
 				message: 'All users retrieved succesfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: users
 			};
 			
@@ -88,7 +90,7 @@ export class UsersService {
 			const user = await this.userModel.findOne({ _id: id }).select('-password -recovery_token');
 			return {
 				message: 'User retrived successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: user
 			};
 		} catch (error) {
@@ -101,7 +103,7 @@ export class UsersService {
 			const createdCourses = await this.userModel.findOne({ _id: id }).select('created_courses').populate('created_courses');
 			return {
 				message: 'User with created courses retrived successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: createdCourses
 			};
 		} catch (error) {
@@ -116,7 +118,7 @@ export class UsersService {
 			
 			return {
 				message: 'User with bought courses retrived successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: boughtCourses
 			};
 			
@@ -133,7 +135,7 @@ export class UsersService {
 			});
 			return {
 				message: 'User updated successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: updatedUser
 			};
 		} catch (error) {
@@ -147,7 +149,7 @@ export class UsersService {
 			});
 			return {
 				message: 'User updated successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: updatedUser
 			};
 		} catch (error) {
@@ -162,7 +164,7 @@ export class UsersService {
 			}).select('-password -recovery_token');
 			return {
 				message: 'Password updated successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: ''
 			};
 		} catch (error) {
@@ -177,7 +179,7 @@ export class UsersService {
 			});
 			return {
 				message: 'Recovery token created successfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: userTokenCreated
 			};
 		} catch (error) {
@@ -190,7 +192,7 @@ export class UsersService {
 			const usersBoughtCourses = await this.userModel.find( user, filter ).lean().exec();		
 			return {
 				message: 'All users retrieved succesfully',
-				status: 200,
+				status: HttpStatus.OK,
 				data: usersBoughtCourses
 			}; 	
 		} catch (error) {
@@ -227,10 +229,6 @@ export class UsersService {
 		} catch (error) {
 			throw error;
 		}
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} user`;
 	}
 
 	async updateUserBoughtCourses(userId: mongoose.Types.ObjectId , course: any) {
