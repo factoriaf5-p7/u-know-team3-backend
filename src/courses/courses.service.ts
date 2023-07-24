@@ -383,7 +383,6 @@ export class CoursesService {
 					data: ''
 				};
 			}
-
 		}catch (error){
 			throw error;
 		}
