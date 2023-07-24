@@ -267,87 +267,90 @@ describe('CoursesService', () => {
 		 });
 	});
 
-	// xit('findCreatedCourses() should return a standard object within a ', async () => {
-	// 	const userToGetCreatedCourses = {
-	// 		id: '64905b60558ac28e56d3078e'
-	// 	};
+	it('findCreatedCourses() should return a standard object within a ', async () => {
+		const userToGetCreatedCourses = {
+			id: '64905b60558ac28e56d3078e'
+		};
 
-	// 	expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
-	// 		message: 'Retrieved all created courses successfully',
-	// 		status: HttpStatus.OK,
-	// 		data: [ {
-	// 			_id: course._id,
-	// 			name: course.name
-	// 		},
-	// 		{
-	// 			_id: course._id,
-	// 			name: course.name
-	// 		}
-	// 	 ]
-	// 	});
-	// });
+		expect(await service.findCreatedCourses(new mongoose.Schema.Types.ObjectId(userToGetCreatedCourses.id))).toMatchObject({
+			message: 'Retrieved all created courses successfully',
+			status: HttpStatus.OK,
+			data: [ {
+				_id: course._id,
+				name: course.name
+			},
+			{
+				_id: course._id,
+				name: course.name
+			}
+		 ]
+		});
+	});
 
-	// xit('search() should return response standard object with filtered courses as data', async () => {
-	// 	const query = {
-	// 		filters: 'name,tags',
-	// 		keywords: 'web development'
-	// 	};
-	// 	expect(await service.search(query.filters, query.keywords)).toMatchObject({
-	// 		message: 'Retrieved filtered courses successfully',
-	// 		status: HttpStatus.OK,
-	// 		data: courses
-	// 	});
-	// });
+	it('search() should return response standard object with filtered courses as data', async () => {
+		const query = {
+			filters: 'name,tags',
+			keywords: 'web development'
+		};
+		expect(await service.search(query.filters, query.keywords)).toMatchObject({
+			message: 'Retrieved filtered courses successfully',
+			status: HttpStatus.OK,
+			data: courses
+		});
+	});
 	
-	// xit('create() should return a standard response with the course data',async () => {
-	// 	const createNewCourse: CreateCourseDto = {
-	// 		name: 'Java Course',
-	// 		topic: 'Backend',
-	// 		difficulty: 'Advanced',
-	// 		tags: [ 'tag1','tag2','tag3' ],
-	// 		content: '# Learn Java the best way!'
-	// 	};
+	it('create() should return a standard response with the course data',async () => {
+		const createNewCourse: CreateCourseDto = {
+			name: 'Java Course',
+			topic: 'Backend',
+			difficulty: 'Advanced',
+			tags: [ 'tag1','tag2','tag3' ],
+			content: '# Learn Java the best way!'
+		};
 
-	// 	expect(await service.create(createNewCourse)).toMatchObject({
-	// 		message: 'New course created successfully.',
-	// 		status: 200,
-	// 		data: {
-	// 			...createNewCourse
-	// 		}
-	// 	});
-	// });
+		const id = new mongoose.Schema.Types.ObjectId('643khq889a008d66a6s');
 
-	// xit('deleteCourse() should return response standard object if a course is deleted',async () => {
-	// 	expect(await service.deleteCourse(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
-	// 		message: 'Course deleted.',
-	// 		status: HttpStatus.OK,
-	// 		data: '',
-	// 	  });
-	// });
+		expect(await service.create(id, createNewCourse)).toMatchObject({
+			message: 'New course created successfully.',
+			status: 200,
+			data: {
+				...createNewCourse
+			}
+		});
+	});
 
-	// xit('update() should return response standard object within udpated course as data', async () => {
-	// 	const updatedCourseDto: UpdateCourseDto = {
-	// 		name: 'The best web development course',
-	// 		topic: 'Web development',
-	// 		difficulty: 'Hard', 
-	// 		tags: [ '#web', '#dev', '#frontend' ],
-	// 		content: '### New course of turbo development'
-	// 	};
+	it('deleteCourse() should return response standard object if a course is deleted',async () => {
+		expect(await service.deleteCourse(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({
+			message: 'Course deleted.',
+			status: HttpStatus.OK,
+			data: '',
+		  });
+	});
 
-	// 	expect(await service.update(new Schema.Types.ObjectId(course._id), updatedCourseDto)).toMatchObject({
-	// 		message: 'Course updated successfully',
-	// 		status: HttpStatus.OK,
-	// 		data: course
-	// 	});
-	// });
+	it('update() should return response standard object within udpated course as data', async () => {
+		const updatedCourseDto: UpdateCourseDto = {
+			_id: new mongoose.Schema.Types.ObjectId('68akeap833l1ahgy'),
+			name: 'The best web development course',
+			topic: 'Web development',
+			difficulty: 'Hard', 
+			tags: [ '#web', '#dev', '#frontend' ],
+			content: '### New course of turbo development'
+		};
 
-	// xit('findAllSortedByAverage() should return response standard object within a list of courses sorted by average as data', async ()=> {
-	// 	expect(await service.findAllSortedByAverage()).toMatchObject({
-	// 		message: 'Retrieved all courses succesfully',
-	// 		status: HttpStatus.OK,
-	// 		data: sortedCourses
-	// 	});
-	// });
+		expect(await service.update(new Schema.Types.ObjectId(course._id), updatedCourseDto)).toMatchObject({
+			message: 'Course updated successfully',
+			status: HttpStatus.OK,
+			data: course
+		});
+	});
+
+	it('findAllSortedByAverage() should return response standard object within a list of courses sorted by average as data', async ()=> {
+		expect(await service.findAllSortedByAverage()).toMatchObject({
+			message: 'Retrieved all courses succesfully',
+			status: HttpStatus.OK,
+			data: sortedCourses
+		});
+	});
 
 	it('deletedCourseByAdmin() should return response standard object',async () => {
 		expect(await service.deleteCourseByAdmin(new mongoose.Schema.Types.ObjectId(course._id))).toMatchObject({

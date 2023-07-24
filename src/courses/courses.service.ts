@@ -120,75 +120,83 @@ export class CoursesService {
 	}
 
 	async findAllSortedByAverage() {
-		const calculates = [];
-		const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 }); //id de todos los cursos
-		const { data, message, status } = await this.userService.findAllBoughtCourses({},{ bought_courses: 1, _id: 0 }); //cursos comprados de cada usuario
+		try {
+			const calculates = [];
+			const idCoursesAll = await this.courseModel.find({}, { _id: 1, name: 1 }); //id de todos los cursos
+			const { data, message, status } = await this.userService.findAllBoughtCourses({},{ bought_courses: 1, _id: 0 }); //cursos comprados de cada usuario
 
-		// return 'This action find all users';
-		// const courses = this.courseModel.find();
-		idCoursesAll.forEach((course) => {
-			const courseId = course._id;
-			let totalStars = 0;
-			let numRating = 0;
+			// return 'This action find all users';
+			// const courses = this.courseModel.find();
+			idCoursesAll.forEach((course) => {
+				const courseId = course._id;
+				let totalStars = 0;
+				let numRating = 0;
 
-			// Buscar las puntuaciones del curso
-			data.forEach((boughtCourses) => {
-				const bcourses = Array.from(boughtCourses.bought_courses);
-				bcourses.forEach((courseObj) => {
-					if (String(courseObj.course_id) === String(courseId)) {
-						totalStars += courseObj.stars;
-						numRating++;
-					}
+				// Buscar las puntuaciones del curso
+				data.forEach((boughtCourses) => {
+					const bcourses = Array.from(boughtCourses.bought_courses);
+					bcourses.forEach((courseObj) => {
+						if (String(courseObj.course_id) === String(courseId)) {
+							totalStars += courseObj.stars;
+							numRating++;
+						}
+					});
+				});
+				calculates.push({
+					_id: courseId,
+					name: course.name,
+					totalStars,
+					numRating,
 				});
 			});
-			calculates.push({
-				_id: courseId,
-				name: course.name,
-				totalStars,
-				numRating,
+
+			const hash = {};
+			const filteredCourses = calculates.filter((course) => {
+				return hash[course._id] || course.numRating === 0
+					? false
+					: (hash[course._id] = true);
 			});
-		});
 
-		const hash = {};
-		const filteredCourses = calculates.filter((course) => {
-			return hash[course._id] || course.numRating === 0
-				? false
-				: (hash[course._id] = true);
-		});
+			filteredCourses.map((course) => {
+				if (course.numRating > 0) {
+					course.average = course.totalStars / course.numRating;
+					return Number(course.average.toFixed(2));
+				}
+			});
 
-		filteredCourses.map((course) => {
-			if (course.numRating > 0) {
-				course.average = course.totalStars / course.numRating;
-				return Number(course.average.toFixed(2));
-			}
-		});
+			const sortedCourses = filteredCourses.sort((a, b) => b.average - a.average);
 
-		const sortedCourses = filteredCourses.sort((a, b) => b.average - a.average);
-
-		//   respuesta
-		return {
-			message: 'Retrieved all courses succesfully',
-			status: 200,
-			data: sortedCourses,
-		};
+			//   respuesta
+			return {
+				message: 'Retrieved all courses succesfully',
+				status: 200,
+				data: sortedCourses,
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	async findCreatedCourses(userId: ObjectId) {
-		const { data, message, status } =
-      await this.userService.findOneWithCreatedCourses(userId);
+		try{
+			const { data, message, status } =
+		await this.userService.findOneWithCreatedCourses(userId);
 
-		const createdCourses = [];
+			const createdCourses = [];
 
-		const entries = Object.entries(data.created_courses);
-		entries.forEach((course) => {
-			createdCourses.push({ _id: course[1]._id, name: course[1].name });
-		});
+			const entries = Object.entries(data.created_courses);
+			entries.forEach((course) => {
+				createdCourses.push({ _id: course[1]._id, name: course[1].name });
+			});
 
-		return {
-			message: 'Retrieved all created courses successfully',
-			status: HttpStatus.OK,
-			data: createdCourses,
-		};
+			return {
+				message: 'Retrieved all created courses successfully',
+				status: HttpStatus.OK,
+				data: createdCourses,
+			};
+		}catch(error) {
+			throw error;
+		}
 	}
 
 	async findCoursesCollectionById(courseId: ObjectId[]) {
