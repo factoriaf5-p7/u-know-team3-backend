@@ -62,7 +62,7 @@ export class AuthService {
 		};
 
 		try {
-			const token = await this.jwtService.signAsync(payload, { expiresIn: '60s' });
+			const token = await this.jwtService.signAsync(payload, { expiresIn: '1d' });
 			user.recovery_token = token;
 			const { data, message, status } = await this.userService.updateRecoveryToken(user);
 			sendEmail(data, token);
